@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SoporTI</string>
+    <string name="create_user">Crear usuario</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="register_user">Registrar usuario</string>
+    <string name="login">Login</string>
 </resources>
