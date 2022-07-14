@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Configure toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -81,16 +82,15 @@ public class MainActivity extends AppCompatActivity {
                 logOutUser();
                 return true;
             case R.id.action_new_ticket:
-                switchToNewTicket();
+                startActivityNewTicket();
                 return true;
         }
         return true;
     }
 
-    private void switchToNewTicket() {
+    private void startActivityNewTicket() {
         Intent intent = new Intent(this, NewTicketActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void logOutUser() {

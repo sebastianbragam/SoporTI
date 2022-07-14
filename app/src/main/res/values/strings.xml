@@ -6,8 +6,8 @@
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="register_user">Registrar usuario</string>
-    <string name="login">Iniciar sesión</string>
-    <string name="back_to_login">Volver a iniciar sesión.</string>
+    <string name="login">Login</string>
+    <string name="back_to_login">Volver al login</string>
     <string name="welcome">Bienvenido</string>
     <string name="logout">Cerrar sesión</string>
     <string name="title_activity_tickets_list">TicketsListActivity</string>
@@ -19,4 +19,11 @@
     <string name="description">Descripción</string>
     <string name="register_ticket">Registrar ticket</string>
     <string name="cancel">Cancelar</string>
+    <string name="soporti">SoporTI</string>
+    <string name="enter_your_name">Ingresa tu nombre</string>
+    <string name="enter_your_surname">Ingresa tu apellido</string>
+    <string name="example_mail">example@mail.com</string>
+    <string name="enter_secure_password">Ingresa una contraseña segura</string>
+    <string name="enter_ticket_title">Ingrese un título para el ticket</string>
+    <string name="describe_problem">Describa el problema</string>
 </resources>

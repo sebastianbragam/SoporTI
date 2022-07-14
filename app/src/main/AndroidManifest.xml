@@ -11,19 +11,24 @@
         android:theme="@style/Theme.SoporTI">
         <activity
             android:name=".NewTicketActivity"
-            android:exported="false" />
+            android:label="@string/new_ticket"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
+            android:label="@string/register_user"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:label="@string/login" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
