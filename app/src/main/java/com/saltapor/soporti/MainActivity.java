@@ -2,9 +2,12 @@ package com.saltapor.soporti;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,12 +22,15 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tvFirstName, tvLastName, tvEmail;
+    TextView tvName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Initialize FirebaseAuth
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -36,18 +42,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        tvFirstName = findViewById(R.id.tvFirstName);
-        tvLastName = findViewById(R.id.tvLastName);
-        tvEmail = findViewById(R.id.tvEmail);
-
-        Button btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOutUser();
-            }
-        });
-
+        tvName = findViewById(R.id.tvName);
 
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -61,9 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
-                    tvFirstName.setText("Nombre: " + user.firstName);
-                    tvLastName.setText("Nombre: " + user.lastName);
-                    tvEmail.setText("Nombre: " + user.email);
+                    tvName.setText(user.firstName + " " + user.lastName);
                 }
             }
 
@@ -75,12 +68,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void logOutUser() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                logOutUser();
+                return true;
+            case R.id.action_new_ticket:
+                switchToNewTicket();
+                return true;
+        }
+        return true;
+    }
+
+    private void switchToNewTicket() {
+        Intent intent = new Intent(this, NewTicketActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void logOutUser() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
-
     }
 }

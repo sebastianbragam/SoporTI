@@ -5,12 +5,18 @@
     <string name="last_name">Apellido</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
-    <string name="register_user">Registrar usuario.</string>
+    <string name="register_user">Registrar usuario</string>
     <string name="login">Iniciar sesión</string>
     <string name="back_to_login">Volver a iniciar sesión.</string>
     <string name="welcome">Bienvenido</string>
-    <string name="first_name_main">Nombre:</string>
-    <string name="last_name_main">Apellido:</string>
-    <string name="email_main">Email:</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="title_activity_tickets_list">TicketsListActivity</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="new_ticket">Nuevo ticket</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="register_ticket">Registrar ticket</string>
+    <string name="cancel">Cancelar</string>
 </resources>
