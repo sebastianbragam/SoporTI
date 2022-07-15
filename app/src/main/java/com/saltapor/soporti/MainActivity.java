@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,18 +73,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_logout:
-                logOutUser();
-                return true;
             case R.id.action_new_ticket:
                 startActivityNewTicket();
+                return true;
+            case R.id.action_new_category:
+                startActivityNewCategory();
+                return true;
+            case R.id.action_logout:
+                logOutUser();
                 return true;
         }
         return true;
@@ -96,10 +98,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void startActivityNewCategory() {
+        Intent intent = new Intent(this, NewCategoryActivity.class);
+        startActivity(intent);
+    }
+
     private void logOutUser() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
+
 }

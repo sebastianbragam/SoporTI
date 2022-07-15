@@ -1,4 +1,4 @@
-package com.saltapor.soporti;
+package com.saltapor.soporti.Models;
 
 public class User {
 

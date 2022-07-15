@@ -1,6 +1,4 @@
-package com.saltapor.soporti;
-
-import java.util.Date;
+package com.saltapor.soporti.Models;
 
 public class Ticket {
 

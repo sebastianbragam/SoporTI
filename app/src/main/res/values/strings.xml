@@ -27,4 +27,11 @@
     <string name="enter_ticket_title">Ingrese un título para el ticket</string>
     <string name="describe_problem">Describa el problema</string>
     <string name="category">Categoría</string>
+    <string name="new_category">Nueva categoría</string>
+    <string name="enter_category_name">Ingrese un nombre para la categoría</string>
+    <string name="enter_subcategory_name">Ingrese un nombre para la subcategoría</string>
+    <string name="subcategory">Subcategoría</string>
+    <string name="register_category">Registrar categoría</string>
+    <string name="categories">Categorías</string>
+    <string name="delete_category">Eliminar categoría</string>
 </resources>
