@@ -26,4 +26,5 @@
     <string name="enter_secure_password">Ingresa una contraseña segura</string>
     <string name="enter_ticket_title">Ingrese un título para el ticket</string>
     <string name="describe_problem">Describa el problema</string>
+    <string name="category">Categoría</string>
 </resources>

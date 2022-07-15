@@ -27,11 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Configure toolbar
+        // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Initialize FirebaseAuth
+        // Initialize FirebaseAuth.
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Login button.
         Button btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Back to register TextView.
         TextView tvSwitchToRegister = findViewById(R.id.tvSwitchToRegister);
         tvSwitchToRegister.setOnClickListener(new View.OnClickListener() {
             @Override

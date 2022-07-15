@@ -27,18 +27,21 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Configure toolbar
+        // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Initialize FirebaseAuth
+        // Initialize FirebaseAuth.
         mAuth = FirebaseAuth.getInstance();
 
+        // Check user if user is logged in-
         if (mAuth.getCurrentUser() != null) {
             finish();
             return;
         }
 
+
+        // Register button.
         Button btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+        // Back to login TextView.
         TextView tvLogin = findViewById(R.id.tvLogin);
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Falló la autenticación", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Falló el registro", Toast.LENGTH_LONG).show();
                 }
             }
         });
