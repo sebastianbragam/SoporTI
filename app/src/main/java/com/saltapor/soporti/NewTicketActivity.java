@@ -25,6 +25,7 @@ import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class NewTicketActivity extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class NewTicketActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Up navigation.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Initialize FirebaseAuth.
         FirebaseAuth auth = FirebaseAuth.getInstance();

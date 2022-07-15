@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".NewCategoryActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".NewCategoryActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -63,19 +63,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/categories" />
+        android:text="@string/existent_categories" />
 
-    <ListView
-        android:id="@+id/lvCategories"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp" >
-
-    </ListView>
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnRegisterCategory"

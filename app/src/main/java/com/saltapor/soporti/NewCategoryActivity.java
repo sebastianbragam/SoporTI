@@ -3,6 +3,8 @@ package com.saltapor.soporti;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +19,23 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.CategoryAdapter;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class NewCategoryActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    DatabaseReference databaseReference;
+    CategoryAdapter categoryAdapter;
+    ArrayList<Category> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +47,7 @@ public class NewCategoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Up navigation.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Initialize FirebaseAuth.
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -53,6 +67,46 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 registerCategory();
+            }
+        });
+
+        // RecyclerView setup.
+        recyclerView = findViewById(R.id.rvCategories);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        setRecyclerView();
+
+    }
+
+    private void setRecyclerView() {
+
+        // RecyclerView list setup.
+        list = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(NewCategoryActivity.this, list);
+        recyclerView.setAdapter(categoryAdapter);
+
+
+        // Database reference.
+        databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+
+        // Obtain data.
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Category category = dataSnapshot.getValue(Category.class);
+                    list.add(category);
+                }
+
+                categoryAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -90,6 +144,9 @@ public class NewCategoryActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(NewCategoryActivity.this, "Categoría registrada con éxito", Toast.LENGTH_LONG).show();
+                etCategory.setText(null);
+                etSubcategory.setText(null);
+                setRecyclerView();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -98,21 +155,6 @@ public class NewCategoryActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_categories, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete_category:
-                return true;
-        }
-        return true;
     }
 
     @Override

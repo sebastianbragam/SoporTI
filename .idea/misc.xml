@@ -13,14 +13,18 @@
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/drawable-anydpi/ic_new_item.xml" value="0.2515" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_login.xml" value="0.41938405797101447" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_main.xml" value="0.41938405797101447" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_new_category.xml" value="0.33" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_new_ticket.xml" value="0.4109375" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_register.xml" value="0.41938405797101447" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_tickets_list.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/category_item.xml" value="0.4239583333333333" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/content_tickets_list.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/fragment_first.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/fragment_second.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/toolbar_layout.xml" value="0.4239583333333333" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/menu/toolbar_menu.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/menu/toolbar_menu_categories.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/menu/toolbar_menu_main.xml" value="0.425" />
       </map>
     </option>
   </component>

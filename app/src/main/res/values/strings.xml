@@ -34,4 +34,7 @@
     <string name="register_category">Registrar categoría</string>
     <string name="categories">Categorías</string>
     <string name="delete_category">Eliminar categoría</string>
+    <string name="category_form">Categoría:</string>
+    <string name="subcategory_form">Subcategoría:</string>
+    <string name="existent_categories">Categorías existentes</string>
 </resources>
