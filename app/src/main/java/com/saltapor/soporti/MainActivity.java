@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityNewTicket();
                 return true;
             case R.id.action_new_category:
-                startActivityNewCategory();
+                startActivityCategories();
                 return true;
             case R.id.action_logout:
                 logOutUser();
@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void startActivityNewCategory() {
-        Intent intent = new Intent(this, NewCategoryActivity.class);
+    private void startActivityCategories() {
+        Intent intent = new Intent(this, CategoriesActivity.class);
         startActivity(intent);
     }
 

@@ -8,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,23 +20,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.CategoriesAdapter;
 import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.NewCategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class NewCategoryActivity extends AppCompatActivity {
+public class CategoriesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    NewCategoryAdapter newCategoryAdapter;
+    CategoriesAdapter categoriesAdapter;
     ArrayList<Category> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_category);
+        setContentView(R.layout.activity_categories);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -59,17 +58,8 @@ public class NewCategoryActivity extends AppCompatActivity {
             return;
         }
 
-        // Register button.
-        TextView btnRegisterCategory = findViewById(R.id.btnRegisterCategory);
-        btnRegisterCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerCategory();
-            }
-        });
-
         // RecyclerView setup.
-        recyclerView = findViewById(R.id.rvNewCategory);
+        recyclerView = findViewById(R.id.rvCategories);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -89,15 +79,15 @@ public class NewCategoryActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                newCategoryAdapter = new NewCategoryAdapter(NewCategoryActivity.this, list);
-                recyclerView.setAdapter(newCategoryAdapter);
+                categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, list);
+                recyclerView.setAdapter(categoriesAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Category category = dataSnapshot.getValue(Category.class);
                     list.add(category);
                 }
 
-                newCategoryAdapter.notifyDataSetChanged();
+                categoriesAdapter.notifyDataSetChanged();
 
             }
 
@@ -109,48 +99,28 @@ public class NewCategoryActivity extends AppCompatActivity {
 
     }
 
-    private void registerCategory() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_categories, menu);
+        return true;
+    }
 
-        // Obtain form data.
-        EditText etCategory = findViewById(R.id.etCategory);
-        EditText etSubcategory = findViewById(R.id.etSubcategory);
-
-        String categoryName = etCategory.getText().toString();
-        String subcategory = etSubcategory.getText().toString();
-
-        // Create ticket object with form data.
-        Category category = new Category(categoryName, subcategory);
-
-        // Check if there is missing data.
-        if (categoryName.isEmpty() || subcategory.isEmpty()) {
-            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
-            return;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_new_category:
+                startActivityNewCategory();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
         }
+        return true;
+    }
 
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Obtain user data.
-        DatabaseReference reference = database.getReference("categories");
-
-        // Obtain register ID.
-        String uid = reference.push().getKey();
-
-        // Upload data.
-        reference.child(uid).setValue(category).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(NewCategoryActivity.this, "Categoría registrada con éxito", Toast.LENGTH_LONG).show();
-                etCategory.setText(null);
-                etSubcategory.setText(null);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(NewCategoryActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-            }
-        });
-
+    private void startActivityNewCategory() {
+        Intent intent = new Intent(this, NewCategoryActivity.class);
+        startActivity(intent);
     }
 
     @Override
