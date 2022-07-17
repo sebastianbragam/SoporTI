@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,16 +22,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class NewTicketActivity extends AppCompatActivity {
 
     User userLogged;
+    Category category;
+    boolean categoryCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +66,11 @@ public class NewTicketActivity extends AppCompatActivity {
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // Obtain user data.
-        DatabaseReference reference = database.getReference("users").child(currentUser.getUid());
+        // User data reference.
+        DatabaseReference refUsers = database.getReference("users").child(currentUser.getUid());
 
         // Listener to update user data shown.
-        reference.addValueEventListener(new ValueEventListener() {
+        refUsers.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -77,6 +85,93 @@ public class NewTicketActivity extends AppCompatActivity {
 
             }
         });
+
+        // Category spinner.
+        Spinner spCategory = findViewById(R.id.spCategory);
+
+        // Categories reference.
+        DatabaseReference refCategories = database.getReference("categories");
+
+        // Listener to update categories data.
+        refCategories.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // Create and fill categories list and IDs list.
+                final List<String> categoriesList = new ArrayList<>();
+                final List<String> categoriesIDList = new ArrayList<>();
+
+                // Create first hint item.
+                categoriesList.add("Seleccione un elemento...");
+                categoriesIDList.add(" ");
+
+                // Fill rest of list.
+                for (DataSnapshot categoriesListSnapshot : dataSnapshot.getChildren()) {
+
+                    // Fill categories list.
+                    String categoryName = categoriesListSnapshot.child("category").getValue(String.class);
+                    categoryName = categoryName + ": " + categoriesListSnapshot.child("subcategory").getValue(String.class);
+                    categoriesList.add(categoryName);
+
+                    // Fill IDs list.
+                    String categoryID = categoriesListSnapshot.child("id").getValue(String.class);
+                    categoriesIDList.add(categoryID);
+
+                }
+
+                // Populate spinner with list.
+                ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, categoriesList);
+                categoriesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                spCategory.setAdapter(categoriesAdapter);
+
+                // Spinner behaviour.
+                spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        // To check if there is a selected item.
+                        if (adapterView.getSelectedItem().toString() == "Seleccione un elemento...") {
+                            categoryCheck = true;
+                        }
+
+                        // Disable and grey first item !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                        // Get category object with it's ID.
+                        String categoryID = categoriesIDList.get(i);
+                        Query categoryQuery = refCategories.orderByChild("id").equalTo(categoryID);
+                        categoryQuery.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                                category = childSnapshot.getValue(Category.class);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+
+                        });
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         // Register button.
         TextView btnRegisterTicket = findViewById(R.id.btnRegisterTicket);
@@ -107,7 +202,6 @@ public class NewTicketActivity extends AppCompatActivity {
 
         String title = etTicketTitle.getText().toString();
         String description = etDescription.getText().toString();
-        String category = "Remoto"; // Change!!!!!!!!!!!!!!!!!!!!!!!!!
         User user = userLogged;
         long date = new Date().getTime();
 
@@ -115,7 +209,7 @@ public class NewTicketActivity extends AppCompatActivity {
         Ticket ticket = new Ticket(title, category, description, date, user);
 
         // Check if there is missing data.
-        if (title.isEmpty() || description.isEmpty() || category.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || categoryCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
             return;
         }
