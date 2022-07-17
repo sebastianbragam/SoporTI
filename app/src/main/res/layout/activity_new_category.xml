@@ -75,13 +75,4 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btnRegisterCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/register_category" />
-
 </LinearLayout>

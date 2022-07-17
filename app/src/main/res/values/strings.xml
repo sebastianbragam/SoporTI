@@ -14,7 +14,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="new_ticket">Nuevo ticket</string>
+    <string name="add">Nuevo</string>
     <string name="title">Título</string>
     <string name="description">Descripción</string>
     <string name="register_ticket">Registrar ticket</string>
@@ -33,9 +33,10 @@
     <string name="subcategory">Subcategoría</string>
     <string name="register_category">Registrar categoría</string>
     <string name="categories">Categorías</string>
-    <string name="delete_category">Eliminar categoría</string>
+    <string name="delete">Eliminar</string>
     <string name="category_form">Categoría:</string>
     <string name="subcategory_form">Subcategoría:</string>
     <string name="existent_categories">Categorías existentes</string>
-    <string name="edit_category">Editar categoría</string>
+    <string name="edit">Editar</string>
+    <string name="save">Guardar</string>
 </resources>

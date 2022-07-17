@@ -19,14 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.User;
 
-public class MainActivity extends AppCompatActivity {
+public class TicketsActivity extends AppCompatActivity {
 
     TextView tvName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tickets);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -80,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_new_ticket:
+            case R.id.action_new:
                 startActivityNewTicket();
                 return true;
-            case R.id.action_new_category:
+            case R.id.action_categories:
                 startActivityCategories();
                 return true;
             case R.id.action_logout:

@@ -10,9 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -162,17 +160,17 @@ public class EditCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_edit_category, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete_category:
+            case R.id.action_delete:
                 deleteCategory();
                 return true;
-            case R.id.action_edit_category:
+            case R.id.action_edit:
                 editCategory();
                 return true;
             case android.R.id.home:

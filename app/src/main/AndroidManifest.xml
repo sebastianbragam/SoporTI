@@ -30,21 +30,21 @@
         </activity>
         <activity
             android:name=".NewTicketActivity"
-            android:label="@string/new_ticket"
-            android:parentActivityName=".MainActivity">
+            android:label="@string/add"
+            android:parentActivityName=".TicketsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".TicketsActivity" />
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/register_user"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".TicketsActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/login" />
         <activity
-            android:name=".MainActivity"
+            android:name=".TicketsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

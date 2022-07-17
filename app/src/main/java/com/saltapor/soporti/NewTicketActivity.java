@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -198,25 +200,7 @@ public class NewTicketActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
 
-
-        // Register button.
-        TextView btnRegisterTicket = findViewById(R.id.btnRegisterTicket);
-        btnRegisterTicket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerTicket();
-            }
-        });
-
-        // Cancel button.
-        TextView btnCancelTicket = findViewById(R.id.btnCancelTicket);
-        btnCancelTicket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
         });
 
     }
@@ -266,6 +250,25 @@ public class NewTicketActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                registerTicket();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override

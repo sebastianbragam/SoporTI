@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TicketsActivity.class);
         startActivity(intent);
         finish();
     }

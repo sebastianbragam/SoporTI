@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,15 +60,6 @@ public class NewCategoryActivity extends AppCompatActivity {
             finish();
             return;
         }
-
-        // Register button.
-        TextView btnRegisterCategory = findViewById(R.id.btnRegisterCategory);
-        btnRegisterCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerCategory();
-            }
-        });
 
         // RecyclerView setup.
         recyclerView = findViewById(R.id.rvNewCategory);
@@ -151,6 +144,25 @@ public class NewCategoryActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                registerCategory();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override

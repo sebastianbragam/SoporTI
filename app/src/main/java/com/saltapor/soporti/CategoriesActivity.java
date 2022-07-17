@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.CategoriesAdapter;
 import com.saltapor.soporti.Models.Category;
-import com.saltapor.soporti.Models.NewCategoryAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -101,14 +98,14 @@ public class CategoriesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_categories, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_new, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_new_category:
+            case R.id.action_categories:
                 startActivityNewCategory();
                 return true;
             case android.R.id.home:
