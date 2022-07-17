@@ -6,7 +6,7 @@
         android:id="@+id/action_new_category"
         android:orderInCategory="10"
         android:title="@string/new_category"
-        android:icon="@drawable/ic_new_ticket"
+        android:icon="@drawable/ic_new"
         app:showAsAction="ifRoom" />
 
 </menu>

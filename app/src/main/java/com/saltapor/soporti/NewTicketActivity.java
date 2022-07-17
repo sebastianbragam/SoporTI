@@ -92,7 +92,7 @@ public class NewTicketActivity extends AppCompatActivity {
         btnCancelTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMainActivity();
+                finish();
             }
         });
 
@@ -127,29 +127,23 @@ public class NewTicketActivity extends AppCompatActivity {
         DatabaseReference reference = database.getReference("tickets");
 
         // Obtain register ID.
-        String uid = reference.push().getKey();
+        String id = reference.push().getKey();
 
         // Upload data.
-        reference.child(uid).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
+        reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(NewTicketActivity.this, "Ticket registrado con éxito", Toast.LENGTH_LONG).show();
-                showMainActivity();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(NewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-                showMainActivity();
+                finish();
             }
         });
 
-    }
-
-    private void showMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override

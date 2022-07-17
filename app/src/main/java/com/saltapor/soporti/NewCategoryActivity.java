@@ -118,9 +118,6 @@ public class NewCategoryActivity extends AppCompatActivity {
         String categoryName = etCategory.getText().toString();
         String subcategory = etSubcategory.getText().toString();
 
-        // Create ticket object with form data.
-        Category category = new Category(categoryName, subcategory);
-
         // Check if there is missing data.
         if (categoryName.isEmpty() || subcategory.isEmpty()) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
@@ -130,24 +127,27 @@ public class NewCategoryActivity extends AppCompatActivity {
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // Obtain user data.
+        // Obtain data.
         DatabaseReference reference = database.getReference("categories");
 
         // Obtain register ID.
-        String uid = reference.push().getKey();
+        String id = reference.push().getKey();
+
+        // Create ticket object with form data.
+        Category category = new Category(categoryName, subcategory, id);
 
         // Upload data.
-        reference.child(uid).setValue(category).addOnSuccessListener(new OnSuccessListener<Void>() {
+        reference.child(id).setValue(category).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(NewCategoryActivity.this, "Categoría registrada con éxito", Toast.LENGTH_LONG).show();
-                etCategory.setText(null);
-                etSubcategory.setText(null);
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(NewCategoryActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
