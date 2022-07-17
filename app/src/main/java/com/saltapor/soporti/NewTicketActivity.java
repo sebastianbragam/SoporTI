@@ -135,17 +135,6 @@ public class NewTicketActivity extends AppCompatActivity {
                         else return true;
                     }
 
-                    // Set color to gray.
-                    @Override
-                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                        View view = super.getDropDownView(position, convertView, parent);
-                        TextView tv = (TextView) view;
-                        if (position == 0) {
-                            tv.setTextColor(Color.DKGRAY);
-                        }
-                        return view;
-                    }
-
                 };
 
                 // Populate spinner with list.
@@ -217,9 +206,6 @@ public class NewTicketActivity extends AppCompatActivity {
         User user = userLogged;
         long date = new Date().getTime();
 
-        // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, description, date, user);
-
         // Check if there is missing data.
         if (title.isEmpty() || description.isEmpty() || categoryCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
@@ -234,6 +220,9 @@ public class NewTicketActivity extends AppCompatActivity {
 
         // Obtain register ID.
         String id = reference.push().getKey();
+
+        // Create ticket object with form data.
+        Ticket ticket = new Ticket(title, category, description, date, user, "Pendiente de asignación", id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {

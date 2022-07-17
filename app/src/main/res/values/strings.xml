@@ -8,7 +8,7 @@
     <string name="register_user">Registrar usuario</string>
     <string name="login">Login</string>
     <string name="back_to_login">Volver al login</string>
-    <string name="welcome">Bienvenido</string>
+    <string name="welcome">Bienvenid@</string>
     <string name="logout">Cerrar sesión</string>
     <string name="title_activity_tickets_list">TicketsListActivity</string>
 
@@ -39,4 +39,11 @@
     <string name="existent_categories">Categorías existentes</string>
     <string name="edit">Editar</string>
     <string name="save">Guardar</string>
+    <string name="soporti_tickets">SoporTI: Tickets</string>
+    <string name="new_ticket">Nuevo ticket</string>
+    <string name="state_form">Estado:</string>
+    <string name="state">Estado</string>
+    <string name="your_tickets">Tus tickets</string>
+    <string name="date_form">Fecha:</string>
+    <string name="date">Fecha</string>
 </resources>
