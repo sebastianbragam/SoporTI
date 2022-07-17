@@ -1,12 +1,15 @@
 package com.saltapor.soporti;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -37,7 +40,8 @@ public class NewTicketActivity extends AppCompatActivity {
 
     User userLogged;
     Category category;
-    boolean categoryCheck;
+    boolean categoryCheck = true;
+    int selectionsCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +123,30 @@ public class NewTicketActivity extends AppCompatActivity {
 
                 }
 
+                // Create spinner adapter.
+                ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, categoriesList) {
+
+                    // Disable first element.
+                    @Override
+                    public boolean isEnabled(int position) {
+                        if (position == 0) return false;
+                        else return true;
+                    }
+
+                    // Set color to gray.
+                    @Override
+                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        View view = super.getDropDownView(position, convertView, parent);
+                        TextView tv = (TextView) view;
+                        if (position == 0) {
+                            tv.setTextColor(Color.DKGRAY);
+                        }
+                        return view;
+                    }
+
+                };
+
                 // Populate spinner with list.
-                ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, categoriesList);
                 categoriesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
                 spCategory.setAdapter(categoriesAdapter);
 
@@ -130,11 +156,13 @@ public class NewTicketActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                         // To check if there is a selected item.
-                        if (adapterView.getSelectedItem().toString() == "Seleccione un elemento...") {
-                            categoryCheck = true;
-                        }
+                        if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
 
-                        // Disable and grey first item !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            // Check category
+                            categoryCheck = false;
+                            selectionsCount = 1;
+
+                        }
 
                         // Get category object with it's ID.
                         String categoryID = categoriesIDList.get(i);
