@@ -75,7 +75,7 @@ public class NewTicketActivity extends AppCompatActivity {
         // User data reference.
         DatabaseReference refUsers = database.getReference("users").child(currentUser.getUid());
 
-        // Listener to update user data shown.
+        // Listener to update user data.
         refUsers.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -90,6 +90,7 @@ public class NewTicketActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
 
         // Category spinner.

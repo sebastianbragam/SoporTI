@@ -53,4 +53,8 @@
     <string name="answers">Respuestas</string>
     <string name="reply">Responder</string>
     <string name="manage">Gestionar</string>
+    <string name="reply_ticket">Responder ticket</string>
+    <string name="enter_your_response">Ingrese su respuesta</string>
+    <string name="response">Respuesta</string>
+    <string name="last_reply">Última respuesta</string>
 </resources>

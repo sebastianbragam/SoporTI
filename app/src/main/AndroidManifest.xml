@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".ReplyTicketActivity"
+            android:label="@string/reply_ticket"
+            android:parentActivityName=".ViewTicketActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ViewTicketActivity" />
+        </activity>
+        <activity
             android:name=".ViewTicketActivity"
             android:label="@string/ticket"
             android:parentActivityName=".TicketsActivity">

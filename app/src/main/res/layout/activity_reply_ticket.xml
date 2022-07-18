@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".EditCategoryActivity"
-    android:weightSum="1" >
+    tools:context=".ReplyTicketActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,45 +18,60 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/categoryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/category"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/etCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/enter_category_name"
-        android:inputType="textNoSuggestions"
-        tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        android:textStyle="bold"
+        android:text="@string/description" />
 
     <TextView
-        android:id="@+id/subcategoryText"
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/description" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/subcategory"
+        android:layout_marginTop="32dp"
+        android:textStyle="bold"
+        android:text="@string/last_reply" />
+
+    <TextView
+        android:id="@+id/tvLastReply"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/last_reply" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/response"
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/etSubcategory"
+        android:id="@+id/etReply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="top"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="1dp"
         android:ems="10"
-        android:hint="@string/enter_subcategory_name"
-        android:inputType="textNoSuggestions"
+        android:hint="@string/enter_your_response"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
         tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </LinearLayout>

@@ -112,6 +112,9 @@ public class ViewTicketActivity extends AppCompatActivity {
     }
 
     private void startActivityReply() {
+        Intent intent = new Intent(this, ReplyTicketActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
     }
 
     private void startActivityManage() {

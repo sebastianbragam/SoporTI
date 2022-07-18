@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/category" />
+        android:text="@string/category"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etCategory"
@@ -43,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/subcategory" />
+        android:text="@string/subcategory"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etSubcategory"
@@ -63,7 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/existent_categories" />
+        android:text="@string/existent_categories"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNewCategory"
