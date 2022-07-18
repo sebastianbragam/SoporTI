@@ -1,6 +1,8 @@
 package com.saltapor.soporti.Models;
 
-public class Ticket {
+import java.io.Serializable;
+
+public class Ticket implements Serializable {
 
     public String title;
     public Category category;

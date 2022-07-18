@@ -60,8 +60,8 @@ public class EditCategoryActivity extends AppCompatActivity {
         EditText etCategory = findViewById(R.id.etCategory);
         EditText etSubcategory = findViewById(R.id.etSubcategory);
 
-        etCategory.setText(category.category.toString());
-        etSubcategory.setText(category.subcategory.toString());
+        etCategory.setText(category.category);
+        etSubcategory.setText(category.subcategory);
 
     }
 

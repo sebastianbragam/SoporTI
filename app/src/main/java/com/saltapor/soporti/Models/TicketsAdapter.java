@@ -16,6 +16,7 @@ import com.saltapor.soporti.EditCategoryActivity;
 import com.saltapor.soporti.NewTicketActivity;
 import com.saltapor.soporti.R;
 import com.saltapor.soporti.TicketsActivity;
+import com.saltapor.soporti.ViewTicketActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,12 +51,9 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
         holder.btnViewTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(context, "Ver ticket...", Toast.LENGTH_LONG).show();
-
-                /* Intent intent = new Intent(context, EditCategoryActivity.class);
-                intent.putExtra("KEY_NAME", category);
-                context.startActivity(intent); */
+                Intent intent = new Intent(context, ViewTicketActivity.class);
+                intent.putExtra("KEY_NAME", ticket);
+                context.startActivity(intent);
             }
         });
 
