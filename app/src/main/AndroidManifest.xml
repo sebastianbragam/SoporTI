@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".ViewTicketActivity"
+            android:label="@string/ticket"
+            android:parentActivityName=".TicketsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TicketsActivity" />
+        </activity>
+        <activity
             android:name=".EditCategoryActivity"
             android:exported="false" />
         <activity
@@ -45,8 +53,8 @@
             android:label="@string/login" />
         <activity
             android:name=".TicketsActivity"
-            android:label="@string/soporti_tickets"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/soporti_tickets">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

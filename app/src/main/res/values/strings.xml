@@ -46,4 +46,11 @@
     <string name="your_tickets">Tus tickets</string>
     <string name="date_form">Fecha:</string>
     <string name="date">Fecha</string>
+    <string name="ticket">Ticket</string>
+    <string name="description_form">Descripción:</string>
+    <string name="user_form">Usuario:</string>
+    <string name="user">Usuario</string>
+    <string name="answers">Respuestas</string>
+    <string name="reply">Responder</string>
+    <string name="manage">Gestionar</string>
 </resources>
