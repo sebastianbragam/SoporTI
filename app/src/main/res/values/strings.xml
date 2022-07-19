@@ -57,4 +57,7 @@
     <string name="enter_your_response">Ingrese su respuesta</string>
     <string name="response">Respuesta</string>
     <string name="last_reply">Última respuesta</string>
+    <string name="user_name">Nombre del usuario</string>
+    <string name="said_form">\u0020 dijo:</string>
+    <string name="answer">Respuesta</string>
 </resources>
