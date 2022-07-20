@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,28 +19,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.saltapor.soporti.Models.CategoriesAdapter;
-import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class TicketsActivity extends AppCompatActivity {
+public class UserTicketsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     TicketsAdapter ticketsAdapter;
     ArrayList<Ticket> list;
     TextView tvName;
+    User userLogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tickets);
+        setContentView(R.layout.activity_user_tickets);
 
         // Initialize FirebaseAuth.
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -63,6 +63,11 @@ public class TicketsActivity extends AppCompatActivity {
         // Obtain user data.
         DatabaseReference reference = database.getReference("users").child(currentUser.getUid());
 
+        // RecyclerView setup.
+        recyclerView = findViewById(R.id.rvTickets);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         // Listener to update user data.
         reference.addValueEventListener(new ValueEventListener() {
 
@@ -74,6 +79,9 @@ public class TicketsActivity extends AppCompatActivity {
                     // Set user name on TextView.
                     tvName = findViewById(R.id.tvName);
                     tvName.setText(user.firstName + " " + user.lastName);
+                    userLogged = user;
+
+                    setRecyclerView();
 
                 }
             }
@@ -84,28 +92,22 @@ public class TicketsActivity extends AppCompatActivity {
             }
         });
 
-        // RecyclerView setup.
-        recyclerView = findViewById(R.id.rvTickets);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        setRecyclerView();
-
     }
 
     private void setRecyclerView() {
 
         // Database reference.
         databaseReference = FirebaseDatabase.getInstance().getReference("tickets");
+        Query databaseQuery = databaseReference.orderByChild("user/email").equalTo(userLogged.email);
 
         // Obtain data.
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(TicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(UserTicketsActivity.this, list);
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -127,8 +129,33 @@ public class TicketsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_user_main, menu);
+
+        // Building search bar.
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                txtSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                txtSearch(query);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    private void txtSearch(String query) {
+
+
+
     }
 
     @Override

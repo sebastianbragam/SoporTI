@@ -20,10 +20,10 @@
         <activity
             android:name=".ViewTicketActivity"
             android:label="@string/ticket"
-            android:parentActivityName=".TicketsActivity">
+            android:parentActivityName=".UserTicketsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TicketsActivity" />
+                android:value=".UserTicketsActivity" />
         </activity>
         <activity
             android:name=".EditCategoryActivity"
@@ -31,10 +31,10 @@
         <activity
             android:name=".CategoriesActivity"
             android:label="@string/categories"
-            android:parentActivityName=".TicketsActivity">
+            android:parentActivityName=".UserTicketsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TicketsActivity" />
+                android:value=".UserTicketsActivity" />
         </activity>
         <activity
             android:name=".NewCategoryActivity"
@@ -47,29 +47,27 @@
         <activity
             android:name=".NewTicketActivity"
             android:label="@string/new_ticket"
-            android:parentActivityName=".TicketsActivity" >
+            android:parentActivityName=".UserTicketsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TicketsActivity" />
+                android:value=".UserTicketsActivity" />
         </activity>
         <activity
             android:name=".NewUserActivity"
             android:label="@string/new_user"
-            android:parentActivityName=".TicketsActivity" >
+            android:parentActivityName=".UserTicketsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TicketsActivity" />
+                android:value=".UserTicketsActivity" />
         </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/login" />
         <activity
-            android:name=".TicketsActivity"
-            android:exported="true"
-            android:label="@string/soporti_tickets">
+            android:name=".UserTicketsActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

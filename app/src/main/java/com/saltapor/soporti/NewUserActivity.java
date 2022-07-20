@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -160,7 +159,7 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, TicketsActivity.class);
+        Intent intent = new Intent(this, UserTicketsActivity.class);
         startActivity(intent);
         finish();
     }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, TicketsActivity.class);
+        Intent intent = new Intent(this, UserTicketsActivity.class);
         startActivity(intent);
         finish();
     }
