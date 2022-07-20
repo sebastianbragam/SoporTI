@@ -10,6 +10,7 @@ public class Ticket implements Serializable {
     public String state;
     public long date;
     public User user;
+    public User admin;
     public String id;
 
     public Ticket() {}

@@ -26,6 +26,7 @@ import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TicketsActivity extends AppCompatActivity {
 
@@ -40,13 +41,13 @@ public class TicketsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tickets);
 
-        // Configure toolbar.
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         // Initialize FirebaseAuth.
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
+
+        // Configure toolbar.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Check if user is logged in.
         if (currentUser == null) {
@@ -56,22 +57,24 @@ public class TicketsActivity extends AppCompatActivity {
             return;
         }
 
-        tvName = findViewById(R.id.tvName);
-
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // Obtain user data.
         DatabaseReference reference = database.getReference("users").child(currentUser.getUid());
 
-        // Listener to update user data shown.
+        // Listener to update user data.
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
+
+                    // Set user name on TextView.
+                    tvName = findViewById(R.id.tvName);
                     tvName.setText(user.firstName + " " + user.lastName);
+
                 }
             }
 
@@ -134,6 +137,9 @@ public class TicketsActivity extends AppCompatActivity {
             case R.id.action_new:
                 startActivityNewTicket();
                 return true;
+            case R.id.action_users:
+                startActivityNewUser();
+                return true;
             case R.id.action_categories:
                 startActivityCategories();
                 return true;
@@ -151,6 +157,11 @@ public class TicketsActivity extends AppCompatActivity {
 
     private void startActivityCategories() {
         Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+    }
+
+    private void startActivityNewUser() {
+        Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
     }
 

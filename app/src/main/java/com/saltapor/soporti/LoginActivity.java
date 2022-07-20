@@ -48,15 +48,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Back to register TextView.
-        TextView tvSwitchToRegister = findViewById(R.id.tvSwitchToRegister);
-        tvSwitchToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchToRegister();
-            }
-        });
-
     }
 
     private void authenticateUser() {
@@ -91,9 +82,4 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void switchToRegister() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

@@ -47,15 +47,19 @@
         <activity
             android:name=".NewTicketActivity"
             android:label="@string/new_ticket"
-            android:parentActivityName=".TicketsActivity">
+            android:parentActivityName=".TicketsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TicketsActivity" />
         </activity>
         <activity
-            android:name=".RegisterActivity"
-            android:label="@string/register_user"
-            android:parentActivityName=".TicketsActivity" />
+            android:name=".NewUserActivity"
+            android:label="@string/new_user"
+            android:parentActivityName=".TicketsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TicketsActivity" />
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/login" />
