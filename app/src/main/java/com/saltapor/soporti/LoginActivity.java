@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = etLoginPassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor rellene todos los campos.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -68,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             showMainActivity();
                         } else {
-                            Toast.makeText(LoginActivity.this, "La autenticación falló.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "La autenticación falló", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -76,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, UserTicketsActivity.class);
+        Intent intent = new Intent(this, AdminTicketsActivity.class);
         startActivity(intent);
         finish();
     }

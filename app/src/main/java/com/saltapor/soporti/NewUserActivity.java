@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +30,7 @@ import java.util.Objects;
 
 public class NewUserActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth auth;
     boolean typeCheck = true;
     int selectionsCount = 0;
     String type;
@@ -46,7 +48,7 @@ public class NewUserActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Initialize FirebaseAuth.
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
         // Check if user is logged in.
@@ -136,30 +138,31 @@ public class NewUserActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    User user = new User(firstName, lastName, email, id, type);
-                    FirebaseDatabase.getInstance().getReference("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    showMainActivity();
-                                }
-                            });
-                } else {
-                    Toast.makeText(NewUserActivity.this, "Falló el registro", Toast.LENGTH_LONG).show();
-                }
+            public void onSuccess(AuthResult authResult) {
+                String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                User user = new User(firstName, lastName, email, id, type);
+                FirebaseDatabase.getInstance().getReference("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                showMainActivity();
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(NewUserActivity.this, "Falló el registro", Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, UserTicketsActivity.class);
+        Intent intent = new Intent(this, AdminTicketsActivity.class);
         startActivity(intent);
         finish();
     }

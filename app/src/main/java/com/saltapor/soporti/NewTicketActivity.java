@@ -222,8 +222,12 @@ public class NewTicketActivity extends AppCompatActivity {
         // Obtain register ID.
         String id = reference.push().getKey();
 
+        // Create default admin.
+        User admin = new User();
+        admin.email = "admin@saltapor.com";
+
         // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, description, date, user, "Pendiente de asignación", id);
+        Ticket ticket = new Ticket(title, category, description, date, user, admin, "Pendiente de asignación", id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -15,12 +15,13 @@ public class Ticket implements Serializable {
 
     public Ticket() {}
 
-    public Ticket(String title, Category category, String description, long date, User user, String state, String id) {
+    public Ticket(String title, Category category, String description, long date, User user, User admin, String state, String id) {
         this.title = title;
         this.category = category;
         this.description = description;
         this.date = date;
         this.user = user;
+        this.admin = admin;
         this.state = state;
         this.id = id;
     }
