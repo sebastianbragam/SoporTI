@@ -64,4 +64,6 @@
     <string name="users">Usuarios</string>
     <string name="new_user">Nuevo usuario</string>
     <string name="search">Buscar</string>
+    <string name="enter_name">Ingresa el nombre</string>
+    <string name="enter_surname">Ingresa el apellido</string>
 </resources>

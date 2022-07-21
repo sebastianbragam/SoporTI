@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".UserCheckActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".AdminTicketsActivity"
             android:exported="false" />
         <activity
@@ -67,13 +75,7 @@
             android:name=".LoginActivity"
             android:label="@string/login" />
         <activity
-            android:name=".UserTicketsActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".UserTicketsActivity">
         </activity>
     </application>
 

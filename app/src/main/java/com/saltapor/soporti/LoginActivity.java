@@ -15,10 +15,24 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.User;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+
+    String email;
+    String password;
+    String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         EditText etLoginEmail = findViewById(R.id.etLoginEmail);
         EditText etLoginPassword = findViewById(R.id.etLoginPassword);
 
-        String email = etLoginEmail.getText().toString();
-        String password = etLoginPassword.getText().toString();
+        email = etLoginEmail.getText().toString();
+        password = etLoginPassword.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
@@ -65,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            showMainActivity();
+                            showCheckUserActivity();
                         } else {
                             Toast.makeText(LoginActivity.this, "La autenticación falló", Toast.LENGTH_SHORT).show();
                         }
@@ -74,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void showMainActivity() {
-        Intent intent = new Intent(this, AdminTicketsActivity.class);
+    private void showCheckUserActivity() {
+        Intent intent = new Intent(this, UserCheckActivity.class);
         startActivity(intent);
         finish();
     }

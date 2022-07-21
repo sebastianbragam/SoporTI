@@ -27,6 +27,7 @@ import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class UserTicketsActivity extends AppCompatActivity {
 
@@ -42,13 +43,13 @@ public class UserTicketsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_tickets);
 
-        // Initialize FirebaseAuth.
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
-
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Initialize FirebaseAuth.
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
         // Check if user is logged in.
         if (currentUser == null) {
@@ -58,16 +59,16 @@ public class UserTicketsActivity extends AppCompatActivity {
             return;
         }
 
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Obtain user data.
-        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
-
         // RecyclerView setup.
         recyclerView = findViewById(R.id.rvTickets);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Reference to obtain user data.
+        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
 
         // Listener to update user data.
         usersReference.addValueEventListener(new ValueEventListener() {
@@ -204,6 +205,12 @@ public class UserTicketsActivity extends AppCompatActivity {
     private void startActivityNewTicket() {
         Intent intent = new Intent(this, NewTicketActivity.class);
         startActivity(intent);
+    }
+
+    private void showAdminActivity() {
+        Intent intent = new Intent(this, AdminTicketsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void logOutUser() {

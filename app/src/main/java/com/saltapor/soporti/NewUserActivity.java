@@ -141,6 +141,8 @@ public class NewUserActivity extends AppCompatActivity {
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+
+                // Store user data on Realtime Database.
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 User user = new User(firstName, lastName, email, id, type);
                 FirebaseDatabase.getInstance().getReference("users")
@@ -151,6 +153,10 @@ public class NewUserActivity extends AppCompatActivity {
                                 showMainActivity();
                             }
                         });
+
+                // Log out newly created user.
+                FirebaseAuth.getInstance().signOut();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
