@@ -66,6 +66,7 @@ public class NewUserActivity extends AppCompatActivity {
         final List<String> typesList = new ArrayList<>();
         typesList.add("Seleccione un elemento...");
         typesList.add("Admin");
+        typesList.add("Soporte");
         typesList.add("Usuario");
 
         // Create spinner adapter.

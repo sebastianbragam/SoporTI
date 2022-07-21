@@ -55,8 +55,9 @@ public class UserCheckActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
 
-                    // Check to see if user is admin or not and switch to corresponding activity.
+                    // Check user type and switch to corresponding activity.
                     if (Objects.equals(user.type, "Admin")) { showAdminActivity(); };
+                    if (Objects.equals(user.type, "Soporte")) { showSupportActivity(); };
                     if (Objects.equals(user.type, "Usuario")) { showUserActivity(); };
 
                 }
@@ -72,6 +73,12 @@ public class UserCheckActivity extends AppCompatActivity {
 
     private void showUserActivity() {
         Intent intent = new Intent(this, UserTicketsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void showSupportActivity() {
+        Intent intent = new Intent(this, SupportTicketsActivity.class);
         startActivity(intent);
         finish();
     }

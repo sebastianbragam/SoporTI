@@ -172,7 +172,7 @@ public class UserTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter)) {
+                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
                         list.add(ticket);
                     }
                 }

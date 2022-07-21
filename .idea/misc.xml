@@ -9,6 +9,8 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_new_category.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_new_ticket.xml" value="0.33" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_register.xml" value="0.3625" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_support_ticket.xml" value="0.358695652173913" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_support_tickets.xml" value="0.358695652173913" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_tickets.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_user_tickets.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_view_ticket.xml" value="0.3625" />
@@ -21,6 +23,7 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_new.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_reply_manage.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_save.xml" value="0.3625" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_support_main.xml" value="0.2965811965811966" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_user_main.xml" value="0.3625" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/drawable-anydpi/ic_new_item.xml" value="0.2515" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_categories.xml" value="0.425" />

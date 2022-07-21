@@ -28,7 +28,7 @@ import com.saltapor.soporti.Models.User;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AdminTicketsActivity extends AppCompatActivity {
+public class SupportTicketsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference ticketsReference;
@@ -40,7 +40,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_tickets);
+        setContentView(R.layout.activity_support_tickets);
 
         // Initialize FirebaseAuth.
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -108,7 +108,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(AdminTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(SupportTicketsActivity.this, list);
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -130,7 +130,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_admin_main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_support_main, menu);
 
         // Building search bar.
         MenuItem item = menu.findItem(R.id.action_search);
@@ -166,7 +166,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(AdminTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(SupportTicketsActivity.this, list);
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -191,8 +191,8 @@ public class AdminTicketsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_users:
-                startActivityNewUser();
+            case R.id.action_categories:
+                startActivityCategories();
                 return true;
             case R.id.action_logout:
                 logOutUser();
@@ -201,8 +201,8 @@ public class AdminTicketsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startActivityNewUser() {
-        Intent intent = new Intent(this, NewUserActivity.class);
+    private void startActivityCategories() {
+        Intent intent = new Intent(this, CategoriesActivity.class);
         startActivity(intent);
     }
 
