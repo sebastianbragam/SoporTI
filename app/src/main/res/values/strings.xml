@@ -67,4 +67,5 @@
     <string name="enter_name">Ingresa el nombre</string>
     <string name="enter_surname">Ingresa el apellido</string>
     <string name="unassigned_tickets">Tickets sin asignar</string>
+    <string name="choose_a_category">Seleccione una categoría</string>
 </resources>

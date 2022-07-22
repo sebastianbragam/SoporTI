@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:elevation="4dp" />
 
     <androidx.cardview.widget.CardView
