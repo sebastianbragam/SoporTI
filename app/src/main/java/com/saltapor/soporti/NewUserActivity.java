@@ -124,6 +124,7 @@ public class NewUserActivity extends AppCompatActivity {
 
     private void registerUser() {
 
+        // Obtain form data.
         EditText etFirstName = findViewById(R.id.etFirstName);
         EditText etLastName = findViewById(R.id.etLastName);
         EditText etRegisterEmail = findViewById(R.id.etRegisterEmail);
@@ -134,11 +135,13 @@ public class NewUserActivity extends AppCompatActivity {
         String email = etRegisterEmail.getText().toString();
         String password = etRegisterPassword.getText().toString();
 
+        // Check missing fields.
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || typeCheck) {
-            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Create user.
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {

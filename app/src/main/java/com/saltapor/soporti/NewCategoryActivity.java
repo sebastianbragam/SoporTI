@@ -113,7 +113,7 @@ public class NewCategoryActivity extends AppCompatActivity {
 
         // Check if there is missing data.
         if (categoryName.isEmpty() || subcategory.isEmpty()) {
-            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -123,7 +123,7 @@ public class NewCategoryActivity extends AppCompatActivity {
         // Obtain data.
         DatabaseReference reference = database.getReference("categories");
 
-        // Obtain register ID.
+        // Obtain registry ID.
         String id = reference.push().getKey();
 
         // Create ticket object with form data.

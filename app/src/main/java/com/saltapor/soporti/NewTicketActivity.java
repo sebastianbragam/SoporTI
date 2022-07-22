@@ -3,11 +3,16 @@ package com.saltapor.soporti;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +48,8 @@ public class NewTicketActivity extends AppCompatActivity {
 
     User userLogged;
     Category category;
+    TextView tvCategory;
     boolean categoryCheck = true;
-    int selectionsCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +99,23 @@ public class NewTicketActivity extends AppCompatActivity {
 
         });
 
-        // Category spinner.
-        Spinner spCategory = findViewById(R.id.spCategory);
+        // Category "Spinner", actually a TextView with custom dialog.
+        TextView tvCategory = findViewById(R.id.tvCategory);
+
+        // When button pressed, create custom dialog.
+        tvCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSpinner();
+            }
+        });
+
+    }
+
+    private void setSpinner () {
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // Categories reference.
         DatabaseReference refCategories = database.getReference("categories");
@@ -107,10 +128,6 @@ public class NewTicketActivity extends AppCompatActivity {
                 // Create and fill categories list and IDs list.
                 final List<String> categoriesList = new ArrayList<>();
                 final List<String> categoriesIDList = new ArrayList<>();
-
-                // Create first hint item.
-                categoriesList.add("Seleccione un elemento...");
-                categoriesIDList.add(" ");
 
                 // Fill rest of list.
                 for (DataSnapshot categoriesListSnapshot : dataSnapshot.getChildren()) {
@@ -126,59 +143,67 @@ public class NewTicketActivity extends AppCompatActivity {
 
                 }
 
-                // Create spinner adapter.
-                ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, categoriesList) {
+                // Build dialog.
+                Dialog dialog = new Dialog(NewTicketActivity.this);
+                dialog.setContentView(R.layout.spinner_dialog);
+                dialog.show();
 
-                    // Disable first element.
+                // Initialize dialog variables.
+                EditText etSearch = dialog.findViewById(R.id.etSearch);
+                ListView listView = dialog.findViewById(R.id.listView);
+                tvCategory = findViewById(R.id.tvCategory);
+
+                // Fill list.
+                final ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_list_item_1, categoriesList);
+                listView.setAdapter(categoriesAdapter);
+
+                // Listener for search.
+                etSearch.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public boolean isEnabled(int position) {
-                        if (position == 0) return false;
-                        else return true;
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        categoriesAdapter.getFilter().filter(charSequence);
                     }
 
-                };
-
-                // Populate spinner with list.
-                categoriesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-                spCategory.setAdapter(categoriesAdapter);
-
-                // Spinner behaviour.
-                spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void afterTextChanged(Editable editable) { }
+                });
 
-                        // To check if there is a selected item.
-                        if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
+                // Item selected behaviour.
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                            // Check category
-                            categoryCheck = false;
-                            selectionsCount = 1;
+                        // Check for unselected category.
+                        categoryCheck = false;
 
-                        }
+                        // Set TextView text to selected category.
+                        tvCategory.setText(categoriesAdapter.getItem(i));
 
-                        // Get category object with it's ID.
-                        String categoryID = categoriesIDList.get(i);
+                        // Get ID by indexing list.
+                        int idIndex = categoriesList.indexOf(categoriesAdapter.getItem(i));
+                        String categoryID = categoriesIDList.get(idIndex);
+
+                        // Query to get category with ID.
                         Query categoryQuery = refCategories.orderByChild("id").equalTo(categoryID);
                         categoryQuery.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
-                                category = childSnapshot.getValue(Category.class);
+                                    category = childSnapshot.getValue(Category.class);
 
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
+                            public void onCancelled(@NonNull DatabaseError error) { }
 
                         });
 
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        // Dismiss dialog.
+                        dialog.dismiss();
 
                     }
 
@@ -187,9 +212,7 @@ public class NewTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
 
         });
 
@@ -200,7 +223,6 @@ public class NewTicketActivity extends AppCompatActivity {
         // Obtain form data.
         EditText etTicketTitle = findViewById(R.id.etTicketTitle);
         EditText etDescription = findViewById(R.id.etDescription);
-        Spinner spCategory = findViewById(R.id.spCategory);
 
         String title = etTicketTitle.getText().toString();
         String description = etDescription.getText().toString();
@@ -209,7 +231,7 @@ public class NewTicketActivity extends AppCompatActivity {
 
         // Check if there is missing data.
         if (title.isEmpty() || description.isEmpty() || categoryCheck) {
-            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -219,7 +241,7 @@ public class NewTicketActivity extends AppCompatActivity {
         // Obtain user data.
         DatabaseReference reference = database.getReference("tickets");
 
-        // Obtain register ID.
+        // Obtain registry ID.
         String id = reference.push().getKey();
 
         // Create default admin.
