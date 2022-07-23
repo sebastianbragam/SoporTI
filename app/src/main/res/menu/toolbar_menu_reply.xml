@@ -9,11 +9,4 @@
         android:icon="@drawable/ic_reply"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_manage"
-        android:orderInCategory="10"
-        android:title="@string/manage"
-        android:icon="@drawable/ic_manage"
-        app:showAsAction="ifRoom" />
-
 </menu>

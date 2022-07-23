@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class ViewTicketActivity extends AppCompatActivity {
+public class AssignTicketActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
@@ -40,7 +40,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_ticket);
+        setContentView(R.layout.activity_assign_ticket);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -83,56 +83,19 @@ public class ViewTicketActivity extends AppCompatActivity {
         tvUser.setText(ticket.user.email);
         tvDescription.setText(ticket.description);
 
-        // RecyclerView setup.
-        recyclerView = findViewById(R.id.rvViewTicket);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        setRecyclerView();
-
-    }
-
-    private void setRecyclerView() {
-
-        // Database reference.
-        databaseReference = FirebaseDatabase.getInstance().getReference("tickets").child(ticket.id).child("replies");
-
-        // Obtain data.
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // RecyclerView list setup.
-                list = new ArrayList<>();
-                repliesAdapter = new RepliesAdapter(ViewTicketActivity.this, list);
-                recyclerView.setAdapter(repliesAdapter);
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Reply reply = dataSnapshot.getValue(Reply.class);
-                    list.add(reply);
-                }
-
-                repliesAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_reply, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_reply:
-                startActivityReply();
+            case R.id.action_save:
+                assignTicket();
                 return true;
             case android.R.id.home:
                 finish();
@@ -141,10 +104,8 @@ public class ViewTicketActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startActivityReply() {
-        Intent intent = new Intent(this, ReplyTicketActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
+    private void assignTicket() {
+
     }
 
     @Override

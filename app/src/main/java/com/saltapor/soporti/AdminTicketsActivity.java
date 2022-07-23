@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.AdminTicketsAdapter;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
@@ -32,7 +33,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference ticketsReference;
-    TicketsAdapter ticketsAdapter;
+    AdminTicketsAdapter adminTicketsAdapter;
     ArrayList<Ticket> list;
     TextView tvName;
     User userLogged;
@@ -108,15 +109,15 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(AdminTicketsActivity.this, list);
-                recyclerView.setAdapter(ticketsAdapter);
+                adminTicketsAdapter = new AdminTicketsAdapter(AdminTicketsActivity.this, list);
+                recyclerView.setAdapter(adminTicketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
                     list.add(ticket);
                 }
 
-                ticketsAdapter.notifyDataSetChanged();
+                adminTicketsAdapter.notifyDataSetChanged();
 
             }
 
@@ -166,8 +167,8 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(AdminTicketsActivity.this, list);
-                recyclerView.setAdapter(ticketsAdapter);
+                adminTicketsAdapter = new AdminTicketsAdapter(AdminTicketsActivity.this, list);
+                recyclerView.setAdapter(adminTicketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
@@ -176,7 +177,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
                     }
                 }
 
-                ticketsAdapter.notifyDataSetChanged();
+                adminTicketsAdapter.notifyDataSetChanged();
 
             }
 
