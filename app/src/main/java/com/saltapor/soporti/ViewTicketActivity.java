@@ -69,6 +69,7 @@ public class ViewTicketActivity extends AppCompatActivity {
 
         // Set text.
         TextView tvTitle = findViewById(R.id.tvTitle);
+        TextView tvTypeName = findViewById(R.id.tvTypeName);
         TextView tvCategoryName = findViewById(R.id.tvCategoryName);
         TextView tvStateName = findViewById(R.id.tvStateName);
         TextView tvDate = findViewById(R.id.tvDate);
@@ -76,6 +77,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         TextView tvDescription = findViewById(R.id.tvDescription);
 
         tvTitle.setText(ticket.title);
+        tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));

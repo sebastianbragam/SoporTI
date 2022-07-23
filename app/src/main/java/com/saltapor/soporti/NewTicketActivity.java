@@ -50,6 +50,9 @@ public class NewTicketActivity extends AppCompatActivity {
     Category category;
     TextView tvCategory;
     boolean categoryCheck = true;
+    boolean typeCheck = true;
+    int selectionsCount = 0;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,59 @@ public class NewTicketActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+        });
+
+        // Type spinner.
+        Spinner spType = findViewById(R.id.spType);
+
+        // Create and fill list.
+        final List<String> typesList = new ArrayList<>();
+        typesList.add("Seleccione un elemento...");
+        typesList.add("Requerimiento de servicio");
+        typesList.add("Cambio");
+        typesList.add("Incidente");
+        typesList.add("Problema");
+        typesList.add("Ayuda");
+        typesList.add("Prevención");
+
+        // Create spinner adapter.
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, typesList) {
+
+            // Disable first element.
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) return false;
+                else return true;
+            }
+
+        };
+
+        // Populate spinner with list.
+        typesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spType.setAdapter(typesAdapter);
+
+        // Spinner behaviour.
+        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // To check if there is a selected item.
+                if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
+
+                    // Check category
+                    typeCheck = false;
+                    selectionsCount = 1;
+
+                }
+
+                // Get category object with it's ID.
+                type = typesList.get(i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
 
         });
 
@@ -230,7 +286,7 @@ public class NewTicketActivity extends AppCompatActivity {
         long date = new Date().getTime();
 
         // Check if there is missing data.
-        if (title.isEmpty() || description.isEmpty() || categoryCheck) {
+        if (title.isEmpty() || description.isEmpty() || categoryCheck || typeCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -249,7 +305,7 @@ public class NewTicketActivity extends AppCompatActivity {
         admin.email = "admin@saltapor.com";
 
         // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, description, date, user, admin, "Pendiente de asignación", id);
+        Ticket ticket = new Ticket(title, category, type, description, date, user, admin, "Pendiente de asignación", id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
