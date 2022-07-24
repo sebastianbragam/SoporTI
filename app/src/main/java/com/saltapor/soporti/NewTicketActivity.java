@@ -125,6 +125,17 @@ public class NewTicketActivity extends AppCompatActivity {
                 else return true;
             }
 
+            // Set color to gray.
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    tv.setTextColor(Color.DKGRAY);
+                }
+                return view;
+            }
+
         };
 
         // Populate spinner with list.
@@ -294,7 +305,7 @@ public class NewTicketActivity extends AppCompatActivity {
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // Obtain user data.
+        // Ticket reference.
         DatabaseReference reference = database.getReference("tickets");
 
         // Obtain registry ID.

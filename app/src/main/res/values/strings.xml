@@ -70,4 +70,6 @@
     <string name="choose_a_category">Seleccione una categoría</string>
     <string name="assign_ticket">Asignar ticket</string>
     <string name="type_form">Tipo:</string>
+    <string name="support_user">Usuario soporte</string>
+    <string name="support_user_form">Usuario soporte:</string>
 </resources>

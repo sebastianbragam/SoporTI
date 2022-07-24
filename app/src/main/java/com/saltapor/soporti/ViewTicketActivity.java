@@ -74,6 +74,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         TextView tvStateName = findViewById(R.id.tvStateName);
         TextView tvDate = findViewById(R.id.tvDate);
         TextView tvUser = findViewById(R.id.tvUser);
+        TextView tvAdmin = findViewById(R.id.tvAdmin);
         TextView tvDescription = findViewById(R.id.tvDescription);
 
         tvTitle.setText(ticket.title);
@@ -83,6 +84,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
         tvDate.setText(date);
         tvUser.setText(ticket.user.email);
+        tvAdmin.setText(ticket.admin.email);
         tvDescription.setText(ticket.description);
 
         // RecyclerView setup.

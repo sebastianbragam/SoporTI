@@ -149,7 +149,7 @@ public class EditCategoryActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(EditCategoryActivity.this, "Cancelado", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditCategoryActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
             }
         });
 
