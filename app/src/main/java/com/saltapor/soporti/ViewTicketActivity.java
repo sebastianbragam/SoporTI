@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.RepliesAdapter;
 import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.Ticket;
+import com.saltapor.soporti.Models.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     RepliesAdapter repliesAdapter;
     ArrayList<Reply> list;
 
+    User userLogged;
     Ticket ticket;
 
     @Override
@@ -63,6 +66,23 @@ public class ViewTicketActivity extends AppCompatActivity {
 
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Reference to obtain user data.
+        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
+
+        // Listener to obtain user data.
+        usersReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userLogged = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         // Obtain object data.
         ticket = (Ticket) this.getIntent().getSerializableExtra("KEY_NAME");
@@ -136,7 +156,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_reply:
-                startActivityReply();
+                replyCheck();
                 return true;
             case android.R.id.home:
                 finish();
@@ -145,8 +165,32 @@ public class ViewTicketActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startActivityReply() {
-        Intent intent = new Intent(this, ReplyTicketActivity.class);
+    private void replyCheck() {
+
+        if (Objects.equals(userLogged.type, "Usuario")) {
+            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
+                startActivityUserReply();
+            } else {
+                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
+                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+            } else {
+                startActivityAdminReply();
+            }
+        }
+
+    }
+
+    private void startActivityAdminReply() {
+        Intent intent = new Intent(this, AdminReplyActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
+    }
+
+    private void startActivityUserReply() {
+        Intent intent = new Intent(this, UserReplyActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
     }

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".AdminReplyActivity"
+            android:exported="false" />
+        <activity
             android:name=".AssignTicketActivity"
             android:label="@string/assign_ticket"
             android:parentActivityName=".AdminTicketsActivity">
@@ -33,7 +36,7 @@
             android:name=".AdminTicketsActivity"
             android:exported="false" />
         <activity
-            android:name=".ReplyTicketActivity"
+            android:name=".UserReplyActivity"
             android:label="@string/reply_ticket"
             android:parentActivityName=".ViewTicketActivity">
             <meta-data
@@ -86,7 +89,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/login" />
-        <activity android:name=".UserTicketsActivity"></activity>
+        <activity android:name=".UserTicketsActivity" />
     </application>
 
 </manifest>

@@ -20,8 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
@@ -29,7 +29,7 @@ import com.saltapor.soporti.Models.User;
 import java.util.Date;
 import java.util.Objects;
 
-public class ReplyTicketActivity extends AppCompatActivity {
+public class UserReplyActivity extends AppCompatActivity {
 
     User userLogged;
     Ticket ticket;
@@ -37,7 +37,7 @@ public class ReplyTicketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reply_ticket);
+        setContentView(R.layout.activity_user_reply);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,14 +76,36 @@ public class ReplyTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
 
         });
 
         // Obtain object data.
         ticket = (Ticket) this.getIntent().getSerializableExtra("KEY_NAME");
+
+        // Get TextViews
+        TextView tvLastReply = findViewById(R.id.tvLastReply);
+
+        // Reply data reference.
+        Query queryReplies = database.getReference("tickets").child(ticket.id).child("replies").orderByChild("date").limitToLast(1);
+
+        // Listener to update user data.
+        queryReplies.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Reply reply = dataSnapshot.getValue(Reply.class);
+                    if (reply != null) {
+                        tvLastReply.setText(reply.reply);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+
+        });
 
         // Set text.
         TextView tvDescription = findViewById(R.id.tvDescription);
@@ -139,13 +161,27 @@ public class ReplyTicketActivity extends AppCompatActivity {
         reference.child(id).setValue(reply).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(ReplyTicketActivity.this, "Respuesta registrada con éxito", Toast.LENGTH_LONG).show();
-                finish();
+
+                // Update ticket state.
+                database.getReference("tickets").child(ticket.id).child("state").setValue("Pendiente respuesta de soporte").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(UserReplyActivity.this, "Respuesta registrada con éxito", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(UserReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ReplyTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                Toast.makeText(UserReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                 finish();
             }
         });

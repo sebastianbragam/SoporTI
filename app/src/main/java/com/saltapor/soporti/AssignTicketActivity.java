@@ -439,7 +439,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                         String id = reference.push().getKey();
 
                         // Create ticket object with form data.
-                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Asignado", id);
+                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", id);
 
                         // Upload data.
                         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
