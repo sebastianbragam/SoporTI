@@ -9,4 +9,11 @@
         android:icon="@drawable/ic_reply"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_finish"
+        android:orderInCategory="20"
+        android:title="@string/finish_ticket"
+        android:icon="@drawable/ic_finish"
+        app:showAsAction="ifRoom" />
+
 </menu>

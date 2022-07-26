@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/drawable-anydpi/ic_reply.xml" value="0.243" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_admin_tickets.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_login.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_main.xml" value="0.3625" />
@@ -19,6 +20,7 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_edit.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_main.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_new.xml" value="0.3625" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_reply.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_reply_manage.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_save.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_user_main.xml" value="0.3625" />

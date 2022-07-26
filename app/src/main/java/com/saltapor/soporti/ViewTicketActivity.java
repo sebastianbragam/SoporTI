@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -148,7 +150,7 @@ public class ViewTicketActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_reply, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish, menu);
         return true;
     }
 
@@ -158,11 +160,60 @@ public class ViewTicketActivity extends AppCompatActivity {
             case R.id.action_reply:
                 replyCheck();
                 return true;
+            case R.id.action_finish:
+                finishTicket();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return true;
+    }
+
+    private void finishTicket() {
+
+        if (Objects.equals(userLogged.type, "Usuario")) {
+            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
+                userFinish();
+            } else {
+                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (Objects.equals(ticket.state, "Finalizado por usuario")) {
+                startActivityAdminFinish();
+            } else {
+                Toast.makeText(ViewTicketActivity.this, "El parte aún no fue finalizado por el usuario", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private void startActivityAdminFinish() {
+
+
+
+    }
+
+    private void userFinish() {
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Update ticket state.
+        database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
     }
 
     private void replyCheck() {
