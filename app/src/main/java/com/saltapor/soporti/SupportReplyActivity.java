@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class AdminReplyActivity extends AppCompatActivity {
+public class SupportReplyActivity extends AppCompatActivity {
 
     User userLogged;
     Ticket ticket;
@@ -50,7 +50,7 @@ public class AdminReplyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_reply);
+        setContentView(R.layout.activity_support_reply);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -134,7 +134,7 @@ public class AdminReplyActivity extends AppCompatActivity {
         statesList.add("Derivado a desarrollo/proveedor");
 
         // Create spinner adapter.
-        ArrayAdapter<String> statesAdapter = new ArrayAdapter<String>(AdminReplyActivity.this, android.R.layout.simple_spinner_item, statesList) {
+        ArrayAdapter<String> statesAdapter = new ArrayAdapter<String>(SupportReplyActivity.this, android.R.layout.simple_spinner_item, statesList) {
 
             // Disable first element.
             @Override
@@ -250,13 +250,13 @@ public class AdminReplyActivity extends AppCompatActivity {
                         database.getReference("tickets").child(ticket.id).child("state").setValue(ticket.state).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(AdminReplyActivity.this, "Respuesta registrada con éxito", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SupportReplyActivity.this, "Respuesta registrada con éxito", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AdminReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SupportReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         });
@@ -265,7 +265,7 @@ public class AdminReplyActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AdminReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportReplyActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -278,7 +278,7 @@ public class AdminReplyActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(AdminReplyActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SupportReplyActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
             }
         });
 

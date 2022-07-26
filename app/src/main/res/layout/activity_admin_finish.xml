@@ -237,20 +237,4 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/support_user"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/spEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp" />
-
 </LinearLayout>

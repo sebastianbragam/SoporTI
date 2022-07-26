@@ -31,7 +31,7 @@ public class AdminTicketsAdapter extends RecyclerView.Adapter<AdminTicketsAdapte
     @NonNull
     @Override
     public AdminTicketsAdapter.AdminTicketsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.tickets_item, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.admin_tickets_item, parent, false);
         return new AdminTicketsAdapter.AdminTicketsViewHolder(v);
     }
 

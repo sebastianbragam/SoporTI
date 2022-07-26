@@ -42,7 +42,6 @@ import com.saltapor.soporti.Models.User;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +50,7 @@ public class AssignTicketActivity extends AppCompatActivity {
     Ticket ticket;
     TextView tvCategory;
 
-    boolean categoryCheck = true;
+    boolean emailCheck = true;
     int selectionsCount = 0;
 
     @Override
@@ -170,7 +169,7 @@ public class AssignTicketActivity extends AppCompatActivity {
         // Categories reference.
         DatabaseReference refUsers = database.getReference("users");
 
-        // Listener to update categories data.
+        // Listener to update users data.
         refUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -237,7 +236,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                         if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
 
                             // Check category
-                            categoryCheck = false;
+                            emailCheck = false;
                             selectionsCount = 1;
 
                         }
@@ -401,7 +400,7 @@ public class AssignTicketActivity extends AppCompatActivity {
     private void assignTicket() {
 
         // Check if there is missing data.
-        if (categoryCheck) {
+        if (emailCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -435,14 +434,11 @@ public class AssignTicketActivity extends AppCompatActivity {
                         // Ticket reference.
                         DatabaseReference reference = database.getReference("tickets");
 
-                        // Obtain registry ID.
-                        String id = reference.push().getKey();
-
                         // Create ticket object with form data.
-                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", id);
+                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", ticketOld.id);
 
                         // Upload data.
-                        reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        reference.child(ticketOld.id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(AssignTicketActivity.this, "Ticket asignado con éxito", Toast.LENGTH_LONG).show();

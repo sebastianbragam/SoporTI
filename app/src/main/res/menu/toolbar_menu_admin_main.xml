@@ -11,6 +11,12 @@
         app:actionViewClass="android.widget.SearchView" />
 
     <item
+        android:id="@+id/action_categories"
+        android:orderInCategory="20"
+        android:title="@string/categories"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_users"
         android:orderInCategory="80"
         android:title="@string/users"

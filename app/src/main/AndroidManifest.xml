@@ -11,9 +11,11 @@
         android:theme="@style/Theme.SoporTI">
         <activity
             android:name=".AdminFinishActivity"
+            android:label="@string/finish_ticket"
             android:exported="false" />
         <activity
-            android:name=".AdminReplyActivity"
+            android:name=".SupportReplyActivity"
+            android:label="@string/reply_ticket"
             android:exported="false" />
         <activity
             android:name=".AssignTicketActivity"
@@ -56,6 +58,7 @@
         </activity>
         <activity
             android:name=".EditCategoryActivity"
+            android:label="@string/edit_category"
             android:exported="false" />
         <activity
             android:name=".CategoriesActivity"

@@ -83,9 +83,7 @@ public class ViewTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
         // Obtain object data.
@@ -165,28 +163,6 @@ public class ViewTicketActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_reply:
-                replyCheck();
-                return true;
-            case R.id.action_finish:
-                finishTicket();
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return true;
-    }
-
     private void finishTicket() {
 
         if (Objects.equals(userLogged.type, "Usuario")) {
@@ -260,10 +236,10 @@ public class ViewTicketActivity extends AppCompatActivity {
                 Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
         } else {
-            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
-                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
-            } else {
+            if (Objects.equals(ticket.state, "Pendiente respuesta de soporte")) {
                 startActivityAdminReply();
+            } else {
+                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -276,7 +252,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     }
 
     private void startActivityAdminReply() {
-        Intent intent = new Intent(this, AdminReplyActivity.class);
+        Intent intent = new Intent(this, SupportReplyActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
     }
@@ -285,6 +261,72 @@ public class ViewTicketActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UserReplyActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Reference to update ticket data.
+        DatabaseReference usersReference = database.getReference("tickets").child(ticket.id);
+
+        // Listener to obtain user data.
+        usersReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ticket = snapshot.getValue(Ticket.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+        // Update TextViews.
+        TextView tvTitle = findViewById(R.id.tvTitle);
+        TextView tvTypeName = findViewById(R.id.tvTypeName);
+        TextView tvCategoryName = findViewById(R.id.tvCategoryName);
+        TextView tvStateName = findViewById(R.id.tvStateName);
+        TextView tvDate = findViewById(R.id.tvDate);
+        TextView tvUser = findViewById(R.id.tvUser);
+        TextView tvAdmin = findViewById(R.id.tvAdmin);
+        TextView tvDescription = findViewById(R.id.tvDescription);
+
+        tvTitle.setText(ticket.title);
+        tvTypeName.setText(ticket.type);
+        tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
+        tvStateName.setText(ticket.state);
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        tvDate.setText(date);
+        tvUser.setText(ticket.user.email);
+        tvAdmin.setText(ticket.admin.email);
+        tvDescription.setText(ticket.description);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reply:
+                replyCheck();
+                return true;
+            case R.id.action_finish:
+                finishTicket();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override

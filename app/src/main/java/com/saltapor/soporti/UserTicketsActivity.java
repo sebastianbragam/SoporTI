@@ -121,8 +121,10 @@ public class UserTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    list.add(ticket);
-                    count = count + 1;
+                    if (!Objects.equals(ticket.state, "Finalizado") && !Objects.equals(ticket.state, "Finalizado por usuario")) {
+                        list.add(ticket);
+                        count = count + 1;
+                    }
                 }
 
                 // Change text if there is no data.
@@ -186,8 +188,10 @@ public class UserTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
-                        list.add(ticket);
+                    if (!Objects.equals(ticket.state, "Finalizado") && !Objects.equals(ticket.state, "Finalizado por usuario")) {
+                        if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
+                            list.add(ticket);
+                        }
                     }
                 }
 

@@ -1,7 +1,6 @@
 package com.saltapor.soporti;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,14 +8,12 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -37,7 +34,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
-import com.saltapor.soporti.Models.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +45,6 @@ public class AdminFinishActivity extends AppCompatActivity {
 
     Ticket ticket;
     TextView tvCategory;
-
-    boolean categoryCheck = true;
-    int selectionsCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,119 +151,6 @@ public class AdminFinishActivity extends AppCompatActivity {
             public void onClick(View view) {
                 setSpinner();
             }
-        });
-
-        // Email spinner.
-        Spinner spEmail = findViewById(R.id.spEmail);
-
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Categories reference.
-        DatabaseReference refUsers = database.getReference("users");
-
-        // Listener to update categories data.
-        refUsers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                // Create and fill users list and IDs list.
-                final List<String> usersList = new ArrayList<>();
-                final List<String> usersIDList = new ArrayList<>();
-
-                // Create first hint item.
-                usersList.add("Seleccione un elemento...");
-                usersIDList.add(" ");
-
-                // Fill rest of list.
-                for (DataSnapshot usersListSnapshot : dataSnapshot.getChildren()) {
-
-                    // Check if user type is support.
-                    if (Objects.equals(usersListSnapshot.child("type").getValue(String.class), "Soporte")) {
-
-                        // Fill categories list.
-                        String email = usersListSnapshot.child("email").getValue(String.class);
-                        usersList.add(email);
-
-                        // Fill IDs list.
-                        String categoryID = usersListSnapshot.child("id").getValue(String.class);
-                        usersIDList.add(categoryID);
-
-                    }
-
-                }
-
-                // Create spinner adapter.
-                ArrayAdapter<String> usersAdapter = new ArrayAdapter<String>(AdminFinishActivity.this, android.R.layout.simple_spinner_item, usersList) {
-
-                    // Disable first element.
-                    @Override
-                    public boolean isEnabled(int position) {
-                        if (position == 0) return false;
-                        else return true;
-                    }
-
-                    // Set color to gray.
-                    @Override
-                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                        View view = super.getDropDownView(position, convertView, parent);
-                        TextView tv = (TextView) view;
-                        if (position == 0) {
-                            tv.setTextColor(Color.DKGRAY);
-                        }
-                        return view;
-                    }
-
-                };
-
-                // Populate spinner with list.
-                usersAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-                spEmail.setAdapter(usersAdapter);
-
-                // Spinner behaviour.
-                spEmail.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        // To check if there is a selected item.
-                        if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
-
-                            // Check category
-                            categoryCheck = false;
-                            selectionsCount = 1;
-
-                        }
-
-                        // Get category object with it's ID.
-                        String userID = usersIDList.get(i);
-                        Query userQuery = refUsers.orderByChild("id").equalTo(userID);
-                        userQuery.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
-
-                                    ticket.admin = childSnapshot.getValue(User.class);
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) { }
-
-                        });
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) { }
-
-                });
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-
         });
 
     }
@@ -388,7 +268,7 @@ public class AdminFinishActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                assignTicket();
+                finishTicket();
                 return true;
             case android.R.id.home:
                 finish();
@@ -397,69 +277,62 @@ public class AdminFinishActivity extends AppCompatActivity {
         return true;
     }
 
-    private void assignTicket() {
-
-        // Check if there is missing data.
-        if (categoryCheck) {
-            Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void finishTicket() {
 
         // Build alert.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("¿Seguro de que quieres asignar este ticket a " + ticket.admin.firstName + " " + ticket.admin.lastName + "?");
-        builder.setMessage("Revise la categoría y tipo de ticket seleccionados.");
+        builder.setTitle("¿Seguro de que quieres finalizar este ticket?");
+        builder.setMessage("Revise la categoría y tipo de ticket seleccionados. Una vez finalizado, no se pueden cambiar.");
 
         // Assign.
-        builder.setPositiveButton("Asignar", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // Connect to database.
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                // Obtain data.
-                DatabaseReference reference = database.getReference("tickets");
-
-                Ticket ticketOld = ticket;
-
-                // Delete object and re-upload.
-                reference.child(ticket.id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                // Update ticket category.
+                database.getReference("tickets").child(ticket.id).child("category").setValue(ticket.category).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
-                        // Connect to database.
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                        // Ticket reference.
-                        DatabaseReference reference = database.getReference("tickets");
-
-                        // Obtain registry ID.
-                        String id = reference.push().getKey();
-
-                        // Create ticket object with form data.
-                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", id);
-
-                        // Upload data.
-                        reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(AdminFinishActivity.this, "Ticket asignado con éxito", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AdminFinishActivity.this, "La asignación ha fallado", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-
+                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AdminFinishActivity.this, "La asignación ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+
+                // Update ticket type.
+                database.getReference("tickets").child(ticket.id).child("type").setValue(ticket.type).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+
+                // Update ticket state.
+                database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });

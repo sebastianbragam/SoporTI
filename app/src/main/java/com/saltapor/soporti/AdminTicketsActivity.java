@@ -209,6 +209,9 @@ public class AdminTicketsActivity extends AppCompatActivity {
             case R.id.action_users:
                 startActivityNewUser();
                 return true;
+            case R.id.action_categories:
+                startActivityCategories();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
@@ -218,6 +221,11 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
     private void startActivityNewUser() {
         Intent intent = new Intent(this, NewUserActivity.class);
+        startActivity(intent);
+    }
+
+    private void startActivityCategories() {
+        Intent intent = new Intent(this, CategoriesActivity.class);
         startActivity(intent);
     }
 

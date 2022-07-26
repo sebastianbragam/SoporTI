@@ -27,6 +27,7 @@ import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SupportTicketsActivity extends AppCompatActivity {
 
@@ -120,8 +121,10 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    list.add(ticket);
-                    count = count + 1;
+                    if (!Objects.equals(ticket.state, "Finalizado")) {
+                        list.add(ticket);
+                        count = count + 1;
+                    }
                 }
 
                 // Change text if there is no data.
@@ -185,8 +188,10 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
-                        list.add(ticket);
+                    if (!Objects.equals(ticket.state, "Finalizado")) {
+                        if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
+                            list.add(ticket);
+                        }
                     }
                 }
 

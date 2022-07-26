@@ -74,4 +74,5 @@
     <string name="support_user_form">Usuario soporte:</string>
     <string name="no_replies_yet">No hay respuestas aún</string>
     <string name="finish_ticket">Finalizar ticket</string>
+    <string name="edit_category">Editar categoría</string>
 </resources>
