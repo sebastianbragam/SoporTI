@@ -202,11 +202,12 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/tvReplies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/answers"
+        android:text="@string/replies"
         android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView

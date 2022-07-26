@@ -106,6 +106,13 @@ public class SupportTicketsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                // Obtain TextView element and set text to default.
+                TextView tvTickets = findViewById(R.id.tvTickets);
+                tvTickets.setText("Tus tickets");
+
+                // Counter to see if there is data.
+                int count = 0;
+
                 // RecyclerView list setup.
                 list = new ArrayList<>();
                 ticketsAdapter = new TicketsAdapter(SupportTicketsActivity.this, list);
@@ -114,8 +121,15 @@ public class SupportTicketsActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
                     list.add(ticket);
+                    count = count + 1;
                 }
 
+                // Change text if there is no data.
+                if (count == 0) {
+                    tvTickets.setText("No hay tickets pendientes.");
+                }
+
+                // Update data on recycler.
                 ticketsAdapter.notifyDataSetChanged();
 
             }

@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -125,15 +127,6 @@ public class NewUserActivity extends AppCompatActivity {
 
         });
 
-        // Register button.
-        Button btnRegister = findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerUser();
-            }
-        });
-
     }
 
     private void registerUser() {
@@ -189,6 +182,25 @@ public class NewUserActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AdminTicketsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                registerUser();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override

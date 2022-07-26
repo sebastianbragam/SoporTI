@@ -25,7 +25,9 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_save.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/menu/toolbar_menu_user_main.xml" value="0.3625" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/drawable-anydpi/ic_new_item.xml" value="0.2515" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_admin_finish.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_admin_reply.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_admin_tickets.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_assign_ticket.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_assign_tickets.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_categories.xml" value="0.425" />
@@ -37,10 +39,12 @@
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_new_user.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_register.xml" value="0.41938405797101447" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_reply_ticket.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_support_tickets.xml" value="0.41846153846153844" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_tickets.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_tickets_list.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_user_check.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_user_reply.xml" value="0.425" />
+        <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_user_tickets.xml" value="0.41846153846153844" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/activity_view_ticket.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/categories_item.xml" value="0.425" />
         <entry key="..\:/Users/seba_/Documents/GitHub/SoporTI/app/src/main/res/layout/category_item.xml" value="0.4239583333333333" />

@@ -50,7 +50,7 @@
     <string name="description_form">Descripción:</string>
     <string name="user_form">Usuario:</string>
     <string name="user">Usuario</string>
-    <string name="answers">Respuestas</string>
+    <string name="replies">Respuestas</string>
     <string name="reply">Responder</string>
     <string name="manage">Gestionar</string>
     <string name="reply_ticket">Responder ticket</string>

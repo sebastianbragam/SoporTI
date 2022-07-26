@@ -1,11 +1,13 @@
 package com.saltapor.soporti;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -128,22 +130,37 @@ public class ViewTicketActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                // Obtain TextView element and set text to default.
+                TextView tvReplies = findViewById(R.id.tvReplies);
+                tvReplies.setText("Respuestas");
+
                 // RecyclerView list setup.
                 list = new ArrayList<>();
                 repliesAdapter = new RepliesAdapter(ViewTicketActivity.this, list);
                 recyclerView.setAdapter(repliesAdapter);
 
+                // Counter to see if there is data.
+                int count = 0;
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Reply reply = dataSnapshot.getValue(Reply.class);
                     list.add(reply);
+                    count = count + 1;
                 }
 
+                // Change text if there is no data.
+                if (count == 0) {
+                    tvReplies.setText("No hay respuestas.");
+                }
+
+                // Update data on recycler.
                 repliesAdapter.notifyDataSetChanged();
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
     }
@@ -188,31 +205,49 @@ public class ViewTicketActivity extends AppCompatActivity {
 
     }
 
-    private void startActivityAdminFinish() {
-
-
-
-    }
-
     private void userFinish() {
 
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        // Build alert.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¿Seguro de que quieres finalizar este ticket?");
+        builder.setMessage("Luego de finalizado no se puede volver atrás.");
 
-        // Update ticket state.
-        database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
+        // Assign.
+        builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
             @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-                finish();
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                // Connect to database.
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                // Update ticket state.
+                database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+
             }
         });
+
+        // Cancel.
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(ViewTicketActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Show alert.
+        builder.show();
 
     }
 
@@ -232,6 +267,12 @@ public class ViewTicketActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void startActivityAdminFinish() {
+        Intent intent = new Intent(this, AdminFinishActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
     }
 
     private void startActivityAdminReply() {

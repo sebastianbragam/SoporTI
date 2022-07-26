@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".AdminFinishActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminReplyActivity"
             android:exported="false" />
         <activity
