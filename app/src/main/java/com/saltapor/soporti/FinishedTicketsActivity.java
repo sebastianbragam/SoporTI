@@ -21,35 +21,37 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.saltapor.soporti.Models.AdminTicketsAdapter;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
-public class AdminTicketsActivity extends AppCompatActivity {
+public class FinishedTicketsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference ticketsReference;
-    AdminTicketsAdapter adminTicketsAdapter;
+    TicketsAdapter ticketsAdapter;
     ArrayList<Ticket> list;
-    TextView tvName;
     User userLogged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_tickets);
-
-        // Initialize FirebaseAuth.
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
+        setContentView(R.layout.activity_finished_tickets);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Up navigation.
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        // Initialize FirebaseAuth.
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
         // Check if user is logged in.
         if (currentUser == null) {
@@ -59,16 +61,16 @@ public class AdminTicketsActivity extends AppCompatActivity {
             return;
         }
 
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Obtain user data.
-        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
-
         // RecyclerView setup.
         recyclerView = findViewById(R.id.rvTickets);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Reference to obtain user data.
+        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
 
         // Listener to update user data.
         usersReference.addValueEventListener(new ValueEventListener() {
@@ -78,14 +80,43 @@ public class AdminTicketsActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 if (user != null) {
 
-                    // Set user name on TextView.
-                    tvName = findViewById(R.id.tvName);
-                    tvName.setText(user.firstName + " " + user.lastName);
                     userLogged = user;
-
                     setRecyclerView();
 
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
+
+    private void setRecyclerView() {
+
+        // Database query.
+        ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
+        Query ticketsQuery = ticketsReference.orderByChild("state").equalTo("Finalizado");
+
+        // Obtain data.
+        ticketsQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // RecyclerView list setup.
+                list = new ArrayList<>();
+                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list);
+                recyclerView.setAdapter(ticketsAdapter);
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Ticket ticket = dataSnapshot.getValue(Ticket.class);
+                    list.add(ticket);
+                }
+
+                // Update data on recycler.
+                ticketsAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -96,42 +127,30 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
     }
 
-    private void setRecyclerView() {
+    private void filterTickets(String filter) {
 
         // Database query.
         ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
-        Query ticketsQuery = ticketsReference.orderByChild("admin/email").equalTo(userLogged.email);
+        Query ticketsQuery = ticketsReference.orderByChild("state").equalTo("Finalizado");
 
         // Obtain data.
         ticketsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                // Obtain TextView element and set text to default.
-                TextView tvTickets = findViewById(R.id.tvTickets);
-                tvTickets.setText("Tickets sin asignar");
-
-                // Counter to see if there is data.
-                int count = 0;
-
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                adminTicketsAdapter = new AdminTicketsAdapter(AdminTicketsActivity.this, list);
-                recyclerView.setAdapter(adminTicketsAdapter);
+                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list);
+                recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    list.add(ticket);
-                    count = count + 1;
+                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
+                        list.add(ticket);
+                    }
                 }
 
-                // Change text if there is no data.
-                if (count == 0) {
-                    tvTickets.setText("No hay tickets pendientes.");
-                }
-
-                // Update data on recycler.
-                adminTicketsAdapter.notifyDataSetChanged();
+                ticketsAdapter.notifyDataSetChanged();
 
             }
 
@@ -145,7 +164,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_admin_main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_search, menu);
 
         // Building search bar.
         MenuItem item = menu.findItem(R.id.action_search);
@@ -168,80 +187,20 @@ public class AdminTicketsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void filterTickets(String filter) {
-
-        // Database query.
-        ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
-        Query ticketsQuery = ticketsReference.orderByChild("admin/email").equalTo(userLogged.email);
-
-        // Obtain data.
-        ticketsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // RecyclerView list setup.
-                list = new ArrayList<>();
-                adminTicketsAdapter = new AdminTicketsAdapter(AdminTicketsActivity.this, list);
-                recyclerView.setAdapter(adminTicketsAdapter);
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
-                        list.add(ticket);
-                    }
-                }
-
-                adminTicketsAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_users:
-                startActivityNewUser();
-                return true;
-            case R.id.action_finished:
-                startActivityFinishedTickets();
-                return true;
-            case R.id.action_categories:
-                startActivityCategories();
-                return true;
-            case R.id.action_logout:
-                logOutUser();
+            case android.R.id.home:
+                finish();
                 return true;
         }
         return true;
     }
 
-    private void startActivityNewUser() {
-        Intent intent = new Intent(this, NewUserActivity.class);
-        startActivity(intent);
-    }
-
-    private void startActivityFinishedTickets() {
-        Intent intent = new Intent(this, FinishedTicketsActivity.class);
-        startActivity(intent);
-    }
-
-    private void startActivityCategories() {
-        Intent intent = new Intent(this, CategoriesActivity.class);
-        startActivity(intent);
-    }
-
-    private void logOutUser() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

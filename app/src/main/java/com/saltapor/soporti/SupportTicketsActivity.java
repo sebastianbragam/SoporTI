@@ -213,6 +213,9 @@ public class SupportTicketsActivity extends AppCompatActivity {
             case R.id.action_categories:
                 startActivityCategories();
                 return true;
+            case R.id.action_finished:
+                startActivityFinishedTickets();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
@@ -222,6 +225,11 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
     private void startActivityCategories() {
         Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+    }
+
+    private void startActivityFinishedTickets() {
+        Intent intent = new Intent(this, FinishedTicketsActivity.class);
         startActivity(intent);
     }
 

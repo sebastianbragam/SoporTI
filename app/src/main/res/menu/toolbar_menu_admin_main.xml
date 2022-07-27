@@ -11,8 +11,14 @@
         app:actionViewClass="android.widget.SearchView" />
 
     <item
-        android:id="@+id/action_categories"
+        android:id="@+id/action_finished"
         android:orderInCategory="20"
+        android:title="@string/finished_tickets"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_categories"
+        android:orderInCategory="30"
         android:title="@string/categories"
         app:showAsAction="never" />
 

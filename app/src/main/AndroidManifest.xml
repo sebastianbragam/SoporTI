@@ -10,13 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
-            android:name=".AdminFinishActivity"
-            android:label="@string/finish_ticket"
+            android:name=".FinishedTicketsActivity"
+            android:label="@string/finished_tickets"
             android:exported="false" />
         <activity
+            android:name=".AdminFinishActivity"
+            android:exported="false"
+            android:label="@string/finish_ticket" />
+        <activity
             android:name=".SupportReplyActivity"
-            android:label="@string/reply_ticket"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/reply_ticket" />
         <activity
             android:name=".AssignTicketActivity"
             android:label="@string/assign_ticket"
@@ -58,8 +62,8 @@
         </activity>
         <activity
             android:name=".EditCategoryActivity"
-            android:label="@string/edit_category"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/edit_category" />
         <activity
             android:name=".CategoriesActivity"
             android:label="@string/categories"

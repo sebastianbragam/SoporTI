@@ -89,9 +89,7 @@ public class UserTicketsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
     }
@@ -213,6 +211,9 @@ public class UserTicketsActivity extends AppCompatActivity {
             case R.id.action_new:
                 startActivityNewTicket();
                 return true;
+            case R.id.action_finished:
+                startActivityFinishedTickets();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
@@ -225,10 +226,9 @@ public class UserTicketsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showAdminActivity() {
-        Intent intent = new Intent(this, AdminTicketsActivity.class);
+    private void startActivityFinishedTickets() {
+        Intent intent = new Intent(this, FinishedTicketsActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void logOutUser() {
