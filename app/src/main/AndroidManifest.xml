@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".ViewFinishedTicketActivity"
+            android:exported="false"
+            android:label="@string/finished_ticket"/>
+        <activity
             android:name=".FinishedTicketsActivity"
-            android:label="@string/finished_tickets"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/finished_tickets" />
         <activity
             android:name=".AdminFinishActivity"
             android:exported="false"

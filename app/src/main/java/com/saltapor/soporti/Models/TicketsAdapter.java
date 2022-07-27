@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.saltapor.soporti.FinishedTicketsActivity;
 import com.saltapor.soporti.R;
+import com.saltapor.soporti.ViewFinishedTicketActivity;
 import com.saltapor.soporti.ViewTicketActivity;
 
 import java.text.SimpleDateFormat;
@@ -22,10 +24,12 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
 
     Context context;
     ArrayList<Ticket> list;
+    String className;
 
-    public TicketsAdapter(Context context, ArrayList<Ticket> list) {
+    public TicketsAdapter(Context context, ArrayList<Ticket> list, String className) {
         this.context = context;
         this.list = list;
+        this.className = className;
     }
 
     @NonNull
@@ -47,9 +51,15 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
         holder.btnViewTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ViewTicketActivity.class);
-                intent.putExtra("KEY_NAME", ticket);
-                context.startActivity(intent);
+                if (className == FinishedTicketsActivity.class.getName()) {
+                    Intent intent = new Intent(context, ViewFinishedTicketActivity.class);
+                    intent.putExtra("KEY_NAME", ticket);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, ViewTicketActivity.class);
+                    intent.putExtra("KEY_NAME", ticket);
+                    context.startActivity(intent);
+                }
             }
         });
 

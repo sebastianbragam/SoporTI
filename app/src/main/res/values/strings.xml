@@ -76,4 +76,5 @@
     <string name="finish_ticket">Finalizar ticket</string>
     <string name="edit_category">Editar categoría</string>
     <string name="finished_tickets">Tickets finalizados</string>
+    <string name="finished_ticket">Ticket finalizado</string>
 </resources>

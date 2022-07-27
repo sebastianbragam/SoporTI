@@ -106,7 +106,7 @@ public class FinishedTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list, FinishedTicketsActivity.class.getName());
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -140,7 +140,7 @@ public class FinishedTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list, FinishedTicketsActivity.class.getName());
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {

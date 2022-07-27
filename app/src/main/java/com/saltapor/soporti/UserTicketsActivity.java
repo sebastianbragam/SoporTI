@@ -114,7 +114,7 @@ public class UserTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(UserTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(UserTicketsActivity.this, list, UserTicketsActivity.class.getName());
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -181,7 +181,7 @@ public class UserTicketsActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(UserTicketsActivity.this, list);
+                ticketsAdapter = new TicketsAdapter(UserTicketsActivity.this, list, UserTicketsActivity.class.getName());
                 recyclerView.setAdapter(ticketsAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {

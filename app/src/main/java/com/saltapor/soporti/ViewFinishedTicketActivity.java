@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class ViewTicketActivity extends AppCompatActivity {
+public class ViewFinishedTicketActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
@@ -47,7 +47,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_ticket);
+        setContentView(R.layout.activity_view_finished_ticket);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -134,7 +134,7 @@ public class ViewTicketActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                repliesAdapter = new RepliesAdapter(ViewTicketActivity.this, list);
+                repliesAdapter = new RepliesAdapter(ViewFinishedTicketActivity.this, list);
                 recyclerView.setAdapter(repliesAdapter);
 
                 // Counter to see if there is data.
@@ -169,13 +169,13 @@ public class ViewTicketActivity extends AppCompatActivity {
             if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
                 userFinish();
             } else {
-                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (Objects.equals(ticket.state, "Finalizado por usuario")) {
                 startActivityAdminFinish();
             } else {
-                Toast.makeText(ViewTicketActivity.this, "El parte aún no fue finalizado por el usuario", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFinishedTicketActivity.this, "El parte aún no fue finalizado por el usuario", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -200,13 +200,13 @@ public class ViewTicketActivity extends AppCompatActivity {
                 database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ViewFinishedTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ViewFinishedTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -218,7 +218,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(ViewTicketActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFinishedTicketActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -233,13 +233,13 @@ public class ViewTicketActivity extends AppCompatActivity {
             if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
                 startActivityUserReply();
             } else {
-                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (Objects.equals(ticket.state, "Pendiente respuesta de soporte") || Objects.equals(ticket.state, "Derivado a desarrollo/proveedor")) {
                 startActivityAdminReply();
             } else {
-                Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -308,20 +308,8 @@ public class ViewTicketActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_reply:
-                replyCheck();
-                return true;
-            case R.id.action_finish:
-                finishTicket();
-                return true;
             case android.R.id.home:
                 finish();
                 return true;
