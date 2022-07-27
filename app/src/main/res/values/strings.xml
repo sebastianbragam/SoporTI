@@ -77,4 +77,5 @@
     <string name="edit_category">Editar categoría</string>
     <string name="finished_tickets">Tickets finalizados</string>
     <string name="finished_ticket">Ticket finalizado</string>
+    <string name="filter_by_category">Filtrar por categoría</string>
 </resources>

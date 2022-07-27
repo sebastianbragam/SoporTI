@@ -108,8 +108,8 @@ public class NewCategoryActivity extends AppCompatActivity {
         EditText etCategory = findViewById(R.id.etCategory);
         EditText etSubcategory = findViewById(R.id.etSubcategory);
 
-        String categoryName = etCategory.getText().toString();
-        String subcategory = etSubcategory.getText().toString();
+        String categoryName = etCategory.getText().toString().trim();
+        String subcategory = etSubcategory.getText().toString().trim();
 
         // Check if there is missing data.
         if (categoryName.isEmpty() || subcategory.isEmpty()) {

@@ -150,13 +150,13 @@ public class NewTicketActivity extends AppCompatActivity {
                 // To check if there is a selected item.
                 if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
 
-                    // Check category
+                    // Check type.
                     typeCheck = false;
                     selectionsCount = 1;
 
                 }
 
-                // Get category object with it's ID.
+                // Get type.
                 type = typesList.get(i);
 
             }
@@ -291,8 +291,8 @@ public class NewTicketActivity extends AppCompatActivity {
         EditText etTicketTitle = findViewById(R.id.etTicketTitle);
         EditText etDescription = findViewById(R.id.etDescription);
 
-        String title = etTicketTitle.getText().toString();
-        String description = etDescription.getText().toString();
+        String title = etTicketTitle.getText().toString().trim();
+        String description = etDescription.getText().toString().trim();
         User user = userLogged;
         long date = new Date().getTime();
 

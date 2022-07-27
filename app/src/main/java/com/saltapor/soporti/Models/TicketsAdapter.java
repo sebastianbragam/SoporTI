@@ -44,8 +44,9 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
 
         Ticket ticket = list.get(position);
         holder.tvTitle.setText(ticket.title);
-        holder.categoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
-        holder.stateName.setText(ticket.state);
+        holder.tvTypeName.setText(ticket.type);
+        holder.tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
+        holder.tvStateName.setText(ticket.state);
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
         holder.tvDate.setText(date);
         holder.btnViewTicket.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +73,16 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
 
     public static class TicketsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitle, categoryName, stateName, tvDate;
+        TextView tvTitle, tvTypeName, tvCategoryName, tvStateName, tvDate;
         ImageButton btnViewTicket;
 
         public TicketsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            categoryName = itemView.findViewById(R.id.tvCategoryName);
-            stateName = itemView.findViewById(R.id.tvStateName);
+            tvTypeName = itemView.findViewById(R.id.tvTypeName);
+            tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
+            tvStateName = itemView.findViewById(R.id.tvStateName);
             tvDate = itemView.findViewById(R.id.tvDate);
             btnViewTicket = itemView.findViewById(R.id.btnViewTicket);
 

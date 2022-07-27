@@ -175,7 +175,7 @@ public class ViewTicketActivity extends AppCompatActivity {
             if (Objects.equals(ticket.state, "Finalizado por usuario")) {
                 startActivityAdminFinish();
             } else {
-                Toast.makeText(ViewTicketActivity.this, "El parte aún no fue finalizado por el usuario", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewTicketActivity.this, "El parte aún no fue finalizado por el usuario o ya fue finalizado por soporte", Toast.LENGTH_SHORT).show();
             }
         }
 

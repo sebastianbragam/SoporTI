@@ -137,9 +137,9 @@ public class NewUserActivity extends AppCompatActivity {
         EditText etRegisterEmail = findViewById(R.id.etRegisterEmail);
         EditText etRegisterPassword = findViewById(R.id.etRegisterPassword);
 
-        String firstName = etFirstName.getText().toString();
-        String lastName = etLastName.getText().toString();
-        String email = etRegisterEmail.getText().toString();
+        String firstName = etFirstName.getText().toString().trim();
+        String lastName = etLastName.getText().toString().trim();
+        String email = etRegisterEmail.getText().toString().trim();
         String password = etRegisterPassword.getText().toString();
 
         // Check missing fields.
