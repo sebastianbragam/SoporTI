@@ -38,16 +38,29 @@ import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class AssignTicketActivity extends AppCompatActivity {
 
     Ticket ticket;
+    Ticket ticketOld;
     TextView tvCategory;
 
     boolean emailCheck = true;
@@ -142,7 +155,8 @@ public class AssignTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
 
         });
 
@@ -255,27 +269,30 @@ public class AssignTicketActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) { }
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
 
                         });
 
                     }
 
                     @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) { }
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
 
                 });
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
 
         });
 
     }
 
-    private void setSpinner () {
+    private void setSpinner() {
 
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -323,7 +340,8 @@ public class AssignTicketActivity extends AppCompatActivity {
                 // Listener for search.
                 etSearch.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -331,7 +349,8 @@ public class AssignTicketActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void afterTextChanged(Editable editable) { }
+                    public void afterTextChanged(Editable editable) {
+                    }
                 });
 
                 // Item selected behaviour.
@@ -358,7 +377,8 @@ public class AssignTicketActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) { }
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
 
                         });
 
@@ -372,29 +392,11 @@ public class AssignTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
 
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                assignTicket();
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return true;
     }
 
     private void assignTicket() {
@@ -421,7 +423,8 @@ public class AssignTicketActivity extends AppCompatActivity {
                 // Obtain data.
                 DatabaseReference reference = database.getReference("tickets");
 
-                Ticket ticketOld = ticket;
+                // Copy object to old.
+                ticketOld = ticket;
 
                 // Delete object and re-upload.
                 reference.child(ticket.id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -442,6 +445,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(AssignTicketActivity.this, "Ticket asignado con éxito", Toast.LENGTH_LONG).show();
+                                sendMail();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -475,6 +479,76 @@ public class AssignTicketActivity extends AppCompatActivity {
         // Show alert.
         builder.show();
 
+    }
+
+    private void sendMail() {
+
+        try {
+
+            // Create email.
+            String mailTo = ticketOld.admin.email.trim();
+            String subject = "Nuevo ticket asignado.";
+            String message = ("Se informa que el ticket \"" + ticketOld.title + "\" " +
+                    "ha sido asignado a " + ticketOld.admin.firstName + " " + ticketOld.admin.lastName + "." +
+                    "\n\n Saludos!");
+            String host = "smtp.gmail.com";
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.port", 465);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(Utils.email, Utils.password);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                assignTicket();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override
