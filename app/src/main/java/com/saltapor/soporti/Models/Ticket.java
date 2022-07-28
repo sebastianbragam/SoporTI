@@ -12,11 +12,12 @@ public class Ticket implements Serializable {
     public long date;
     public User user;
     public User admin;
+    public Long number;
     public String id;
 
     public Ticket() {}
 
-    public Ticket(String title, Category category, String type, String description, long date, User user, User admin, String state, String id) {
+    public Ticket(String title, Category category, String type, String description, long date, User user, User admin, String state, Long number, String id) {
         this.title = title;
         this.category = category;
         this.type = type;
@@ -25,6 +26,7 @@ public class Ticket implements Serializable {
         this.user = user;
         this.admin = admin;
         this.state = state;
+        this.number = number;
         this.id = id;
     }
 

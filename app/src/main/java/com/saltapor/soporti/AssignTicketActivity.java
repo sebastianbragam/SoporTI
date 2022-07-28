@@ -103,7 +103,7 @@ public class AssignTicketActivity extends AppCompatActivity {
         TextView tvAdmin = findViewById(R.id.tvAdmin);
         TextView tvDescription = findViewById(R.id.tvDescription);
 
-        tvTitle.setText(ticket.title);
+        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
@@ -438,7 +438,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                         DatabaseReference reference = database.getReference("tickets");
 
                         // Create ticket object with form data.
-                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", ticketOld.id);
+                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", ticketOld.number, ticketOld.id);
 
                         // Upload data.
                         reference.child(ticketOld.id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {

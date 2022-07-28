@@ -53,6 +53,9 @@ public class NewTicketActivity extends AppCompatActivity {
     boolean typeCheck = true;
     int selectionsCount = 0;
     String type;
+    Long ticketNum = Long.valueOf(0);
+
+    Ticket ticket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +99,47 @@ public class NewTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) { }
+
+        });
+
+        // Get next ticket number.
+        Query ticketNumQuery = database.getReference("tickets").orderByChild("number").limitToLast(1);
+
+        ticketNumQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    ticketNum = childSnapshot.child("number").getValue(Long.class) + Long.valueOf(1);
+                }
 
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+
         });
+
+
+        /* Delete bad tickets.
+        Query deleteTicketQuery = database.getReference("tickets").orderByChild("title");
+
+        deleteTicketQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    ticket = childSnapshot.getValue(Ticket.class);
+                    if (Objects.equals(ticket.title, "1")) {
+                        database.getReference().child("tickets").child(ticket.id).removeValue();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+
+        }); */
 
         // Type spinner.
         Spinner spType = findViewById(R.id.spType);
@@ -258,10 +297,8 @@ public class NewTicketActivity extends AppCompatActivity {
                         categoryQuery.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
                                     category = childSnapshot.getValue(Category.class);
-
                             }
 
                             @Override
@@ -296,6 +333,12 @@ public class NewTicketActivity extends AppCompatActivity {
         User user = userLogged;
         long date = new Date().getTime();
 
+        // Check if ticket number has been obtained.
+        if (ticketNum == 0) {
+            Toast.makeText(this, "Por favor espere unos segundos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Check if there is missing data.
         if (title.isEmpty() || description.isEmpty() || categoryCheck || typeCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
@@ -316,7 +359,7 @@ public class NewTicketActivity extends AppCompatActivity {
         admin.email = "admin@saltapor.com";
 
         // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, type, description, date, user, admin, "Pendiente de asignación", id);
+        Ticket ticket = new Ticket(title, category, type, description, date, user, admin, "Pendiente de asignación", ticketNum, id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {

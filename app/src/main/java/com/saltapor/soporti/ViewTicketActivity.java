@@ -99,7 +99,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         TextView tvAdmin = findViewById(R.id.tvAdmin);
         TextView tvDescription = findViewById(R.id.tvDescription);
 
-        tvTitle.setText(ticket.title);
+        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
@@ -295,7 +295,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         TextView tvAdmin = findViewById(R.id.tvAdmin);
         TextView tvDescription = findViewById(R.id.tvDescription);
 
-        tvTitle.setText(ticket.title);
+        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);

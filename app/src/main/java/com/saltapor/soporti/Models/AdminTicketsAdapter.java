@@ -39,7 +39,7 @@ public class AdminTicketsAdapter extends RecyclerView.Adapter<AdminTicketsAdapte
     public void onBindViewHolder(@NonNull AdminTicketsAdapter.AdminTicketsViewHolder holder, int position) {
 
         Ticket ticket = list.get(position);
-        holder.tvTitle.setText(ticket.title);
+        holder.tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         holder.tvTypeName.setText(ticket.type);
         holder.tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         holder.tvStateName.setText(ticket.state);
