@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -246,7 +245,7 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
     }
 
     private void startActivityAdminFinish() {
-        Intent intent = new Intent(this, AdminFinishActivity.class);
+        Intent intent = new Intent(this, SupportFinishActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
     }

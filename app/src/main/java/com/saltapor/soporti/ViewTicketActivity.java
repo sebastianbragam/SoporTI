@@ -28,11 +28,23 @@ import com.saltapor.soporti.Models.RepliesAdapter;
 import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class ViewTicketActivity extends AppCompatActivity {
 
@@ -115,6 +127,50 @@ public class ViewTicketActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         setRecyclerView();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Connect to database.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Reference to update ticket data.
+        DatabaseReference usersReference = database.getReference("tickets").child(ticket.id);
+
+        // Listener to obtain user data.
+        usersReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ticket = snapshot.getValue(Ticket.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+        // Update TextViews.
+        TextView tvTitle = findViewById(R.id.tvTitle);
+        TextView tvTypeName = findViewById(R.id.tvTypeName);
+        TextView tvCategoryName = findViewById(R.id.tvCategoryName);
+        TextView tvStateName = findViewById(R.id.tvStateName);
+        TextView tvDate = findViewById(R.id.tvDate);
+        TextView tvUser = findViewById(R.id.tvUser);
+        TextView tvAdmin = findViewById(R.id.tvAdmin);
+        TextView tvDescription = findViewById(R.id.tvDescription);
+
+        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
+        tvTypeName.setText(ticket.type);
+        tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
+        tvStateName.setText(ticket.state);
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        tvDate.setText(date);
+        tvUser.setText(ticket.user.email);
+        tvAdmin.setText(ticket.admin.email);
+        tvDescription.setText(ticket.description);
 
     }
 
@@ -201,6 +257,7 @@ public class ViewTicketActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        sendMail();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -246,7 +303,7 @@ public class ViewTicketActivity extends AppCompatActivity {
     }
 
     private void startActivityAdminFinish() {
-        Intent intent = new Intent(this, AdminFinishActivity.class);
+        Intent intent = new Intent(this, SupportFinishActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
     }
@@ -263,47 +320,62 @@ public class ViewTicketActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void sendMail() {
 
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        try {
 
-        // Reference to update ticket data.
-        DatabaseReference usersReference = database.getReference("tickets").child(ticket.id);
+            // Create email.
+            String host = "smtp.gmail.com";
+            String mailToAdmin = ticket.admin.email.trim();
+            String mailToUser = ticket.user.email.trim();
+            String subject = "Ticket Nº" + ticket.number + " finalizado.";
+            String message = ("Se informa que el ticket Nº" + ticket.number + " ha sido finalizado por "
+                    + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
+                    "- Título: " + ticket.title + ":\n" +
+                    "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
+                    "- Tipo: " + ticket.type + ". \n" +
+                    "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +
+                    "- Descripción: " + ticket.description + ". \n" +
+                    "- Usuario: " + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
+                    "Saludos!");
 
-        // Listener to obtain user data.
-        usersReference.addValueEventListener(new ValueEventListener() {
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.port", 465);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ticket = snapshot.getValue(Ticket.class);
-            }
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(Utils.email, Utils.password);
+                }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToAdmin));
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToUser));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
 
-        // Update TextViews.
-        TextView tvTitle = findViewById(R.id.tvTitle);
-        TextView tvTypeName = findViewById(R.id.tvTypeName);
-        TextView tvCategoryName = findViewById(R.id.tvCategoryName);
-        TextView tvStateName = findViewById(R.id.tvStateName);
-        TextView tvDate = findViewById(R.id.tvDate);
-        TextView tvUser = findViewById(R.id.tvUser);
-        TextView tvAdmin = findViewById(R.id.tvAdmin);
-        TextView tvDescription = findViewById(R.id.tvDescription);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
-        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
-        tvTypeName.setText(ticket.type);
-        tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
-        tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
-        tvDate.setText(date);
-        tvUser.setText(ticket.user.email);
-        tvAdmin.setText(ticket.admin.email);
-        tvDescription.setText(ticket.description);
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -486,12 +486,19 @@ public class AssignTicketActivity extends AppCompatActivity {
         try {
 
             // Create email.
-            String mailTo = ticketOld.admin.email.trim();
-            String subject = "Nuevo ticket asignado.";
-            String message = ("Se informa que el ticket \"" + ticketOld.title + "\" " +
-                    "ha sido asignado a " + ticketOld.admin.firstName + " " + ticketOld.admin.lastName + "." +
-                    "\n\n Saludos!");
             String host = "smtp.gmail.com";
+            String mailToAdmin = ticketOld.admin.email.trim();
+            String mailToUser = ticketOld.user.email.trim();
+            String subject = "Ticket Nº" + ticketOld.number + " asignado.";
+            String message = ("Se informa que el ticket Nº" + ticketOld.number + " ha sido asignado a "
+                    + ticketOld.admin.firstName + " " + ticketOld.admin.lastName + ". \n\n" +
+                    "- Título: " + ticketOld.title + ":\n" +
+                    "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
+                    "- Tipo: " + ticketOld.type + ". \n" +
+                    "- Categoría: " + ticketOld.category.category + ": " + ticketOld.category.subcategory + ". \n" +
+                    "- Descripción: " + ticketOld.description + ". \n" +
+                    "- Usuario: " + ticketOld.user.firstName + " " + ticketOld.user.lastName + ". \n\n" +
+                    "Saludos!");
 
             Properties properties = System.getProperties();
             properties.put("mail.smtp.host", host);
@@ -507,7 +514,8 @@ public class AssignTicketActivity extends AppCompatActivity {
             });
 
             MimeMessage mimeMessage = new MimeMessage(session);
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToAdmin));
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToUser));
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
 

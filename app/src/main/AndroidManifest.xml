@@ -20,7 +20,7 @@
             android:exported="false"
             android:label="@string/finished_tickets" />
         <activity
-            android:name=".AdminFinishActivity"
+            android:name=".SupportFinishActivity"
             android:exported="false"
             android:label="@string/finish_ticket" />
         <activity

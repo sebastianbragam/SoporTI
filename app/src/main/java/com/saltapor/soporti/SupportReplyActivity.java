@@ -34,16 +34,30 @@ import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class SupportReplyActivity extends AppCompatActivity {
 
     User userLogged;
     Ticket ticket;
+    Reply reply;
     boolean stateCheck = true;
     int selectionsCount = 0;
 
@@ -187,25 +201,6 @@ public class SupportReplyActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                registerReply();
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return true;
-    }
-
     private void registerReply() {
 
         // Obtain form data.
@@ -239,7 +234,7 @@ public class SupportReplyActivity extends AppCompatActivity {
                 String id = refReplies.push().getKey();
 
                 // Create ticket object with form data.
-                Reply reply = new Reply(id, replyText, date, userLogged);
+                reply = new Reply(id, replyText, date, userLogged);
 
                 // Upload data.
                 refReplies.child(id).setValue(reply).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -251,6 +246,7 @@ public class SupportReplyActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(SupportReplyActivity.this, "Respuesta registrada con éxito", Toast.LENGTH_LONG).show();
+                                sendMail();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -285,6 +281,85 @@ public class SupportReplyActivity extends AppCompatActivity {
         // Show alert.
         builder.show();
 
+    }
+
+    private void sendMail() {
+
+        try {
+
+            // Create email.
+            String host = "smtp.gmail.com";
+            String mailToAdmin = ticket.admin.email.trim();
+            String mailToUser = ticket.user.email.trim();
+            String subject = "Ticket Nº" + ticket.number + " respondido.";
+            String message = ("Se informa que el ticket Nº" + ticket.number + " ha sido respondido por "
+                    + ticket.admin.firstName + " " + ticket.admin.lastName + ", y está pendiente de respuesta de usuario. \n\n" +
+                    "Respuesta: \"" + reply.reply + "\"\n\n" +
+                    "- Título: " + ticket.title + ":\n" +
+                    "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
+                    "- Tipo: " + ticket.type + ". \n" +
+                    "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +
+                    "- Descripción: " + ticket.description + ". \n" +
+                    "- Usuario: " + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
+                    "Saludos!");
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.port", 465);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(Utils.email, Utils.password);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToAdmin));
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToUser));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                registerReply();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     @Override

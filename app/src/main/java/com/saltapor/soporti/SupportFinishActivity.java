@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class AdminFinishActivity extends AppCompatActivity {
+public class SupportFinishActivity extends AppCompatActivity {
 
     Ticket ticket;
     TextView tvCategory;
@@ -49,7 +49,7 @@ public class AdminFinishActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_finish);
+        setContentView(R.layout.activity_support_finish);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -106,7 +106,7 @@ public class AdminFinishActivity extends AppCompatActivity {
         typesList.add("Prevención");
 
         // Create spinner adapter.
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(AdminFinishActivity.this, android.R.layout.simple_spinner_item, typesList) {
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(SupportFinishActivity.this, android.R.layout.simple_spinner_item, typesList) {
 
             // Disable first element.
             @Override
@@ -187,7 +187,7 @@ public class AdminFinishActivity extends AppCompatActivity {
                 }
 
                 // Build dialog.
-                Dialog dialog = new Dialog(AdminFinishActivity.this);
+                Dialog dialog = new Dialog(SupportFinishActivity.this);
                 dialog.setContentView(R.layout.spinner_dialog);
                 dialog.show();
 
@@ -197,7 +197,7 @@ public class AdminFinishActivity extends AppCompatActivity {
                 tvCategory = findViewById(R.id.tvCategory);
 
                 // Fill list.
-                final ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(AdminFinishActivity.this, android.R.layout.simple_list_item_1, categoriesList);
+                final ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(SupportFinishActivity.this, android.R.layout.simple_list_item_1, categoriesList);
                 listView.setAdapter(categoriesAdapter);
 
                 // Listener for search.
@@ -296,13 +296,13 @@ public class AdminFinishActivity extends AppCompatActivity {
                 database.getReference("tickets").child(ticket.id).child("category").setValue(ticket.category).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -311,13 +311,13 @@ public class AdminFinishActivity extends AppCompatActivity {
                 database.getReference("tickets").child(ticket.id).child("type").setValue(ticket.type).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -326,13 +326,13 @@ public class AdminFinishActivity extends AppCompatActivity {
                 database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado").addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(AdminFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AdminFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SupportFinishActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -344,7 +344,7 @@ public class AdminFinishActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(AdminFinishActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SupportFinishActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
             }
         });
 
