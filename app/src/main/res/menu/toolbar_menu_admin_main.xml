@@ -11,14 +11,21 @@
         app:actionViewClass="android.widget.SearchView" />
 
     <item
-        android:id="@+id/action_finished"
+        android:id="@+id/action_report"
         android:orderInCategory="20"
+        android:title="@string/reports"
+        android:icon="@drawable/ic_report"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_finished"
+        android:orderInCategory="30"
         android:title="@string/finished_tickets"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_categories"
-        android:orderInCategory="30"
+        android:orderInCategory="40"
         android:title="@string/categories"
         app:showAsAction="never" />
 

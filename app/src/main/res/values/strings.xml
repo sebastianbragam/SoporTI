@@ -78,4 +78,6 @@
     <string name="finished_tickets">Tickets finalizados</string>
     <string name="finished_ticket">Ticket finalizado</string>
     <string name="filter_by_category">Filtrar por categoría</string>
+    <string name="no_information">No hay información.</string>
+    <string name="reports">Reportes</string>
 </resources>

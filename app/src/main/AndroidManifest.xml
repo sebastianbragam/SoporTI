@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.saltapor.soporti">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".ReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewFinishedTicketActivity"
             android:exported="false"
-            android:label="@string/finished_ticket"/>
+            android:label="@string/finished_ticket" />
         <activity
             android:name=".FinishedTicketsActivity"
             android:exported="false"

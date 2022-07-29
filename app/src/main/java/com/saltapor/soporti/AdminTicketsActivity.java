@@ -209,6 +209,9 @@ public class AdminTicketsActivity extends AppCompatActivity {
             case R.id.action_users:
                 startActivityNewUser();
                 return true;
+            case R.id.action_report:
+                startActivityReport();
+                return true;
             case R.id.action_finished:
                 startActivityFinishedTickets();
                 return true;
@@ -220,6 +223,11 @@ public class AdminTicketsActivity extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    private void startActivityReport() {
+        Intent intent = new Intent(this, ReportActivity.class);
+        startActivity(intent);
     }
 
     private void startActivityNewUser() {
