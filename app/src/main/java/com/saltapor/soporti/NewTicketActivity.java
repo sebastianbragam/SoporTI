@@ -55,8 +55,6 @@ public class NewTicketActivity extends AppCompatActivity {
     String type;
     Long ticketNum = Long.valueOf(0);
 
-    Ticket ticket;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

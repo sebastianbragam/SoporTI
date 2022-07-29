@@ -69,6 +69,53 @@ public class ReportActivity extends AppCompatActivity {
             return;
         }
 
+        // Type spinner.
+        Spinner spType = findViewById(R.id.spType);
+
+        // Create and fill list.
+        final List<String> typesList = new ArrayList<>();
+        typesList.add("Filtrar por tipo");
+        typesList.add("Requerimiento de servicio");
+        typesList.add("Cambio");
+        typesList.add("Incidente");
+        typesList.add("Problema");
+        typesList.add("Ayuda");
+        typesList.add("Prevención");
+
+        // Create spinner adapter.
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(ReportActivity.this, android.R.layout.simple_spinner_item, typesList) {
+
+            // Set color to gray.
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    tv.setTextColor(Color.DKGRAY);
+                }
+                return view;
+            }
+
+        };
+
+        // Populate spinner with list.
+        typesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spType.setAdapter(typesAdapter);
+
+        // Spinner behaviour.
+        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+
+        });
+
     }
 
     @Override

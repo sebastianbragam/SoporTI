@@ -13,7 +13,8 @@
         android:theme="@style/Theme.SoporTI">
         <activity
             android:name=".ReportActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/report_by_type"/>
         <activity
             android:name=".ViewFinishedTicketActivity"
             android:exported="false"

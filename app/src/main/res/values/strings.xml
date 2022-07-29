@@ -80,4 +80,9 @@
     <string name="filter_by_category">Filtrar por categoría</string>
     <string name="no_information">No hay información.</string>
     <string name="reports">Reportes</string>
+    <string name="report_by_type">Reporte por tipo</string>
+    <string name="tickets_count_form">Cantidad de tickets:</string>
+    <string name="number_of_tickets">Número de tickets</string>
+    <string name="resolution_time_form">Tiempo promedio de resolución:</string>
+    <string name="time">Tiempo</string>
 </resources>
