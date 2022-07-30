@@ -73,7 +73,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvCategoryName"
+                        android:id="@+id/tvTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/time"
@@ -84,7 +84,7 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/btnViewTicket"
+                android:id="@+id/btnViewType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

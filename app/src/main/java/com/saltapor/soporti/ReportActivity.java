@@ -34,6 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.ReportAdapter;
+import com.saltapor.soporti.Models.ReportItem;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
@@ -44,6 +46,12 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class ReportActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    ReportAdapter reportAdapter;
+    ArrayList<ReportItem> reportList = new ArrayList<>();
+    ArrayList<Ticket> ticketsList = new ArrayList<>();
+    ArrayList<String> typesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +77,7 @@ public class ReportActivity extends AppCompatActivity {
             return;
         }
 
-        // Type spinner.
-        Spinner spType = findViewById(R.id.spType);
-
-        // Create and fill list.
-        final List<String> typesList = new ArrayList<>();
-        typesList.add("Filtrar por tipo");
+        // Create and fill types list.
         typesList.add("Requerimiento de servicio");
         typesList.add("Cambio");
         typesList.add("Incidente");
@@ -82,38 +85,71 @@ public class ReportActivity extends AppCompatActivity {
         typesList.add("Ayuda");
         typesList.add("Prevención");
 
-        // Create spinner adapter.
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(ReportActivity.this, android.R.layout.simple_spinner_item, typesList) {
+        // RecyclerView setup.
+        recyclerView = findViewById(R.id.rvReport);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            // Set color to gray.
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    tv.setTextColor(Color.DKGRAY);
+        // Create tickets list.
+        fillTicketsList();
+
+    }
+
+    private void setRecyclerView () {
+
+        // RecyclerView list setup.
+        reportAdapter = new ReportAdapter(ReportActivity.this, reportList);
+        recyclerView.setAdapter(reportAdapter);
+
+        // Iterate types list.
+        for (String typeItem : typesList) {
+
+            // Initialize variables.
+            Long count = Long.valueOf(0);
+            long time = 0;
+
+            // Iterate tickets list.
+            for (Ticket ticketItem : ticketsList) {
+                if (Objects.equals(typeItem, ticketItem.type)) {
+                    count = count + 1;
+                    time = time + (ticketItem.finishDate - ticketItem.date);
                 }
-                return view;
             }
 
-        };
+            // Create ReportItem object and add to report list.
+            ReportItem reportItem = new ReportItem(typeItem, count, time);
+            reportList.add(reportItem);
 
-        // Populate spinner with list.
-        typesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spType.setAdapter(typesAdapter);
+        }
 
-        // Spinner behaviour.
-        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // Update data on recycler.
+        reportAdapter.notifyDataSetChanged();
+
+    }
+
+    private void fillTicketsList() {
+
+        // Database query to fill tickets list.
+        DatabaseReference ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
+
+        // Obtain data.
+        ticketsReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Ticket ticket = dataSnapshot.getValue(Ticket.class);
+                    if (Objects.equals(ticket.state, "Finalizado") || Objects.equals(ticket.state, "Finalizado por usuario")) {
+                        ticketsList.add(ticket);
+                    }
+                }
 
-
+                setRecyclerView();
 
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
     }
