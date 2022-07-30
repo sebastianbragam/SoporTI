@@ -94,6 +94,7 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
         TextView tvCategoryName = findViewById(R.id.tvCategoryName);
         TextView tvStateName = findViewById(R.id.tvStateName);
         TextView tvDate = findViewById(R.id.tvDate);
+        TextView tvFinishDate = findViewById(R.id.tvFinishDate);
         TextView tvUser = findViewById(R.id.tvUser);
         TextView tvAdmin = findViewById(R.id.tvAdmin);
         TextView tvDescription = findViewById(R.id.tvDescription);
@@ -102,8 +103,10 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        String date = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.date));
         tvDate.setText(date);
+        String finishDate = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.finishDate));
+        tvFinishDate.setText(finishDate);
         tvUser.setText(ticket.user.email);
         tvAdmin.setText(ticket.admin.email);
         tvDescription.setText(ticket.description);
@@ -298,7 +301,7 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        String date = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.date));
         tvDate.setText(date);
         tvUser.setText(ticket.user.email);
         tvAdmin.setText(ticket.admin.email);

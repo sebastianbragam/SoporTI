@@ -85,4 +85,5 @@
     <string name="number_of_tickets">Número de tickets</string>
     <string name="resolution_time_form">Tiempo promedio de resolución:</string>
     <string name="time">Tiempo</string>
+    <string name="finish_date_form">Fecha de finalización:</string>
 </resources>

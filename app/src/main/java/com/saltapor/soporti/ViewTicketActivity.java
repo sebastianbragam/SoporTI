@@ -115,7 +115,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        String date = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.date));
         tvDate.setText(date);
         tvUser.setText(ticket.user.email);
         tvAdmin.setText(ticket.admin.email);
@@ -166,7 +166,7 @@ public class ViewTicketActivity extends AppCompatActivity {
         tvTypeName.setText(ticket.type);
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
+        String date = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.date));
         tvDate.setText(date);
         tvUser.setText(ticket.user.email);
         tvAdmin.setText(ticket.admin.email);
@@ -256,9 +256,23 @@ public class ViewTicketActivity extends AppCompatActivity {
                 database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
-                        sendMail();
-                        finish();
+
+                        // Update ticket state.
+                        database.getReference("tickets").child(ticket.id).child("finishDate").setValue(new Date().getTime()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
+                                sendMail();
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -300,24 +314,6 @@ public class ViewTicketActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void startActivityAdminFinish() {
-        Intent intent = new Intent(this, SupportFinishActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
-    }
-
-    private void startActivityAdminReply() {
-        Intent intent = new Intent(this, SupportReplyActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
-    }
-
-    private void startActivityUserReply() {
-        Intent intent = new Intent(this, UserReplyActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
     }
 
     private void sendMail() {
@@ -377,6 +373,24 @@ public class ViewTicketActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void startActivityAdminFinish() {
+        Intent intent = new Intent(this, SupportFinishActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
+    }
+
+    private void startActivityAdminReply() {
+        Intent intent = new Intent(this, SupportReplyActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
+    }
+
+    private void startActivityUserReply() {
+        Intent intent = new Intent(this, UserReplyActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
     }
 
     @Override
