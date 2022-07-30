@@ -87,4 +87,6 @@
     <string name="time">Tiempo</string>
     <string name="finish_date_form">Fecha de finalización:</string>
     <string name="tickets_by_type">Tickets por tipo</string>
+    <string name="tickets_by_category">Tickets por categoría</string>
+    <string name="report_by_type_and_category">Reporte por tipo y categoría</string>
 </resources>

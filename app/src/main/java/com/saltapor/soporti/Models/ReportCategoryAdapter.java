@@ -7,42 +7,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saltapor.soporti.AssignTicketActivity;
 import com.saltapor.soporti.R;
 import com.saltapor.soporti.ReportCategoryActivity;
-import com.saltapor.soporti.ViewTicketActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportViewHolder> {
+public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAdapter.ReportCategoryViewHolder> {
 
     Context context;
     ArrayList<ReportItem> list;
 
-    public ReportAdapter(Context context, ArrayList<ReportItem> list) {
+    public ReportCategoryAdapter(Context context, ArrayList<ReportItem> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public ReportAdapter.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.report_item, parent, false);
-        return new ReportAdapter.ReportViewHolder(v);
+    public ReportCategoryAdapter.ReportCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.report_category_item, parent, false);
+        return new ReportCategoryAdapter.ReportCategoryViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReportAdapter.ReportViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReportCategoryAdapter.ReportCategoryViewHolder holder, int position) {
 
         ReportItem reportItem = list.get(position);
-        holder.tvType.setText(reportItem.title);
+        holder.tvCategory.setText(reportItem.title);
         holder.tvTicketsCount.setText(reportItem.quantity + "");
 
         // Preparing elapsed time.
@@ -64,19 +59,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
         String time = (days + " d, " + hours + " hs, " + minutes + " min.");
         holder.tvTime.setText(time);
 
-        holder.btnViewType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (reportItem.quantity > 0) {
-                    Intent intent = new Intent(context, ReportCategoryActivity.class);
-                    intent.putExtra("KEY_NAME", reportItem.title);
-                    context.startActivity(intent);
-                } else {
-                    Toast.makeText(context, "No hay tickets para este tipo", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
     }
 
     @Override
@@ -84,18 +66,16 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
         return list.size();
     }
 
-    public static class ReportViewHolder extends RecyclerView.ViewHolder {
+    public static class ReportCategoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvType, tvTicketsCount, tvTime;
-        ImageButton btnViewType;
+        TextView tvCategory, tvTicketsCount, tvTime;
 
-        public ReportViewHolder(@NonNull View itemView) {
+        public ReportCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvType = itemView.findViewById(R.id.tvType);
+            tvCategory = itemView.findViewById(R.id.tvCategory);
             tvTicketsCount = itemView.findViewById(R.id.tvTicketsCount);
             tvTime = itemView.findViewById(R.id.tvTime);
-            btnViewType = itemView.findViewById(R.id.btnViewType);
 
         }
 

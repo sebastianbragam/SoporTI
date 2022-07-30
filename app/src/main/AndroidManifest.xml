@@ -12,9 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".ReportCategoryActivity"
+            android:exported="false"
+            android:label="@string/report_by_type_and_category" />
+        <activity
             android:name=".ReportActivity"
             android:exported="false"
-            android:label="@string/report_by_type"/>
+            android:label="@string/report_by_type" />
         <activity
             android:name=".ViewFinishedTicketActivity"
             android:exported="false"
