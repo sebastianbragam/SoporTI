@@ -16,4 +16,11 @@
         android:icon="@drawable/ic_finish"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_files"
+        android:orderInCategory="30"
+        android:title="@string/view_files"
+        android:icon="@drawable/ic_files"
+        app:showAsAction="ifRoom" />
+
 </menu>

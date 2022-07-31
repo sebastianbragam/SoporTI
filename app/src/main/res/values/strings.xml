@@ -89,4 +89,5 @@
     <string name="tickets_by_type">Tickets por tipo</string>
     <string name="tickets_by_category">Tickets por categoría</string>
     <string name="report_by_type_and_category">Reporte por tipo y categoría</string>
+    <string name="view_files">Ver archivos</string>
 </resources>

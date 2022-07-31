@@ -393,9 +393,13 @@ public class ViewTicketActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    private void startFilesActivity() {
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_reply_finish_files, menu);
         return true;
     }
 
@@ -407,6 +411,9 @@ public class ViewTicketActivity extends AppCompatActivity {
                 return true;
             case R.id.action_finish:
                 finishTicket();
+                return true;
+            case R.id.action_files:
+                startFilesActivity();
                 return true;
             case android.R.id.home:
                 finish();
