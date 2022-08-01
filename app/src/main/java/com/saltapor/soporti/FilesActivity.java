@@ -3,21 +3,46 @@ package com.saltapor.soporti;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+import com.saltapor.soporti.Models.File;
+import com.saltapor.soporti.Models.FilesAdapter;
 import com.saltapor.soporti.Models.Ticket;
+import com.saltapor.soporti.Models.TicketsAdapter;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class FilesActivity extends AppCompatActivity {
 
     Ticket ticket;
+
+    RecyclerView recyclerView;
+    ArrayList<File> filesList = new ArrayList<>();
+    String fileName, filePath;
+    File fileItem;
+    FilesAdapter filesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +70,55 @@ public class FilesActivity extends AppCompatActivity {
 
         // Obtain object data.
         ticket = (Ticket) this.getIntent().getSerializableExtra("KEY_NAME");
+
+        // RecyclerView setup.
+        recyclerView = findViewById(R.id.rvFiles);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setRecyclerView();
+
+    }
+
+    private void setRecyclerView() {
+
+        // Set adapter.
+        filesAdapter = new FilesAdapter(FilesActivity.this, filesList, FilesActivity.class.getName());
+        recyclerView.setAdapter(filesAdapter);
+
+        // Storage reference.
+        StorageReference filesRef = FirebaseStorage.getInstance().getReference("tickets/" + ticket.number);
+
+        // Obtain data.
+        filesRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+
+                for (StorageReference item : listResult.getItems()) {
+
+                    // Add file to list.
+                    fileName = item.getName();
+                    filePath = item.getPath();
+                    fileItem = new File(fileName, filePath);
+                    filesList.add(fileItem);
+
+                    // Update adapter data.
+                    filesAdapter.notifyDataSetChanged();
+
+                }
+
+                // If list is empty, change text.
+                if (filesList.size() == 0) {
+                    TextView tvAttachedFiles = findViewById(R.id.tvAttachedFiles);
+                    tvAttachedFiles.setText("No hay archivos adjuntos.");
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(FilesActivity.this, "La sincronización falló", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

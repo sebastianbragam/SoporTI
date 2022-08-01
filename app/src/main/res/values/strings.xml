@@ -97,4 +97,6 @@
     <string name="choose_file">Seleccionar archivo</string>
     <string name="chosen_file">Archivo seleccionado</string>
     <string name="no_file_chosen">No hay archivo seleccionado</string>
+    <string name="file_form">Nombre del archivo:</string>
+    <string name="file">Archivo</string>
 </resources>

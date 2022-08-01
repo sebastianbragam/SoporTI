@@ -136,9 +136,7 @@ public class UserTicketsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
     }
