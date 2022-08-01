@@ -42,7 +42,7 @@ public class FilesActivity extends AppCompatActivity {
     Ticket ticket;
 
     RecyclerView recyclerView;
-    ArrayList<File> filesList = new ArrayList<>();
+    ArrayList<File> filesList;
     String fileName, filePath;
     File fileItem;
     FilesAdapter filesAdapter;
@@ -78,11 +78,19 @@ public class FilesActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvFiles);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        setRecyclerView();
 
     }
 
-    private void setRecyclerView() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRecyclerView();
+    }
+
+    public void setRecyclerView() {
+
+        // Create list.
+        filesList = new ArrayList<>();
 
         // Set adapter.
         filesAdapter = new FilesAdapter(FilesActivity.this, filesList, FilesActivity.class.getName());
@@ -110,9 +118,11 @@ public class FilesActivity extends AppCompatActivity {
                 }
 
                 // If list is empty, change text.
+                TextView tvAttachedFiles = findViewById(R.id.tvAttachedFiles);
                 if (filesList.size() == 0) {
-                    TextView tvAttachedFiles = findViewById(R.id.tvAttachedFiles);
                     tvAttachedFiles.setText("No hay archivos adjuntos.");
+                } else {
+                    tvAttachedFiles.setText("Archivos adjuntos");
                 }
 
             }
