@@ -24,7 +24,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_categories"
+        android:id="@+id/action_new_object"
         android:orderInCategory="40"
         android:title="@string/categories"
         app:showAsAction="never" />

@@ -394,7 +394,9 @@ public class ViewTicketActivity extends AppCompatActivity {
     }
 
     private void startFilesActivity() {
-
+        Intent intent = new Intent(this, FilesActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
     }
 
     @Override

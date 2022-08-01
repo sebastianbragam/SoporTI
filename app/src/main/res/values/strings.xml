@@ -90,4 +90,11 @@
     <string name="tickets_by_category">Tickets por categoría</string>
     <string name="report_by_type_and_category">Reporte por tipo y categoría</string>
     <string name="view_files">Ver archivos</string>
+    <string name="new_object">Nuevo</string>
+    <string name="files">Archivos</string>
+    <string name="attached_files">Archivos adjuntos</string>
+    <string name="new_file">Nuevo archivo</string>
+    <string name="choose_file">Seleccionar archivo</string>
+    <string name="chosen_file">Archivo seleccionado</string>
+    <string name="no_file_chosen">No hay archivo seleccionado</string>
 </resources>

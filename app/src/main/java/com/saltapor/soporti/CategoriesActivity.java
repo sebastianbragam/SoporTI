@@ -105,7 +105,7 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_categories:
+            case R.id.action_new_object:
                 startActivityNewCategory();
                 return true;
             case android.R.id.home:

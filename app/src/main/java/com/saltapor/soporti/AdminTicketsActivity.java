@@ -23,7 +23,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.AdminTicketsAdapter;
 import com.saltapor.soporti.Models.Ticket;
-import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
@@ -215,7 +214,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
             case R.id.action_finished:
                 startActivityFinishedTickets();
                 return true;
-            case R.id.action_categories:
+            case R.id.action_new_object:
                 startActivityCategories();
                 return true;
             case R.id.action_logout:

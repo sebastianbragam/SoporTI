@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".NewFileActivity"
+            android:exported="false"
+            android:label="@string/new_file" />
+        <activity
+            android:name=".FilesActivity"
+            android:exported="false"
+            android:label="@string/files" />
+        <activity
             android:name=".ReportCategoryActivity"
             android:exported="false"
             android:label="@string/report_by_type_and_category" />

@@ -210,7 +210,7 @@ public class SupportTicketsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_categories:
+            case R.id.action_new_object:
                 startActivityCategories();
                 return true;
             case R.id.action_finished:
