@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".DocumentationActivity"
+            android:exported="false"
+            android:label="@string/documentation" />
+        <activity
             android:name=".EditUserActivity"
             android:exported="false"
             android:label="@string/edit_user_role" />
@@ -67,11 +71,11 @@
         <activity
             android:name=".SupportTicketsActivity"
             android:exported="false"
-            android:label="@string/soporti_support"/>
+            android:label="@string/soporti_support" />
         <activity
             android:name=".UserTicketsActivity"
             android:exported="false"
-            android:label="@string/soporti_user"/>
+            android:label="@string/soporti_user" />
         <activity
             android:name=".UserCheckActivity"
             android:exported="true">

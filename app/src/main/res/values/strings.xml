@@ -108,4 +108,8 @@
     <string name="rol_by_user">Roles por usuario</string>
     <string name="soporti_support">SoporTI: Soporte</string>
     <string name="soporti_user">SoporTI: Usuario</string>
+    <string name="users_notice">Para administrar usuarios, por favor diríjase a la consola de Firebase.</string>
+    <string name="documentation">Documentación</string>
+    <string name="documentation_files">Documentación</string>
+    <string name="documentation_notice">Si falta documentación, por favor reportar a usuario administrador.</string>
 </resources>

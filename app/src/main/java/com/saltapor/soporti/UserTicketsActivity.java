@@ -212,11 +212,19 @@ public class UserTicketsActivity extends AppCompatActivity {
             case R.id.action_finished:
                 startActivityFinishedTickets();
                 return true;
+            case R.id.action_documentation:
+                startActivityDocumentation();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
         }
         return true;
+    }
+
+    private void startActivityDocumentation() {
+        Intent intent = new Intent(this, DocumentationActivity.class);
+        startActivity(intent);
     }
 
     private void startActivityNewTicket() {
