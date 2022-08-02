@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +20,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.saltapor.soporti.Models.File;
-import com.saltapor.soporti.Models.FilesAdapter;
+import com.saltapor.soporti.Models.FinishedFilesAdapter;
 import com.saltapor.soporti.Models.Ticket;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FilesActivity extends AppCompatActivity {
+public class FilesFinishedActivity extends AppCompatActivity {
 
     Ticket ticket;
 
@@ -35,12 +34,12 @@ public class FilesActivity extends AppCompatActivity {
     ArrayList<File> filesList;
     String fileName, filePath;
     File fileItem;
-    FilesAdapter filesAdapter;
+    FinishedFilesAdapter finishedFilesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_files);
+        setContentView(R.layout.activity_files_finished);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -83,8 +82,8 @@ public class FilesActivity extends AppCompatActivity {
         filesList = new ArrayList<>();
 
         // Set adapter.
-        filesAdapter = new FilesAdapter(FilesActivity.this, filesList, FilesActivity.class.getName());
-        recyclerView.setAdapter(filesAdapter);
+        finishedFilesAdapter = new FinishedFilesAdapter(FilesFinishedActivity.this, filesList, FilesFinishedActivity.class.getName());
+        recyclerView.setAdapter(finishedFilesAdapter);
 
         // Storage reference.
         StorageReference filesRef = FirebaseStorage.getInstance().getReference("tickets/" + ticket.number);
@@ -103,7 +102,7 @@ public class FilesActivity extends AppCompatActivity {
                     filesList.add(fileItem);
 
                     // Update adapter data.
-                    filesAdapter.notifyDataSetChanged();
+                    finishedFilesAdapter.notifyDataSetChanged();
 
                 }
 
@@ -119,24 +118,15 @@ public class FilesActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(FilesActivity.this, "La sincronización falló", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FilesFinishedActivity.this, "La sincronización falló", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_new, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_new_object:
-                startActivityNewFile();
-                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -144,15 +134,6 @@ public class FilesActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startActivityNewFile() {
-        if (Objects.equals(ticket.state, "Finalizado") || Objects.equals(ticket.state, "Finalizado por usuario")) {
-            Toast.makeText(FilesActivity.this, "El ticket ya fue finalizado", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(this, NewFileActivity.class);
-            intent.putExtra("KEY_NAME", ticket);
-            this.startActivity(intent);
-        }
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

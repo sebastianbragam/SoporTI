@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -165,106 +166,6 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
 
     }
 
-    private void finishTicket() {
-
-        if (Objects.equals(userLogged.type, "Usuario")) {
-            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
-                userFinish();
-            } else {
-                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            if (Objects.equals(ticket.state, "Finalizado por usuario")) {
-                startActivityAdminFinish();
-            } else {
-                Toast.makeText(ViewFinishedTicketActivity.this, "El parte aún no fue finalizado por el usuario", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
-
-    private void userFinish() {
-
-        // Build alert.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("¿Seguro de que quieres finalizar este ticket?");
-        builder.setMessage("Luego de finalizado no se puede volver atrás.");
-
-        // Assign.
-        builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                // Connect to database.
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                // Update ticket state.
-                database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(ViewFinishedTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ViewFinishedTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-
-            }
-        });
-
-        // Cancel.
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(ViewFinishedTicketActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Show alert.
-        builder.show();
-
-    }
-
-    private void replyCheck() {
-
-        if (Objects.equals(userLogged.type, "Usuario")) {
-            if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
-                startActivityUserReply();
-            } else {
-                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            if (Objects.equals(ticket.state, "Pendiente respuesta de soporte") || Objects.equals(ticket.state, "Derivado a desarrollo/proveedor")) {
-                startActivityAdminReply();
-            } else {
-                Toast.makeText(ViewFinishedTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
-
-    private void startActivityAdminFinish() {
-        Intent intent = new Intent(this, SupportFinishActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
-    }
-
-    private void startActivityAdminReply() {
-        Intent intent = new Intent(this, SupportReplyActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
-    }
-
-    private void startActivityUserReply() {
-        Intent intent = new Intent(this, UserReplyActivity.class);
-        intent.putExtra("KEY_NAME", ticket);
-        this.startActivity(intent);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -309,9 +210,24 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
 
     }
 
+    private void startFilesFinishedActivity() {
+        Intent intent = new Intent(this, FilesFinishedActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_files, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_files:
+                startFilesFinishedActivity();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;

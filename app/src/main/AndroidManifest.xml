@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".FilesFinishedActivity"
+            android:exported="false"
+            android:label="@string/files" />
+        <activity
             android:name=".NewFileActivity"
             android:exported="false"
             android:label="@string/new_file" />

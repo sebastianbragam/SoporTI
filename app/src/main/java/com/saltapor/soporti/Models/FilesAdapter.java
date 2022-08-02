@@ -162,7 +162,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
         // Set notification and download directory.
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalPublicDir(destinationDirectory, filename);
+        request.setDestinationInExternalPublicDir(destinationDirectory, filename.replaceAll("[^a-zA-Z0-9]", ""));
 
         // Start download and show toast.
         downloadManager.enqueue(request);
