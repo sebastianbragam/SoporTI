@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,6 +61,28 @@ public class UserCheckActivity extends AppCompatActivity {
                     if (Objects.equals(user.type, "Admin")) { showAdminActivity(); };
                     if (Objects.equals(user.type, "Soporte")) { showSupportActivity(); };
                     if (Objects.equals(user.type, "Usuario")) { showUserActivity(); };
+                    if (user.type == null) {
+
+                        // Tell user he has no role.
+                        Toast.makeText(UserCheckActivity.this, "Solicitar al administrador que le asigne un rol", Toast.LENGTH_SHORT).show();
+
+                        // Sign out.
+                        auth.signOut();
+                        Intent intent = new Intent(UserCheckActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                } else {
+
+                    // Tell user he has no role.
+                    Toast.makeText(UserCheckActivity.this, "Usuario inexistente, hablar con el administrador", Toast.LENGTH_SHORT).show();
+
+                    // Sign out.
+                    auth.signOut();
+                    Intent intent = new Intent(UserCheckActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
 
                 }
             }

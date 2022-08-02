@@ -102,4 +102,8 @@
     <string name="name_form">Nombre:</string>
     <string name="name">Nombre</string>
     <string name="email_form">Email:</string>
+    <string name="edit_user">Editar usuario</string>
+    <string name="forgot_password">Olvidé mi contraseña</string>
+    <string name="edit_user_role">Editar rol de usuario</string>
+    <string name="rol_by_user">Roles por usuario</string>
 </resources>

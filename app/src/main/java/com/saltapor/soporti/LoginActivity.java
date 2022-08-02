@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +61,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Forgot listener.
+        TextView tvForgot = findViewById(R.id.tvForgot);
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this, "Solicitar cambio al administrador", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Register listener.
+        TextView tvRegister = findViewById(R.id.tvRegister);
+        tvRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityNewUser();
+            }
+        });
+
+    }
+
+    private void showCheckUserActivity() {
+        Intent intent = new Intent(this, UserCheckActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void startActivityNewUser() {
+        Intent intent = new Intent(this, NewUserActivity.class);
+        startActivity(intent);
     }
 
     private void authenticateUser() {
@@ -86,12 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-    }
-
-    private void showCheckUserActivity() {
-        Intent intent = new Intent(this, UserCheckActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 }

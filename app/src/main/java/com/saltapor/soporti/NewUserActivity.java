@@ -37,9 +37,6 @@ import java.util.Objects;
 public class NewUserActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    boolean typeCheck = true;
-    int selectionsCount = 0;
-    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,76 +52,23 @@ public class NewUserActivity extends AppCompatActivity {
 
         // Initialize FirebaseAuth.
         auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Check if user is logged in.
-        if (currentUser == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
-        // Type spinner.
-        Spinner spType = findViewById(R.id.spType);
-
-        // Create and fill list.
-        final List<String> typesList = new ArrayList<>();
-        typesList.add("Seleccione un elemento...");
-        typesList.add("Admin");
-        typesList.add("Soporte");
-        typesList.add("Usuario");
-
-        // Create spinner adapter.
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(NewUserActivity.this, android.R.layout.simple_spinner_item, typesList) {
-
-            // Disable first element.
+        // Register listener.
+        Button btnRegister = findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) return false;
-                else return true;
+            public void onClick(View view) {
+                registerUser();
             }
+        });
 
-
-            // Set color to gray.
+        // Back to login listener.
+        TextView tvBackToLogin = findViewById(R.id.tvBackToLogin);
+        tvBackToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    tv.setTextColor(Color.DKGRAY);
-                }
-                return view;
+            public void onClick(View view) {
+                backToLogin();
             }
-
-        };
-
-        // Populate spinner with list.
-        typesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spType.setAdapter(typesAdapter);
-
-        // Spinner behaviour.
-        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                // To check if there is a selected item.
-                if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
-
-                    // Check category
-                    typeCheck = false;
-                    selectionsCount = 1;
-
-                }
-
-                // Get category object with it's ID.
-                type = typesList.get(i);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-
         });
 
     }
@@ -143,7 +87,7 @@ public class NewUserActivity extends AppCompatActivity {
         String password = etRegisterPassword.getText().toString();
 
         // Check missing fields.
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || typeCheck) {
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -155,7 +99,7 @@ public class NewUserActivity extends AppCompatActivity {
 
                 // Store user data on Realtime Database.
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                User user = new User(firstName, lastName, email, id, type);
+                User user = new User(firstName, lastName, email, id);
                 FirebaseDatabase.getInstance().getReference("users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -164,9 +108,6 @@ public class NewUserActivity extends AppCompatActivity {
                                 showMainActivity();
                             }
                         });
-
-                // Log out newly created user.
-                FirebaseAuth.getInstance().signOut();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -179,23 +120,18 @@ public class NewUserActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Intent intent = new Intent(this, AdminTicketsActivity.class);
+        Intent intent = new Intent(this, UserCheckActivity.class);
         startActivity(intent);
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_save, menu);
-        return true;
+    private void backToLogin() {
+        finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_save:
-                registerUser();
-                return true;
             case android.R.id.home:
                 finish();
                 return true;

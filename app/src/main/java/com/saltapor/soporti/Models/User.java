@@ -12,11 +12,10 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String id, String type) {
+    public User(String firstName, String lastName, String email, String id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.type = type;
         this.id = id;
     }
 

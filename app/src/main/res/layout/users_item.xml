@@ -92,6 +92,14 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_edit"
+            android:backgroundTint="#3F51B5" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

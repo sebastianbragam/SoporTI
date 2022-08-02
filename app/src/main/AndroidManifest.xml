@@ -13,9 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".EditUserActivity"
+            android:exported="false"
+            android:label="@string/edit_user_role" />
+        <activity
             android:name=".UsersActivity"
             android:exported="false"
-            android:label="@string/users"/>
+            android:label="@string/rol_by_user" />
         <activity
             android:name=".FilesFinishedActivity"
             android:exported="false"

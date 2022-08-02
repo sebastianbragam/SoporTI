@@ -99,27 +99,13 @@ public class UsersActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_new, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_new_object:
-                startActivityNewUser();
-                return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return true;
-    }
-
-    private void startActivityNewUser() {
-        Intent intent = new Intent(this, NewUserActivity.class);
-        startActivity(intent);
     }
 
     @Override

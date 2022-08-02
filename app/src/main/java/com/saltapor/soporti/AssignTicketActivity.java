@@ -269,24 +269,21 @@ public class AssignTicketActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
+                            public void onCancelled(@NonNull DatabaseError error) { }
 
                         });
 
                     }
 
                     @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                    }
+                    public void onNothingSelected(AdapterView<?> adapterView) { }
 
                 });
 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
 
         });
 
@@ -340,8 +337,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                 // Listener for search.
                 etSearch.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -349,8 +345,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void afterTextChanged(Editable editable) {
-                    }
+                    public void afterTextChanged(Editable editable) { }
                 });
 
                 // Item selected behaviour.
@@ -377,8 +372,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
+                            public void onCancelled(@NonNull DatabaseError error) { }
 
                         });
 
@@ -392,8 +386,7 @@ public class AssignTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
 
         });
 
