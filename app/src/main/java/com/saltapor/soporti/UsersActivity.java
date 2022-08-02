@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,13 +18,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.CategoriesAdapter;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.Ticket;
+import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 import com.saltapor.soporti.Models.UsersAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class UsersActivity extends AppCompatActivity {
@@ -84,6 +89,66 @@ public class UsersActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
                     if (!Objects.equals(user.email, "admin@saltapor.com")) {
+                        list.add(user);
+                    }
+                }
+
+                usersAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_search, menu);
+
+        // Building search bar.
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String filter) {
+                filterUsers(filter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String filter) {
+                filterUsers(filter);
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    private void filterUsers(String filter) {
+
+        // Database reference.
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+        // Obtain data.
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // RecyclerView list setup.
+                list = new ArrayList<>();
+                usersAdapter = new UsersAdapter(UsersActivity.this, list);
+                recyclerView.setAdapter(usersAdapter);
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if (!Objects.equals(user.email, "admin@saltapor.com") &&
+                            (user.firstName.toLowerCase(Locale.ROOT).contains(filter)
+                                    || user.lastName.toLowerCase(Locale.ROOT).contains(filter)
+                                    || user.email.toLowerCase(Locale.ROOT).contains(filter))) {
                         list.add(user);
                     }
                 }

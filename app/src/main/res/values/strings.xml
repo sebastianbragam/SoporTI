@@ -106,4 +106,6 @@
     <string name="forgot_password">Olvidé mi contraseña</string>
     <string name="edit_user_role">Editar rol de usuario</string>
     <string name="rol_by_user">Roles por usuario</string>
+    <string name="soporti_support">SoporTI: Soporte</string>
+    <string name="soporti_user">SoporTI: Usuario</string>
 </resources>

@@ -189,7 +189,9 @@ public class SupportTicketsActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
                     if (!Objects.equals(ticket.state, "Finalizado")) {
-                        if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
+                        if (ticket.title.toLowerCase(Locale.ROOT).contains(filter)
+                                || ticket.description.toLowerCase(Locale.ROOT).contains(filter)
+                                || ticket.state.toLowerCase(Locale.ROOT).contains(filter)) {
                             list.add(ticket);
                         }
                     }
@@ -200,9 +202,7 @@ public class SupportTicketsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
     }

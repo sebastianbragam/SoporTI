@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,8 +21,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.CategoriesAdapter;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.UsersAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CategoriesActivity extends AppCompatActivity {
@@ -96,8 +100,60 @@ public class CategoriesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_new, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu_search_new, menu);
+
+        // Building search bar.
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String filter) {
+                filterCategories(filter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String filter) {
+                filterCategories(filter);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    private void filterCategories(String filter) {
+
+        // Database reference.
+        databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+
+        // Obtain data.
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // RecyclerView list setup.
+                list = new ArrayList<>();
+                categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, list);
+                recyclerView.setAdapter(categoriesAdapter);
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Category category = dataSnapshot.getValue(Category.class);
+                    if (category.category.toLowerCase(Locale.ROOT).contains(filter)
+                            || category.subcategory.toLowerCase(Locale.ROOT).contains(filter)) {
+                        list.add(category);
+                    }
+                }
+
+                categoriesAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
     }
 
     @Override
