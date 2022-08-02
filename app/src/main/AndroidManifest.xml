@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".UsersActivity"
+            android:exported="false"
+            android:label="@string/users"/>
+        <activity
             android:name=".FilesFinishedActivity"
             android:exported="false"
             android:label="@string/files" />

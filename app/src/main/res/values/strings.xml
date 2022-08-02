@@ -99,4 +99,7 @@
     <string name="no_file_chosen">No hay archivo seleccionado</string>
     <string name="file_form">Nombre del archivo:</string>
     <string name="file">Archivo</string>
+    <string name="name_form">Nombre:</string>
+    <string name="name">Nombre</string>
+    <string name="email_form">Email:</string>
 </resources>

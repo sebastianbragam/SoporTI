@@ -230,7 +230,7 @@ public class AdminTicketsActivity extends AppCompatActivity {
     }
 
     private void startActivityNewUser() {
-        Intent intent = new Intent(this, NewUserActivity.class);
+        Intent intent = new Intent(this, UsersActivity.class);
         startActivity(intent);
     }
 

@@ -20,21 +20,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.CategoriesAdapter;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.UsersAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
-    CategoriesAdapter categoriesAdapter;
-    ArrayList<Category> list;
+    UsersAdapter usersAdapter;
+    ArrayList<User> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
+        setContentView(R.layout.activity_users);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -56,7 +58,7 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         // RecyclerView setup.
-        recyclerView = findViewById(R.id.rvCategories);
+        recyclerView = findViewById(R.id.rvUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -67,7 +69,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private void setRecyclerView() {
 
         // Database reference.
-        databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         // Obtain data.
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -76,15 +78,17 @@ public class CategoriesActivity extends AppCompatActivity {
 
                 // RecyclerView list setup.
                 list = new ArrayList<>();
-                categoriesAdapter = new CategoriesAdapter(CategoriesActivity.this, list);
-                recyclerView.setAdapter(categoriesAdapter);
+                usersAdapter = new UsersAdapter(UsersActivity.this, list);
+                recyclerView.setAdapter(usersAdapter);
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Category category = dataSnapshot.getValue(Category.class);
-                    list.add(category);
+                    User user = dataSnapshot.getValue(User.class);
+                    if (!Objects.equals(user.email, "admin@saltapor.com")) {
+                        list.add(user);
+                    }
                 }
 
-                categoriesAdapter.notifyDataSetChanged();
+                usersAdapter.notifyDataSetChanged();
 
             }
 
@@ -104,7 +108,7 @@ public class CategoriesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new_object:
-                startActivityNewCategory();
+                startActivityNewUser();
                 return true;
             case android.R.id.home:
                 finish();
@@ -113,8 +117,8 @@ public class CategoriesActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startActivityNewCategory() {
-        Intent intent = new Intent(this, NewCategoryActivity.class);
+    private void startActivityNewUser() {
+        Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
     }
 
