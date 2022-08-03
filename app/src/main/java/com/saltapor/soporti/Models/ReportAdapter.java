@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.saltapor.soporti.AssignTicketActivity;
 import com.saltapor.soporti.R;
+import com.saltapor.soporti.ReportActivity;
 import com.saltapor.soporti.ReportCategoryActivity;
 import com.saltapor.soporti.ViewTicketActivity;
 
@@ -25,10 +26,13 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
 
     Context context;
     ArrayList<ReportItem> list;
+    String dateFrom, dateTo;
 
-    public ReportAdapter(Context context, ArrayList<ReportItem> list) {
+    public ReportAdapter(Context context, ArrayList<ReportItem> list, String dateFrom, String dateTo) {
         this.context = context;
         this.list = list;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
     }
 
     @NonNull
@@ -70,6 +74,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
                 if (reportItem.quantity > 0) {
                     Intent intent = new Intent(context, ReportCategoryActivity.class);
                     intent.putExtra("KEY_NAME", reportItem.title);
+                    intent.putExtra("DATE_FROM", dateFrom);
+                    intent.putExtra("DATE_TO", dateTo);
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, "No hay tickets para este tipo", Toast.LENGTH_SHORT).show();

@@ -21,6 +21,7 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_new_user.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_register.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_report.xml" value="0.3625" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_report_category.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_support_reply.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_tickets.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/activity_user_reply.xml" value="0.3625" />
@@ -32,6 +33,8 @@
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/categories_item.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/file_item.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/finished_file_item.xml" value="0.3614583333333333" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/fragment_date_picker.xml" value="0.3625" />
+        <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/fragment_date_picker_categories.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/replies_item.xml" value="0.3625" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/report_category_item.xml" value="0.3569230769230769" />
         <entry key="..\:/Seba/SoporTI/app/src/main/res/layout/report_item.xml" value="0.3625" />

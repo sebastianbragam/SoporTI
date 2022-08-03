@@ -112,4 +112,9 @@
     <string name="documentation">Documentación</string>
     <string name="documentation_files">Documentación</string>
     <string name="documentation_notice">Si falta documentación, por favor reportar a usuario administrador.</string>
+    <string name="filter_by_date">Filtrar por fecha</string>
+    <string name="choose_date_from">Seleccione la fecha desde</string>
+    <string name="choose_date_to">Seleccione la fecha hasta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -21,6 +21,38 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="@string/filter_by_date"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDateFrom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/choose_date_from"
+        android:textSize="18sp"
+        android:padding="8dp"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/tvDateTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/choose_date_to"
+        android:textSize="18sp"
+        android:padding="8dp"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/tickets_by_type"
         android:textStyle="bold" />
 

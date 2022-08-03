@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +42,10 @@ import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -49,9 +54,13 @@ public class ReportActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ReportAdapter reportAdapter;
-    ArrayList<ReportItem> reportList = new ArrayList<>();
-    ArrayList<Ticket> ticketsList = new ArrayList<>();
+    ArrayList<ReportItem> reportList;
+    ArrayList<Ticket> ticketsList;
     ArrayList<String> typesList = new ArrayList<>();
+
+    String dateFrom, dateTo;
+    TextView tvDateFrom;
+    TextView tvDateTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +102,106 @@ public class ReportActivity extends AppCompatActivity {
         // Create tickets list.
         fillTicketsList();
 
+        // "Buttons" and it's listeners.
+        tvDateFrom = findViewById(R.id.tvDateFrom);
+        tvDateTo = findViewById(R.id.tvDateTo);
+
+        tvDateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("DATE", 1);
+
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.setArguments(bundle);
+
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
+
+        tvDateTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("DATE", 2);
+
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.setArguments(bundle);
+
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
+
     }
 
-    private void setRecyclerView () {
+    public void processDateFromPickerResult(int year, int month, int day) {
+
+        // Get integers to string.
+        month = month + 1;
+        String month_string = Integer.toString(month);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+
+        // To format date.
+        if (month < 10) {
+            month_string = "0" + month;
+        }
+        if (day < 10) {
+            day_string  = "0" + day ;
+        }
+
+        // Set TextView and variable.
+        dateFrom = (day_string + "/" + month_string + "/" + year_string);
+        tvDateFrom.setText(dateFrom);
+
+        // Re create list.
+        fillTicketsList();
+
+    }
+
+    public void processDateToPickerResult(int year, int month, int day) {
+
+        // Get integers to string.
+        month = month + 1;
+        String month_string = Integer.toString(month);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+
+        // To format date.
+        if (month < 10) {
+            month_string = "0" + month;
+        }
+        if (day < 10) {
+            day_string  = "0" + day ;
+        }
+
+        // Set TextView and variable.
+        dateTo = (day_string + "/" + month_string + "/" + year_string);
+        tvDateTo.setText(dateTo);
+
+        // Re create list.
+        fillTicketsList();
+
+    }
+
+    private static long parseDate(String text) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.parse(text).getTime();
+    }
+
+    private void setRecyclerView () throws ParseException {
 
         // RecyclerView list setup.
-        reportAdapter = new ReportAdapter(ReportActivity.this, reportList);
+        reportAdapter = new ReportAdapter(ReportActivity.this, reportList, dateFrom, dateTo);
         recyclerView.setAdapter(reportAdapter);
+
+        // See if dates are null and replace with distant dates..
+        if (dateFrom == null) { dateFrom = "01/01/2000"; }
+        if (dateTo == null) { dateTo = "31/12/2099"; }
+
+        // Convert dates to long (correcting date to datetime by adding a full day).
+        long dateFromLong = parseDate(dateFrom);
+        long dateToLong = parseDate(dateTo) + (1000 * 60 * 60 * 24);
 
         // Iterate types list.
         for (String typeItem : typesList) {
@@ -110,7 +212,9 @@ public class ReportActivity extends AppCompatActivity {
 
             // Iterate tickets list.
             for (Ticket ticketItem : ticketsList) {
-                if (Objects.equals(typeItem, ticketItem.type)) {
+
+                if (Objects.equals(typeItem, ticketItem.type) &&
+                        ticketItem.date > dateFromLong && ticketItem.date < dateToLong) {
                     count = count + 1;
                     time = time + (ticketItem.finishDate - ticketItem.date);
                 }
@@ -129,6 +233,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private void fillTicketsList() {
 
+        // Create lists.
+        reportList = new ArrayList<>();
+        ticketsList = new ArrayList<>();
+
         // Database query to fill tickets list.
         DatabaseReference ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
 
@@ -143,7 +251,11 @@ public class ReportActivity extends AppCompatActivity {
                     }
                 }
 
-                setRecyclerView();
+                try {
+                    setRecyclerView();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
             }
 
