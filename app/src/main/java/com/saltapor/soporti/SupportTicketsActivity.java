@@ -1,5 +1,9 @@
 package com.saltapor.soporti;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.TicketsAdapter;
 import com.saltapor.soporti.Models.User;
@@ -37,6 +42,27 @@ public class SupportTicketsActivity extends AppCompatActivity {
     ArrayList<Ticket> list;
     TextView tvName;
     User userLogged;
+
+    // Filters.
+    String type;
+    Category category = new Category();
+
+    // Activity for result.
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 1) {
+                        Intent resultIntent = result.getData();
+                        if (resultIntent != null) {
+                            category = (Category) resultIntent.getSerializableExtra("CATEGORY");
+                            type = (String) resultIntent.getSerializableExtra("TYPE");
+                        }
+                        setRecyclerView();
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +115,12 @@ public class SupportTicketsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+        // Set default type and category id.
+        type = "Filtrar por tipo";
+        category.id = "Filtrar por categoría";
 
     }
 
@@ -122,8 +150,31 @@ public class SupportTicketsActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
                     if (!Objects.equals(ticket.state, "Finalizado")) {
-                        list.add(ticket);
-                        count = count + 1;
+
+                        // Conditions for type and category.
+                        if (Objects.equals(type, "Filtrar por tipo") && Objects.equals(category.id, "Filtrar por categoría")) {
+                            list.add(ticket);
+                            count = count + 1;
+                        }
+                        if (Objects.equals(type, "Filtrar por tipo") && !Objects.equals(category.id, "Filtrar por categoría")) {
+                            if (Objects.equals(ticket.category.id, category.id)) {
+                                list.add(ticket);
+                                count = count + 1;
+                            }
+                        }
+                        if (!Objects.equals(type, "Filtrar por tipo") && Objects.equals(category.id, "Filtrar por categoría")) {
+                            if (Objects.equals(ticket.type, type)) {
+                                list.add(ticket);
+                                count = count + 1;
+                            }
+                        }
+                        if (!Objects.equals(type, "Filtrar por tipo") && !Objects.equals(category.id, "Filtrar por categoría")) {
+                            if (Objects.equals(ticket.category.id, category.id) && Objects.equals(ticket.type, type)) {
+                                list.add(ticket);
+                                count = count + 1;
+                            }
+                        }
+
                     }
                 }
 
@@ -181,10 +232,17 @@ public class SupportTicketsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                // Obtain TextView element and set text to default.
+                TextView tvTickets = findViewById(R.id.tvTickets);
+                tvTickets.setText("Tus tickets");
+
                 // RecyclerView list setup.
                 list = new ArrayList<>();
                 ticketsAdapter = new TicketsAdapter(SupportTicketsActivity.this, list, SupportTicketsActivity.class.getName());
                 recyclerView.setAdapter(ticketsAdapter);
+
+                // Counter to see if there is data.
+                int count = 0;
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
@@ -192,11 +250,41 @@ public class SupportTicketsActivity extends AppCompatActivity {
                         if (ticket.title.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.description.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.state.toLowerCase(Locale.ROOT).contains(filter)) {
-                            list.add(ticket);
+
+                            // Conditions for type and category.
+                            if (Objects.equals(type, "Filtrar por tipo") && Objects.equals(category.id, "Filtrar por categoría")) {
+                                list.add(ticket);
+                                count = count + 1;
+                            }
+                            if (Objects.equals(type, "Filtrar por tipo") && !Objects.equals(category.id, "Filtrar por categoría")) {
+                                if (Objects.equals(ticket.category.id, category.id)) {
+                                    list.add(ticket);
+                                    count = count + 1;
+                                }
+                            }
+                            if (!Objects.equals(type, "Filtrar por tipo") && Objects.equals(category.id, "Filtrar por categoría")) {
+                                if (Objects.equals(ticket.type, type)) {
+                                    list.add(ticket);
+                                    count = count + 1;
+                                }
+                            }
+                            if (!Objects.equals(type, "Filtrar por tipo") && !Objects.equals(category.id, "Filtrar por categoría")) {
+                                if (Objects.equals(ticket.category.id, category.id) && Objects.equals(ticket.type, type)) {
+                                    list.add(ticket);
+                                    count = count + 1;
+                                }
+                            }
+
                         }
                     }
                 }
 
+                // Change text if there is no data.
+                if (count == 0) {
+                    tvTickets.setText("No hay tickets pendientes.");
+                }
+
+                // Update data on recycler.
                 ticketsAdapter.notifyDataSetChanged();
 
             }
@@ -213,6 +301,9 @@ public class SupportTicketsActivity extends AppCompatActivity {
             case R.id.action_new_object:
                 startActivityCategories();
                 return true;
+            case R.id.action_filter:
+                startActivityFilter();
+                return true;
             case R.id.action_finished:
                 startActivityFinishedTickets();
                 return true;
@@ -224,6 +315,13 @@ public class SupportTicketsActivity extends AppCompatActivity {
                 return true;
         }
         return true;
+    }
+
+    private void startActivityFilter() {
+        Intent intent = new Intent(SupportTicketsActivity.this, FilterActivity.class);
+        intent.putExtra("TYPE", type);
+        intent.putExtra("CATEGORY", category);
+        activityResultLauncher.launch(intent);
     }
 
     private void startActivityDocumentation() {

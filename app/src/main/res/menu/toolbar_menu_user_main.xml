@@ -11,17 +11,24 @@
         app:actionViewClass="android.widget.SearchView" />
 
     <item
-        android:id="@+id/action_finished"
+        android:id="@+id/action_filter"
         android:orderInCategory="20"
-        android:title="@string/finished_tickets"
-        app:showAsAction="never" />
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_new"
         android:orderInCategory="30"
         android:title="@string/add"
         android:icon="@drawable/ic_new"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_finished"
+        android:orderInCategory="50"
+        android:title="@string/finished_tickets"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_documentation"

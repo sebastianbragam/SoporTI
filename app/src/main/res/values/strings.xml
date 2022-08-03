@@ -117,4 +117,6 @@
     <string name="choose_date_to">Seleccione la fecha hasta</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter">Filtrar</string>
+    <string name="clean_filters">Limpiar filtros</string>
 </resources>

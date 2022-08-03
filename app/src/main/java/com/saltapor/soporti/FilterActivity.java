@@ -44,24 +44,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class FinishedTicketsActivity extends AppCompatActivity {
-
-    RecyclerView recyclerView;
-    DatabaseReference ticketsReference;
-    TicketsAdapter ticketsAdapter;
-    ArrayList<Ticket> list;
-    User userLogged;
+public class FilterActivity extends AppCompatActivity {
 
     // Variables for filters.
     TextView tvCategory;
     Category category = new Category();
     String type;
-    String filterText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finished_tickets);
+        setContentView(R.layout.activity_filter);
 
         // Configure toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -82,34 +75,8 @@ public class FinishedTicketsActivity extends AppCompatActivity {
             return;
         }
 
-        // RecyclerView setup.
-        recyclerView = findViewById(R.id.rvTickets);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Reference to obtain user data.
-        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
-
-        // Listener to update user data.
-        usersReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                if (user != null) {
-
-                    userLogged = user;
-                    setRecyclerView();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
 
         // Type spinner.
         Spinner spType = findViewById(R.id.spType);
@@ -125,7 +92,7 @@ public class FinishedTicketsActivity extends AppCompatActivity {
         typesList.add("Prevención");
 
         // Create spinner adapter.
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(FinishedTicketsActivity.this, android.R.layout.simple_spinner_item, typesList) {
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_spinner_item, typesList) {
 
             // Set color to gray.
             @Override
@@ -149,9 +116,8 @@ public class FinishedTicketsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                // Get type and re-create recycler.
+                // Get type.
                 type = typesList.get(i);
-                setRecyclerView();
 
             }
 
@@ -160,17 +126,42 @@ public class FinishedTicketsActivity extends AppCompatActivity {
 
         });
 
+        // Select spinner item based on data.
+        type = (String) this.getIntent().getSerializableExtra("TYPE");
+        spType.setSelection(typesList.indexOf(type));
+
         // Category "Spinner", actually a TextView with custom dialog.
         TextView tvCategory = findViewById(R.id.tvCategory);
 
         // Set default category ID.
         category.id = "Filtrar por categoría";
 
+        // Select category item based on data.
+        category = (Category) this.getIntent().getSerializableExtra("CATEGORY");
+        if (category.category != null) { tvCategory.setText(category.category + ": " + category.subcategory); }
+        else { category.id = "Filtrar por categoría"; }
+
         // When button pressed, create custom dialog.
         tvCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setSpinner();
+            }
+        });
+
+        // When filter button pressed, save activity result.
+        Button btnFilter = findViewById(R.id.btnFilter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Create intent and pass as result.
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("TYPE", type);
+                resultIntent.putExtra("CATEGORY", category);
+                setResult(1, resultIntent);
+                finish();
+
             }
         });
 
@@ -184,9 +175,6 @@ public class FinishedTicketsActivity extends AppCompatActivity {
                 tvCategory.setText("Filtrar por categoría");
                 category.id = "Filtrar por categoría";
                 spType.setSelection(typesList.indexOf("Filtrar por tipo"));
-
-                // Re create recycler.
-                setRecyclerView();
 
             }
         });
@@ -229,7 +217,7 @@ public class FinishedTicketsActivity extends AppCompatActivity {
                 }
 
                 // Build dialog.
-                Dialog dialog = new Dialog(FinishedTicketsActivity.this);
+                Dialog dialog = new Dialog(FilterActivity.this);
                 dialog.setContentView(R.layout.spinner_dialog);
                 dialog.show();
 
@@ -239,7 +227,7 @@ public class FinishedTicketsActivity extends AppCompatActivity {
                 tvCategory = findViewById(R.id.tvCategory);
 
                 // Fill list.
-                final ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(FinishedTicketsActivity.this, android.R.layout.simple_list_item_1, categoriesList);
+                final ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(FilterActivity.this, android.R.layout.simple_list_item_1, categoriesList);
                 listView.setAdapter(categoriesAdapter);
 
                 // Listener for search.
@@ -289,9 +277,6 @@ public class FinishedTicketsActivity extends AppCompatActivity {
 
                         });
 
-                        // Re-create recycler.
-                        setRecyclerView();
-
                         // Dismiss dialog.
                         dialog.dismiss();
 
@@ -306,98 +291,6 @@ public class FinishedTicketsActivity extends AppCompatActivity {
 
         });
 
-    }
-
-    private void setRecyclerView() {
-
-        // Database query.
-        ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
-        Query ticketsQuery = ticketsReference.orderByChild("state").equalTo("Finalizado");
-
-        // Obtain data.
-        ticketsQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // RecyclerView list setup.
-                list = new ArrayList<>();
-                ticketsAdapter = new TicketsAdapter(FinishedTicketsActivity.this, list, FinishedTicketsActivity.class.getName());
-                recyclerView.setAdapter(ticketsAdapter);
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Ticket ticket = dataSnapshot.getValue(Ticket.class);
-
-                    // Conditions for text filter.
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filterText) || ticket.description.toLowerCase(Locale.ROOT).contains(filterText)) {
-
-                        // Conditions for type and category.
-                        if (type == "Filtrar por tipo" && category.id == "Filtrar por categoría") {
-                            list.add(ticket);
-                        }
-                        if (type == "Filtrar por tipo" && category.id != "Filtrar por categoría") {
-                            if (Objects.equals(ticket.category.id, category.id)) {
-                                list.add(ticket);
-                            }
-                        }
-                        if (type != "Filtrar por tipo" && category.id == "Filtrar por categoría") {
-                            if (Objects.equals(ticket.type, type)) {
-                                list.add(ticket);
-                            }
-                        }
-                        if (type != "Filtrar por tipo" && category.id != "Filtrar por categoría") {
-                            if (Objects.equals(ticket.category.id, category.id) && Objects.equals(ticket.type, type)) {
-                                list.add(ticket);
-                            }
-                        }
-
-                    }
-
-                }
-
-                // Update data on recycler.
-                ticketsAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_search, menu);
-
-        // Building search bar.
-        MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String filter) {
-
-                // Assign text to filterText and re-create recycler.
-                filterText = filter;
-                setRecyclerView();
-                return false;
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String filter) {
-
-                // Assign text to filterText and re-create recycler.
-                filterText = filter;
-                setRecyclerView();
-                return false;
-
-            }
-        });
-
-        return true;
     }
 
     @Override

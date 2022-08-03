@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".FilterActivity"
+            android:exported="false"
+            android:label="@string/filter"/>
+        <activity
             android:name=".DocumentationActivity"
             android:exported="false"
             android:label="@string/documentation" />
