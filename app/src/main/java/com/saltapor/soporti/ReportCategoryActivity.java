@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ReportCategoryActivity extends AppCompatActivity {
@@ -238,6 +239,9 @@ public class ReportCategoryActivity extends AppCompatActivity {
         if (reportList.size() == 0) {
             TextView tvTicketsByCategory = findViewById(R.id.tvTicketsByCategory);
             tvTicketsByCategory.setText("No hay tickets para el tipo seleccionado.");
+        } else {
+            TextView tvTicketsByCategory = findViewById(R.id.tvTicketsByCategory);
+            tvTicketsByCategory.setText("Tickets de tipo '" + selectedType.toLowerCase(Locale.ROOT) + "' por categoría");
         }
 
         // Update data on recycler.

@@ -28,8 +28,8 @@
     <string name="describe_problem">Describa el problema</string>
     <string name="category">Categoría</string>
     <string name="new_category">Nueva categoría</string>
+    <string name="enter_category_grouper">Ingrese un agrupador para la categoría</string>
     <string name="enter_category_name">Ingrese un nombre para la categoría</string>
-    <string name="enter_subcategory_name">Ingrese un nombre para la subcategoría</string>
     <string name="subcategory">Subcategoría</string>
     <string name="register_category">Registrar categoría</string>
     <string name="categories">Categorías</string>
@@ -115,10 +115,13 @@
     <string name="filter_by_date">Filtrar por fecha</string>
     <string name="choose_date_from">Seleccione la fecha desde</string>
     <string name="choose_date_to">Seleccione la fecha hasta</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filter">Filtrar</string>
     <string name="clean_filters">Limpiar filtros</string>
     <string name="priority">Prioridad</string>
     <string name="priority_form">Prioridad:</string>
+    <string name="grouper_form">Agrupador:</string>
+    <string name="grouper">Agrupador</string>
 </resources>

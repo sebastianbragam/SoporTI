@@ -28,14 +28,14 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginEnd="8dp"
-                android:text="@string/category_form" />
+                android:text="@string/grouper_form" />
 
             <TextView
                 android:id="@+id/tvCategoryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/category"/>
+                android:text="@string/grouper"/>
 
         </LinearLayout>
 
@@ -51,14 +51,14 @@
                 android:layout_marginEnd="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="@string/subcategory_form" />
+                android:text="@string/name_form" />
 
             <TextView
                 android:id="@+id/tvSubcategoryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="@string/subcategory"/>
+                android:text="@string/name"/>
 
         </LinearLayout>
 
