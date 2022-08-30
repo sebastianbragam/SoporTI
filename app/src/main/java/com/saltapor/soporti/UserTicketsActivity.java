@@ -245,7 +245,7 @@ public class UserTicketsActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
                     if (!Objects.equals(ticket.state, "Finalizado") && !Objects.equals(ticket.state, "Finalizado por usuario")) {
-                        if (ticket.title.toLowerCase(Locale.ROOT).contains(filter)
+                        if (ticket.number.toString().contains(filter) || ticket.title.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.description.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.state.toLowerCase(Locale.ROOT).contains(filter)) {
 

@@ -111,6 +111,9 @@ public class NewTicketActivity extends AppCompatActivity {
                     ticketNum = childSnapshot.child("number").getValue(Long.class) + Long.valueOf(1);
                 }
 
+                // Check when there is no tickets.
+                if (ticketNum == 0) { ticketNum = Long.valueOf(1); }
+
             }
 
             @Override

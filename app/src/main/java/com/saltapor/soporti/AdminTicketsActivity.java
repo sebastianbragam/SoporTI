@@ -185,7 +185,8 @@ public class AdminTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (ticket.title.toLowerCase(Locale.ROOT).contains(filter) || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
+                    if (ticket.number.toString().contains(filter) || ticket.title.toLowerCase(Locale.ROOT).contains(filter)
+                            || ticket.description.toLowerCase(Locale.ROOT).contains(filter)) {
                         list.add(ticket);
                     }
                 }
