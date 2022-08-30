@@ -128,7 +128,7 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
         // Database query.
         ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
-        Query ticketsQuery = ticketsReference.orderByChild("admin/email").equalTo(userLogged.email);
+        Query ticketsQuery = ticketsReference.orderByChild("priority");
 
         // Obtain data.
         ticketsQuery.addValueEventListener(new ValueEventListener() {
@@ -149,7 +149,7 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (!Objects.equals(ticket.state, "Finalizado")) {
+                    if (!Objects.equals(ticket.state, "Finalizado") && Objects.equals(ticket.admin.email, userLogged.email)) {
 
                         // Conditions for type and category.
                         if (Objects.equals(type, "Filtrar por tipo") && Objects.equals(category.id, "Filtrar por categoría")) {
@@ -225,7 +225,7 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
         // Database query.
         ticketsReference = FirebaseDatabase.getInstance().getReference("tickets");
-        Query ticketsQuery = ticketsReference.orderByChild("admin/email").equalTo(userLogged.email);
+        Query ticketsQuery = ticketsReference.orderByChild("priority");
 
         // Obtain data.
         ticketsQuery.addValueEventListener(new ValueEventListener() {
@@ -246,7 +246,9 @@ public class SupportTicketsActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Ticket ticket = dataSnapshot.getValue(Ticket.class);
-                    if (!Objects.equals(ticket.state, "Finalizado")) {
+                    if (!Objects.equals(ticket.state, "Finalizado") && Objects.equals(ticket.admin.email, userLogged.email)) {
+
+                        // Filter text.
                         if (ticket.number.toString().contains(filter) || ticket.title.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.description.toLowerCase(Locale.ROOT).contains(filter)
                                 || ticket.state.toLowerCase(Locale.ROOT).contains(filter)) {
