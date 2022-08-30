@@ -71,7 +71,7 @@
     <string name="assign_ticket">Asignar ticket</string>
     <string name="type_form">Tipo:</string>
     <string name="support_user">Usuario soporte</string>
-    <string name="support_user_form">Usuario soporte:</string>
+    <string name="support_user_form">Encargado:</string>
     <string name="no_replies_yet">No hay respuestas aún</string>
     <string name="finish_ticket">Finalizar ticket</string>
     <string name="edit_category">Editar categoría</string>
@@ -124,4 +124,5 @@
     <string name="priority_form">Prioridad:</string>
     <string name="grouper_form">Agrupador:</string>
     <string name="grouper">Agrupador</string>
+    <string name="choose_rate">¿Cómo calificaría la atención recibida?</string>
 </resources>

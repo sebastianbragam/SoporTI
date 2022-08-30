@@ -227,7 +227,7 @@ public class ViewTicketActivity extends AppCompatActivity {
 
         if (Objects.equals(userLogged.type, "Usuario")) {
             if (Objects.equals(ticket.state, "Pendiente respuesta de usuario")) {
-                userFinish();
+                startActivityUserFinish();
             } else {
                 Toast.makeText(ViewTicketActivity.this, "El parte no está pendiente de respuesta", Toast.LENGTH_SHORT).show();
             }
@@ -238,67 +238,6 @@ public class ViewTicketActivity extends AppCompatActivity {
                 Toast.makeText(ViewTicketActivity.this, "El parte aún no fue finalizado por el usuario o ya fue finalizado por soporte", Toast.LENGTH_SHORT).show();
             }
         }
-
-    }
-
-    private void userFinish() {
-
-        // Build alert.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("¿Seguro de que quieres finalizar este ticket?");
-        builder.setMessage("Luego de finalizado no se puede volver atrás.");
-
-        // Assign.
-        builder.setPositiveButton("Finalizar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                // Connect to database.
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                // Update ticket state.
-                database.getReference("tickets").child(ticket.id).child("state").setValue("Finalizado por usuario").addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-
-                        // Update ticket state.
-                        database.getReference("tickets").child(ticket.id).child("finishDate").setValue(new Date().getTime()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(ViewTicketActivity.this, "Ticket finalizado con éxito", Toast.LENGTH_LONG).show();
-                                sendMail();
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ViewTicketActivity.this, "El registro ha fallado", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-
-            }
-        });
-
-        // Cancel.
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(ViewTicketActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Show alert.
-        builder.show();
 
     }
 
@@ -320,68 +259,14 @@ public class ViewTicketActivity extends AppCompatActivity {
 
     }
 
-    private void sendMail() {
-
-        try {
-
-            // Create email.
-            String host = "smtp.gmail.com";
-            String mailToAdmin = ticket.admin.email.trim();
-            String mailToUser = ticket.user.email.trim();
-            String subject = "Ticket Nº" + ticket.number + " finalizado.";
-            String message = ("Se informa que el ticket Nº" + ticket.number + " ha sido finalizado por "
-                    + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
-                    "- Título: " + ticket.title + ":\n" +
-                    "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
-                    "- Tipo: " + ticket.type + ". \n" +
-                    "- Prioridad: " + ticket.priority.substring(3) + ". \n" +
-                    "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +
-                    "- Descripción: " + ticket.description + ". \n" +
-                    "- Usuario: " + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
-                    "Saludos!");
-
-            Properties properties = System.getProperties();
-            properties.put("mail.smtp.host", host);
-            properties.put("mail.smtp.port", 465);
-            properties.put("mail.smtp.ssl.enable", "true");
-            properties.put("mail.smtp.auth", "true");
-
-            Session session = Session.getInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(Utils.email, Utils.password);
-                }
-            });
-
-            MimeMessage mimeMessage = new MimeMessage(session);
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToAdmin));
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToUser));
-            mimeMessage.setSubject(subject);
-            mimeMessage.setText(message);
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Transport.send(mimeMessage);
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            thread.start();
-
-        } catch (AddressException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void startActivityAdminFinish() {
         Intent intent = new Intent(this, SupportFinishActivity.class);
+        intent.putExtra("KEY_NAME", ticket);
+        this.startActivity(intent);
+    }
+
+    private void startActivityUserFinish() {
+        Intent intent = new Intent(this, UserFinishActivity.class);
         intent.putExtra("KEY_NAME", ticket);
         this.startActivity(intent);
     }

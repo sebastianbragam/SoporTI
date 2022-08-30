@@ -15,6 +15,7 @@ public class Ticket implements Serializable {
     public User user;
     public User admin;
     public Long number;
+    public Long rate;
     public String id;
 
     public Ticket() {}

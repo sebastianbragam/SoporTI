@@ -13,9 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".UserFinishActivity"
+            android:exported="false"
+            android:label="@string/finish_ticket" />
+        <activity
             android:name=".FilterActivity"
             android:exported="false"
-            android:label="@string/filter"/>
+            android:label="@string/filter" />
         <activity
             android:name=".DocumentationActivity"
             android:exported="false"
