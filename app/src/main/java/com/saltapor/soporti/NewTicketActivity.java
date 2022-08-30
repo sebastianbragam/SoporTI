@@ -149,11 +149,10 @@ public class NewTicketActivity extends AppCompatActivity {
         final List<String> typesList = new ArrayList<>();
         typesList.add("Seleccione un elemento...");
         typesList.add("Requerimiento de servicio");
-        typesList.add("Cambio");
+        typesList.add("Requerimiento de cambio");
         typesList.add("Incidente");
         typesList.add("Problema");
         typesList.add("Ayuda");
-        typesList.add("Prevención");
 
         // Create spinner adapter.
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, typesList) {

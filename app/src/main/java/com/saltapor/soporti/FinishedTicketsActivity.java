@@ -118,11 +118,10 @@ public class FinishedTicketsActivity extends AppCompatActivity {
         final List<String> typesList = new ArrayList<>();
         typesList.add("Filtrar por tipo");
         typesList.add("Requerimiento de servicio");
-        typesList.add("Cambio");
+        typesList.add("Requerimiento de cambio");
         typesList.add("Incidente");
         typesList.add("Problema");
         typesList.add("Ayuda");
-        typesList.add("Prevención");
 
         // Create spinner adapter.
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(FinishedTicketsActivity.this, android.R.layout.simple_spinner_item, typesList) {

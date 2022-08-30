@@ -119,23 +119,13 @@ public class AssignTicketActivity extends AppCompatActivity {
         // Create and fill list.
         final List<String> typesList = new ArrayList<>();
         typesList.add("Requerimiento de servicio");
-        typesList.add("Cambio");
+        typesList.add("Requerimiento de cambio");
         typesList.add("Incidente");
         typesList.add("Problema");
         typesList.add("Ayuda");
-        typesList.add("Prevención");
 
         // Create spinner adapter.
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(AssignTicketActivity.this, android.R.layout.simple_spinner_item, typesList) {
-
-            // Disable first element.
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) return false;
-                else return true;
-            }
-
-        };
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(AssignTicketActivity.this, android.R.layout.simple_spinner_item, typesList) { };
 
         // Populate spinner with list.
         typesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);

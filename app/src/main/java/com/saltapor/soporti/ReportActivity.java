@@ -88,11 +88,10 @@ public class ReportActivity extends AppCompatActivity {
 
         // Create and fill types list.
         typesList.add("Requerimiento de servicio");
-        typesList.add("Cambio");
+        typesList.add("Requerimiento de cambio");
         typesList.add("Incidente");
         typesList.add("Problema");
         typesList.add("Ayuda");
-        typesList.add("Prevención");
 
         // RecyclerView setup.
         recyclerView = findViewById(R.id.rvReport);
