@@ -45,6 +45,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
         Ticket ticket = list.get(position);
         holder.tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         holder.tvTypeName.setText(ticket.type);
+        holder.tvPriorityName.setText(ticket.priority.substring(3));
         holder.tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         holder.tvStateName.setText(ticket.state);
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
@@ -73,7 +74,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
 
     public static class TicketsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitle, tvTypeName, tvCategoryName, tvStateName, tvDate;
+        TextView tvTitle, tvTypeName, tvPriorityName, tvCategoryName, tvStateName, tvDate;
         ImageButton btnViewTicket;
 
         public TicketsViewHolder(@NonNull View itemView) {
@@ -81,6 +82,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.TicketsV
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvTypeName = itemView.findViewById(R.id.tvTypeName);
+            tvPriorityName = itemView.findViewById(R.id.tvPriorityName);
             tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
             tvStateName = itemView.findViewById(R.id.tvStateName);
             tvDate = itemView.findViewById(R.id.tvDate);

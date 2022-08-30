@@ -76,6 +76,7 @@ public class SupportFinishActivity extends AppCompatActivity {
         // Set ticket data.
         TextView tvTitle = findViewById(R.id.tvTitle);
         TextView tvTypeName = findViewById(R.id.tvTypeName);
+        TextView tvPriorityName = findViewById(R.id.tvPriorityName);
         TextView tvCategoryName = findViewById(R.id.tvCategoryName);
         TextView tvStateName = findViewById(R.id.tvStateName);
         TextView tvDate = findViewById(R.id.tvDate);
@@ -85,6 +86,7 @@ public class SupportFinishActivity extends AppCompatActivity {
 
         tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
         tvTypeName.setText(ticket.type);
+        tvPriorityName.setText(ticket.priority.substring(3));
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
         tvStateName.setText(ticket.state);
         String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date));
