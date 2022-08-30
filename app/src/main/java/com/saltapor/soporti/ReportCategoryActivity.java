@@ -216,6 +216,9 @@ public class ReportCategoryActivity extends AppCompatActivity {
             // Initialize variables.
             Long count = Long.valueOf(0);
             long time = 0;
+            Long responseCount = Long.valueOf(0);
+            long responseTime = 0;
+            Long rating = Long.valueOf(0);
 
             // Iterate tickets list.
             for (Ticket ticketItem : ticketsList) {
@@ -229,7 +232,7 @@ public class ReportCategoryActivity extends AppCompatActivity {
 
             if (count > 0) {
                 // Create ReportItem object and add to report list.
-                ReportItem reportItem = new ReportItem(categoryItem.category + ": " + categoryItem.subcategory, count, time);
+                ReportItem reportItem = new ReportItem(categoryItem.category + ": " + categoryItem.subcategory, count, time, responseCount, responseTime, rating);
                 reportList.add(reportItem);
             }
 

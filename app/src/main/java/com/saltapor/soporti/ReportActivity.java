@@ -208,6 +208,9 @@ public class ReportActivity extends AppCompatActivity {
             // Initialize variables.
             Long count = Long.valueOf(0);
             long time = 0;
+            Long responseCount = Long.valueOf(0);
+            long responseTime = 0;
+            Long rating = Long.valueOf(0);
 
             // Iterate tickets list.
             for (Ticket ticketItem : ticketsList) {
@@ -216,11 +219,16 @@ public class ReportActivity extends AppCompatActivity {
                         ticketItem.date > dateFromLong && ticketItem.date < dateToLong) {
                     count = count + 1;
                     time = time + (ticketItem.finishDate - ticketItem.date);
+                    rating = rating + ticketItem.rate;
+
+                    // Retrieve replies from this ticket here and calculate quantity and mean.
+
                 }
+
             }
 
             // Create ReportItem object and add to report list.
-            ReportItem reportItem = new ReportItem(typeItem, count, time);
+            ReportItem reportItem = new ReportItem(typeItem, count, time, responseCount, responseTime, rating);
             reportList.add(reportItem);
 
         }
@@ -259,8 +267,8 @@ public class ReportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
+
         });
 
     }

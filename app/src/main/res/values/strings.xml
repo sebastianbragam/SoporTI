@@ -125,4 +125,9 @@
     <string name="grouper_form">Agrupador:</string>
     <string name="grouper">Agrupador</string>
     <string name="choose_rate">¿Cómo calificaría la atención recibida?</string>
+    <string name="response_time_form">Tiempo promedio de respuesta:</string>
+    <string name="response_quantity_form">Cantidad promedio de respuestas:</string>
+    <string name="satisfaction">Satisfacción</string>
+    <string name="satisfaction_form">Puntaje promedio de usuarios:</string>
+    <string name="number">Número</string>
 </resources>
