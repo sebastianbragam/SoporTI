@@ -192,11 +192,11 @@ public class UserReplyActivity extends AppCompatActivity {
             String host = "smtp.gmail.com";
             String mailToAdmin = ticket.admin.email.trim();
             String mailToUser = ticket.user.email.trim();
-            String subject = "Ticket Nº" + ticket.number + " respondido.";
+            String subject = "Ticket Nº" + ticket.number + " respondido. Prioridad: " + ticket.priority.substring(3);
             String message = ("Se informa que el ticket Nº" + ticket.number + " ha sido respondido por "
                     + ticket.user.firstName + " " + ticket.user.lastName + ", y está pendiente de respuesta de soporte. \n\n" +
                     "Respuesta: \"" + reply.reply + "\"\n\n" +
-                    "- Título: " + ticket.title + ":\n" +
+                    "- Título: " + ticket.title + ".\n" +
                     "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
                     "- Tipo: " + ticket.type + ". \n" +
                     "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +

@@ -334,6 +334,7 @@ public class ViewTicketActivity extends AppCompatActivity {
                     "- Título: " + ticket.title + ":\n" +
                     "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
                     "- Tipo: " + ticket.type + ". \n" +
+                    "- Prioridad: " + ticket.priority.substring(3) + ". \n" +
                     "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +
                     "- Descripción: " + ticket.description + ". \n" +
                     "- Usuario: " + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +

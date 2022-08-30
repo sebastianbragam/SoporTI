@@ -507,10 +507,10 @@ public class AssignTicketActivity extends AppCompatActivity {
             String host = "smtp.gmail.com";
             String mailToAdmin = ticketOld.admin.email.trim();
             String mailToUser = ticketOld.user.email.trim();
-            String subject = "Ticket Nº" + ticketOld.number + " asignado.";
+            String subject = "Ticket Nº" + ticketOld.number + " asignado. Prioridad: " + ticketOld.priority.substring(3);
             String message = ("Se informa que el ticket Nº" + ticketOld.number + " ha sido asignado a "
                     + ticketOld.admin.firstName + " " + ticketOld.admin.lastName + ". \n\n" +
-                    "- Título: " + ticketOld.title + ":\n" +
+                    "- Título: " + ticketOld.title + ".\n" +
                     "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
                     "- Tipo: " + ticketOld.type + ". \n" +
                     "- Categoría: " + ticketOld.category.category + ": " + ticketOld.category.subcategory + ". \n" +

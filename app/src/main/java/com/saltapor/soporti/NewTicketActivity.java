@@ -38,15 +38,29 @@ import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
+import com.saltapor.soporti.Models.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class NewTicketActivity extends AppCompatActivity {
 
     User userLogged;
+    Ticket ticket;
 
     Category category;
     TextView tvCategory;
@@ -428,13 +442,14 @@ public class NewTicketActivity extends AppCompatActivity {
         admin.email = "admin@saltapor.com";
 
         // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, type, priority, description, date, user, admin, "Pendiente de asignación", ticketNum, id);
+        ticket = new Ticket(title, category, type, priority, description, date, user, admin, "Pendiente de asignación", ticketNum, id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(NewTicketActivity.this, "Ticket registrado con éxito", Toast.LENGTH_LONG).show();
+                sendMail();
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -444,6 +459,65 @@ public class NewTicketActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void sendMail() {
+
+        try {
+
+            // Create email.
+            String host = "smtp.gmail.com";
+            String mailToAdmin = ticket.admin.email.trim();
+            String mailToUser = ticket.user.email.trim();
+            String subject = "Ticket Nº" + ticket.number + " creado. Prioridad: " + ticket.priority.substring(3);
+            String message = ("Se informa que el ticket Nº" + ticket.number + " ha sido creado por "
+                    + ticket.user.firstName + " " + ticket.user.lastName + ", y está pendiente de asignación. \n\n" +
+                    "- Título: " + ticket.title + ".\n" +
+                    "- Fecha: " + new SimpleDateFormat("dd/MM/yyyy").format(new Date(ticket.date)) + ". \n" +
+                    "- Tipo: " + ticket.type + ". \n" +
+                    "- Categoría: " + ticket.category.category + ": " + ticket.category.subcategory + ". \n" +
+                    "- Descripción: " + ticket.description + ". \n" +
+                    "- Usuario: " + ticket.user.firstName + " " + ticket.user.lastName + ". \n\n" +
+                    "Saludos!");
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", host);
+            properties.put("mail.smtp.port", 465);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(Utils.email, Utils.password);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToAdmin));
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(mailToUser));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(message);
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
 
     }
 
