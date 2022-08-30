@@ -47,12 +47,19 @@ import java.util.Objects;
 public class NewTicketActivity extends AppCompatActivity {
 
     User userLogged;
+
     Category category;
     TextView tvCategory;
     boolean categoryCheck = true;
+
     boolean typeCheck = true;
-    int selectionsCount = 0;
+    int typeSelectionsCount = 0;
     String type;
+
+    boolean priorityCheck = true;
+    int prioritySelectionsCount = 0;
+    String priority;
+
     Long ticketNum = Long.valueOf(0);
 
     @Override
@@ -122,7 +129,7 @@ public class NewTicketActivity extends AppCompatActivity {
         });
 
 
-        /* Delete bad tickets.
+        /* Delete tickets.
         Query deleteTicketQuery = database.getReference("tickets").orderByChild("title");
 
         deleteTicketQuery.addValueEventListener(new ValueEventListener() {
@@ -187,16 +194,78 @@ public class NewTicketActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 // To check if there is a selected item.
-                if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
+                if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && typeSelectionsCount == 0) {
 
                     // Check type.
                     typeCheck = false;
-                    selectionsCount = 1;
+                    typeSelectionsCount = 1;
 
                 }
 
                 // Get type.
                 type = typesList.get(i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+
+        });
+
+
+        // Priority spinner.
+        Spinner spPriority = findViewById(R.id.spPriority);
+
+        // Create and fill list.
+        final List<String> prioritiesList = new ArrayList<>();
+        prioritiesList.add("Seleccione un elemento...");
+        prioritiesList.add("3: Baja");
+        prioritiesList.add("2: Media");
+        prioritiesList.add("1: Alta");
+
+        // Create spinner adapter.
+        ArrayAdapter<String> prioritiesAdapter = new ArrayAdapter<String>(NewTicketActivity.this, android.R.layout.simple_spinner_item, prioritiesList) {
+
+            // Disable first element.
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) return false;
+                else return true;
+            }
+
+            // Set color to gray.
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    tv.setTextColor(Color.DKGRAY);
+                }
+                return view;
+            }
+
+        };
+
+        // Populate spinner with list.
+        prioritiesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spPriority.setAdapter(prioritiesAdapter);
+
+        // Spinner behaviour.
+        spPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // To check if there is a selected item.
+                if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && prioritySelectionsCount == 0) {
+
+                    // Check type.
+                    priorityCheck = false;
+                    prioritySelectionsCount = 1;
+
+                }
+
+                // Get type.
+                priority = prioritiesList.get(i);
 
             }
 
@@ -340,7 +409,7 @@ public class NewTicketActivity extends AppCompatActivity {
         }
 
         // Check if there is missing data.
-        if (title.isEmpty() || description.isEmpty() || categoryCheck || typeCheck) {
+        if (title.isEmpty() || description.isEmpty() || categoryCheck || typeCheck || priorityCheck) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -359,7 +428,7 @@ public class NewTicketActivity extends AppCompatActivity {
         admin.email = "admin@saltapor.com";
 
         // Create ticket object with form data.
-        Ticket ticket = new Ticket(title, category, type, description, date, user, admin, "Pendiente de asignación", ticketNum, id);
+        Ticket ticket = new Ticket(title, category, type, priority, description, date, user, admin, "Pendiente de asignación", ticketNum, id);
 
         // Upload data.
         reference.child(id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {

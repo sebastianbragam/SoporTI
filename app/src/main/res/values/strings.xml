@@ -119,4 +119,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filter">Filtrar</string>
     <string name="clean_filters">Limpiar filtros</string>
+    <string name="priority">Prioridad</string>
 </resources>

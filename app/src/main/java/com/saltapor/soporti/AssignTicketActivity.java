@@ -64,7 +64,7 @@ public class AssignTicketActivity extends AppCompatActivity {
     TextView tvCategory;
 
     boolean emailCheck = true;
-    int selectionsCount = 0;
+    int emailSelectionsCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +145,41 @@ public class AssignTicketActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+
+        });
+
+        // Priority spinner.
+        Spinner spPriority = findViewById(R.id.spPriority);
+
+        // Create and fill list.
+        final List<String> prioritiesList = new ArrayList<>();
+        prioritiesList.add("3: Baja");
+        prioritiesList.add("2: Media");
+        prioritiesList.add("1: Alta");
+
+        // Create spinner adapter.
+        ArrayAdapter<String> prioritiesAdapter = new ArrayAdapter<String>(AssignTicketActivity.this, android.R.layout.simple_spinner_item, prioritiesList) { };
+
+        // Populate spinner with list.
+        prioritiesAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spPriority.setAdapter(prioritiesAdapter);
+
+        // Select spinner item based on data.
+        spPriority.setSelection(prioritiesList.indexOf(ticket.priority));
+
+        // Spinner behaviour.
+        spPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // Get category object with it's ID.
+                ticket.priority = prioritiesList.get(i);
+
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
 
         });
 
@@ -237,11 +270,11 @@ public class AssignTicketActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                         // To check if there is a selected item.
-                        if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && selectionsCount == 0) {
+                        if (adapterView.getSelectedItem().toString() != "Seleccione un elemento..." && emailSelectionsCount == 0) {
 
                             // Check category
                             emailCheck = false;
-                            selectionsCount = 1;
+                            emailSelectionsCount = 1;
 
                         }
 
@@ -421,7 +454,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                         DatabaseReference reference = database.getReference("tickets");
 
                         // Create ticket object with form data.
-                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", ticketOld.number, ticketOld.id);
+                        Ticket ticket = new Ticket(ticketOld.title, ticketOld.category, ticketOld.type, ticketOld.priority, ticketOld.description, ticketOld.date, ticketOld.user, ticketOld.admin, "Pendiente respuesta de soporte", ticketOld.number, ticketOld.id);
 
                         // Upload data.
                         reference.child(ticketOld.id).setValue(ticket).addOnSuccessListener(new OnSuccessListener<Void>() {
