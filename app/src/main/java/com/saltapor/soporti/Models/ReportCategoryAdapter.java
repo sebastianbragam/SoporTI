@@ -40,7 +40,7 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
         holder.tvCategory.setText(reportItem.title);
         holder.tvTicketsCount.setText(reportItem.quantity + "");
 
-        // Preparing elapsed time.
+        // Preparing elapsed solving time.
         long diff = 0;
         if (reportItem.time > 0) {
             diff = reportItem.time / reportItem.quantity;
@@ -59,6 +59,39 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
         String time = (days + " d, " + hours + " hs, " + minutes + " min.");
         holder.tvTime.setText(time);
 
+        // Set mean rating.
+        if (reportItem.quantity == 0) {
+            holder.tvSatisfaction.setText("-");
+        } else {
+            holder.tvSatisfaction.setText((double) reportItem.rating / reportItem.quantity + "");
+        }
+
+        // Set mean response quantity.
+        if (reportItem.quantity == 0) {
+            holder.tvResponseQuantity.setText("-");
+        } else {
+            holder.tvResponseQuantity.setText((double) reportItem.responseQuantity / reportItem.quantity + "");
+        }
+
+        // Preparing elapsed response time.
+        diff = 0;
+        if (reportItem.responseTime > 0) {
+            diff = reportItem.responseTime / reportItem.quantity;
+        } else {
+            diff = reportItem.responseTime ;
+        }
+
+        // Transform milliseconds (long) to seconds
+        seconds = diff / 1000;
+
+        // Each one is the rest of the last one divided accordingly.
+        days = seconds / (24 * 60 * 60);
+        hours = (seconds % (24 * 60 * 60)) / (60 * 60);
+        minutes = ((seconds % (24 * 60 * 60)) % (60 * 60)) / 60;
+
+        String responseTime = (days + " d, " + hours + " hs, " + minutes + " min.");
+        holder.tvResponseTime.setText(responseTime);
+
     }
 
     @Override
@@ -68,7 +101,7 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
 
     public static class ReportCategoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvCategory, tvTicketsCount, tvTime;
+        TextView tvCategory, tvTicketsCount, tvTime, tvResponseTime, tvResponseQuantity, tvSatisfaction;
 
         public ReportCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +109,9 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
             tvCategory = itemView.findViewById(R.id.tvCategory);
             tvTicketsCount = itemView.findViewById(R.id.tvTicketsCount);
             tvTime = itemView.findViewById(R.id.tvTime);
+            tvResponseTime = itemView.findViewById(R.id.tvResponseTime);
+            tvResponseQuantity = itemView.findViewById(R.id.tvResponseQuantity);
+            tvSatisfaction = itemView.findViewById(R.id.tvSatisfaction);
 
         }
 

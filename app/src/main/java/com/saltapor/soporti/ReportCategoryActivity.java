@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.ReportAdapter;
 import com.saltapor.soporti.Models.ReportCategoryAdapter;
 import com.saltapor.soporti.Models.ReportItem;
@@ -28,6 +29,7 @@ import com.saltapor.soporti.Models.Ticket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -36,9 +38,11 @@ public class ReportCategoryActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ReportCategoryAdapter reportCategoryAdapter;
+
     ArrayList<ReportItem> reportList;
     ArrayList<Ticket> ticketsList;
     ArrayList<Category> categoriesList = new ArrayList<>();
+
     String selectedType;
 
     String dateFrom, dateTo;
@@ -84,8 +88,12 @@ public class ReportCategoryActivity extends AppCompatActivity {
         // Set dates from other report.
         dateFrom = (String) this.getIntent().getSerializableExtra("DATE_FROM");
         dateTo = (String) this.getIntent().getSerializableExtra("DATE_TO");
-        if (dateFrom != null && !dateFrom.equals("01/01/2000")) { tvDateFrom.setText(dateFrom); }
-        if (dateTo != null && !dateTo.equals("31/12/2099")) { tvDateTo.setText(dateTo); }
+        if (dateFrom != null && !dateFrom.equals("01/01/2000")) {
+            tvDateFrom.setText(dateFrom);
+        }
+        if (dateTo != null && !dateTo.equals("31/12/2099")) {
+            tvDateTo.setText(dateTo);
+        }
 
         // Create and fill categories list.
         // Categories reference.
@@ -108,7 +116,8 @@ public class ReportCategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
 
         });
 
@@ -154,7 +163,7 @@ public class ReportCategoryActivity extends AppCompatActivity {
             month_string = "0" + month;
         }
         if (day < 10) {
-            day_string  = "0" + day ;
+            day_string = "0" + day;
         }
 
         // Set TextView and variable.
@@ -179,7 +188,7 @@ public class ReportCategoryActivity extends AppCompatActivity {
             month_string = "0" + month;
         }
         if (day < 10) {
-            day_string  = "0" + day ;
+            day_string = "0" + day;
         }
 
         // Set TextView and variable.
@@ -196,15 +205,19 @@ public class ReportCategoryActivity extends AppCompatActivity {
         return dateFormat.parse(text).getTime();
     }
 
-    private void setRecyclerView () throws ParseException {
+    private void setRecyclerView() throws ParseException {
 
         // RecyclerView list setup.
         reportCategoryAdapter = new ReportCategoryAdapter(ReportCategoryActivity.this, reportList);
         recyclerView.setAdapter(reportCategoryAdapter);
 
         // See if dates are null and replace with distant dates..
-        if (dateFrom == null) { dateFrom = "01/01/2000"; }
-        if (dateTo == null) { dateTo = "31/12/2099"; }
+        if (dateFrom == null) {
+            dateFrom = "01/01/2000";
+        }
+        if (dateTo == null) {
+            dateTo = "31/12/2099";
+        }
 
         // Convert dates to long (correcting date to datetime by adding a full day).
         long dateFromLong = parseDate(dateFrom);
@@ -227,6 +240,32 @@ public class ReportCategoryActivity extends AppCompatActivity {
                         && ticketItem.date > dateFromLong && ticketItem.date < dateToLong) {
                     count = count + 1;
                     time = time + (ticketItem.finishDate - ticketItem.date);
+                    rating = rating + ticketItem.rate;
+
+                    // Variable to get first response (response time from this ticket).
+                    int responseCounter = 0;
+                    long responseDate = 0;
+
+                    // Create replies map, it cannot be a list as Firebase does not work with lists.
+                    HashMap<String, Reply> repliesMap = ticketItem.replies;
+
+                    for (Reply replyItem : repliesMap.values()) {
+
+                        // Add 1 reply to counter.
+                        responseCount = responseCount + 1;
+
+                        // If it is the first reply, get it's date.
+                        if (responseCounter == 0) {
+
+                            responseDate = replyItem.date;
+                            responseCounter = 1;
+
+                        }
+
+                    }
+
+                    responseTime = responseTime + (responseDate - ticketItem.date);
+
                 }
             }
 
@@ -281,7 +320,8 @@ public class ReportCategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
     }
