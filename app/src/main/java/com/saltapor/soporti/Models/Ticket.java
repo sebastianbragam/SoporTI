@@ -1,6 +1,7 @@
 package com.saltapor.soporti.Models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Ticket implements Serializable {
 
@@ -16,6 +17,7 @@ public class Ticket implements Serializable {
     public User admin;
     public Long number;
     public Long rate;
+    public HashMap<String, Reply> replies;
     public String id;
 
     public Ticket() {}

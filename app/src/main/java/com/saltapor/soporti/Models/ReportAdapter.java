@@ -12,15 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.saltapor.soporti.AssignTicketActivity;
 import com.saltapor.soporti.R;
-import com.saltapor.soporti.ReportActivity;
 import com.saltapor.soporti.ReportCategoryActivity;
-import com.saltapor.soporti.ViewTicketActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportViewHolder> {
 
@@ -49,7 +44,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
         holder.tvType.setText(reportItem.title);
         holder.tvTicketsCount.setText(reportItem.quantity + "");
 
-        // Preparing elapsed time.
+        // Preparing elapsed solving time.
         long diff = 0;
         if (reportItem.time > 0) {
             diff = reportItem.time / reportItem.quantity;
@@ -68,6 +63,40 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
         String time = (days + " d, " + hours + " hs, " + minutes + " min.");
         holder.tvTime.setText(time);
 
+        // Set mean rating.
+        if (reportItem.quantity == 0) {
+            holder.tvSatisfaction.setText("-");
+        } else {
+            holder.tvSatisfaction.setText((double) reportItem.rating / reportItem.quantity + "");
+        }
+
+        // Set mean response quantity.
+        if (reportItem.quantity == 0) {
+            holder.tvResponseQuantity.setText("-");
+        } else {
+            holder.tvResponseQuantity.setText((double) reportItem.responseQuantity / reportItem.quantity + "");
+        }
+
+        // Preparing elapsed response time.
+        diff = 0;
+        if (reportItem.responseTime > 0) {
+            diff = reportItem.responseTime / reportItem.quantity;
+        } else {
+            diff = reportItem.responseTime ;
+        }
+
+        // Transform milliseconds (long) to seconds
+        seconds = diff / 1000;
+
+        // Each one is the rest of the last one divided accordingly.
+        days = seconds / (24 * 60 * 60);
+        hours = (seconds % (24 * 60 * 60)) / (60 * 60);
+        minutes = ((seconds % (24 * 60 * 60)) % (60 * 60)) / 60;
+
+        String responseTime = (days + " d, " + hours + " hs, " + minutes + " min.");
+        holder.tvResponseTime.setText(responseTime);
+
+        // Button handling.
         holder.btnViewType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +121,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
 
     public static class ReportViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvType, tvTicketsCount, tvTime;
+        TextView tvType, tvTicketsCount, tvTime, tvResponseTime, tvResponseQuantity, tvSatisfaction;
         ImageButton btnViewType;
 
         public ReportViewHolder(@NonNull View itemView) {
@@ -101,6 +130,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
             tvType = itemView.findViewById(R.id.tvType);
             tvTicketsCount = itemView.findViewById(R.id.tvTicketsCount);
             tvTime = itemView.findViewById(R.id.tvTime);
+            tvResponseTime = itemView.findViewById(R.id.tvResponseTime);
+            tvResponseQuantity = itemView.findViewById(R.id.tvResponseQuantity);
+            tvSatisfaction = itemView.findViewById(R.id.tvSatisfaction);
             btnViewType = itemView.findViewById(R.id.btnViewType);
 
         }

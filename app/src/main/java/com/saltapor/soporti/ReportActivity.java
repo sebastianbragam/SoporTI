@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.saltapor.soporti.Models.Category;
+import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.ReportAdapter;
 import com.saltapor.soporti.Models.ReportItem;
 import com.saltapor.soporti.Models.Ticket;
@@ -46,14 +47,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class ReportActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ReportAdapter reportAdapter;
+
     ArrayList<ReportItem> reportList;
     ArrayList<Ticket> ticketsList;
     ArrayList<String> typesList = new ArrayList<>();
@@ -146,7 +150,7 @@ public class ReportActivity extends AppCompatActivity {
             month_string = "0" + month;
         }
         if (day < 10) {
-            day_string  = "0" + day ;
+            day_string = "0" + day;
         }
 
         // Set TextView and variable.
@@ -171,7 +175,7 @@ public class ReportActivity extends AppCompatActivity {
             month_string = "0" + month;
         }
         if (day < 10) {
-            day_string  = "0" + day ;
+            day_string = "0" + day;
         }
 
         // Set TextView and variable.
@@ -188,15 +192,19 @@ public class ReportActivity extends AppCompatActivity {
         return dateFormat.parse(text).getTime();
     }
 
-    private void setRecyclerView () throws ParseException {
+    private void setRecyclerView() throws ParseException {
 
         // RecyclerView list setup.
         reportAdapter = new ReportAdapter(ReportActivity.this, reportList, dateFrom, dateTo);
         recyclerView.setAdapter(reportAdapter);
 
         // See if dates are null and replace with distant dates..
-        if (dateFrom == null) { dateFrom = "01/01/2000"; }
-        if (dateTo == null) { dateTo = "31/12/2099"; }
+        if (dateFrom == null) {
+            dateFrom = "01/01/2000";
+        }
+        if (dateTo == null) {
+            dateTo = "31/12/2099";
+        }
 
         // Convert dates to long (correcting date to datetime by adding a full day).
         long dateFromLong = parseDate(dateFrom);
@@ -221,7 +229,29 @@ public class ReportActivity extends AppCompatActivity {
                     time = time + (ticketItem.finishDate - ticketItem.date);
                     rating = rating + ticketItem.rate;
 
-                    // Retrieve replies from this ticket here and calculate quantity and mean.
+                    // Variable to get first response (response time from this ticket).
+                    int responseCounter = 0;
+                    long responseDate = 0;
+
+                    // Create replies map, it cannot be a list as Firebase does not work with lists.
+                    HashMap<String, Reply> repliesMap = ticketItem.replies;
+
+                    for (Reply replyItem : repliesMap.values()) {
+
+                        // Add 1 reply to counter.
+                        responseCount = responseCount + 1;
+
+                        // If it is the first reply, get it's date.
+                        if (responseCounter == 0) {
+
+                            responseDate = replyItem.date;
+                            responseCounter = 1;
+
+                        }
+
+                    }
+
+                    responseTime = responseTime + (responseDate - ticketItem.date);
 
                 }
 

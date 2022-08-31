@@ -96,7 +96,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvReplies"
+                        android:id="@+id/tvResponseTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/time"
@@ -119,7 +119,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvRepliesQuantity"
+                        android:id="@+id/tvResponseQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/number"

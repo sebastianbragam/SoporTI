@@ -1,13 +1,11 @@
 package com.saltapor.soporti;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +13,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,23 +24,11 @@ import com.saltapor.soporti.Models.RepliesAdapter;
 import com.saltapor.soporti.Models.Reply;
 import com.saltapor.soporti.Models.Ticket;
 import com.saltapor.soporti.Models.User;
-import com.saltapor.soporti.Models.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class ViewTicketActivity extends AppCompatActivity {
 
@@ -189,7 +173,7 @@ public class ViewTicketActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 // Obtain TextView element and set text to default.
-                TextView tvReplies = findViewById(R.id.tvReplies);
+                TextView tvReplies = findViewById(R.id.tvResponseTime);
                 tvReplies.setText("Respuestas");
 
                 // RecyclerView list setup.
