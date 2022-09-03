@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.saltapor.soporti.R;
 import com.saltapor.soporti.ReportCategoryActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAdapter.ReportCategoryViewHolder> {
@@ -59,18 +60,21 @@ public class ReportCategoryAdapter extends RecyclerView.Adapter<ReportCategoryAd
         String time = (days + " d, " + hours + " hs, " + minutes + " min.");
         holder.tvTime.setText(time);
 
+        // Format to two zeros.
+        DecimalFormat df = new DecimalFormat("#.00");
+
         // Set mean rating.
         if (reportItem.quantity == 0) {
             holder.tvSatisfaction.setText("-");
         } else {
-            holder.tvSatisfaction.setText((double) reportItem.rating / reportItem.quantity + "");
+            holder.tvSatisfaction.setText(df.format((double) reportItem.rating / reportItem.quantity));
         }
 
         // Set mean response quantity.
         if (reportItem.quantity == 0) {
             holder.tvResponseQuantity.setText("-");
         } else {
-            holder.tvResponseQuantity.setText((double) reportItem.responseQuantity / reportItem.quantity + "");
+            holder.tvResponseQuantity.setText(df.format((double) reportItem.responseQuantity / reportItem.quantity));
         }
 
         // Preparing elapsed response time.

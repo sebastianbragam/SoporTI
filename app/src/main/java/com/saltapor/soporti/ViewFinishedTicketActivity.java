@@ -86,6 +86,7 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
 
         // Set text.
         TextView tvTitle = findViewById(R.id.tvTitle);
+        TextView tvRatingName = findViewById(R.id.tvRatingName);
         TextView tvTypeName = findViewById(R.id.tvTypeName);
         TextView tvPriorityName = findViewById(R.id.tvPriorityName);
         TextView tvCategoryName = findViewById(R.id.tvCategoryName);
@@ -97,6 +98,7 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
         TextView tvDescription = findViewById(R.id.tvDescription);
 
         tvTitle.setText(ticket.title);
+        tvRatingName.setText(ticket.rate.toString());
         tvTypeName.setText(ticket.type);
         tvPriorityName.setText(ticket.priority.substring(3));
         tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
@@ -160,50 +162,6 @@ public class ViewFinishedTicketActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Connect to database.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Reference to update ticket data.
-        DatabaseReference usersReference = database.getReference("tickets").child(ticket.id);
-
-        // Listener to obtain user data.
-        usersReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ticket = snapshot.getValue(Ticket.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
-        // Update TextViews.
-        TextView tvTitle = findViewById(R.id.tvTitle);
-        TextView tvTypeName = findViewById(R.id.tvTypeName);
-        TextView tvCategoryName = findViewById(R.id.tvCategoryName);
-        TextView tvStateName = findViewById(R.id.tvStateName);
-        TextView tvDate = findViewById(R.id.tvDate);
-        TextView tvUser = findViewById(R.id.tvUser);
-        TextView tvAdmin = findViewById(R.id.tvAdmin);
-        TextView tvDescription = findViewById(R.id.tvDescription);
-
-        tvTitle.setText("Nº" + ticket.number + ": " + ticket.title);
-        tvTypeName.setText(ticket.type);
-        tvCategoryName.setText(ticket.category.category + ": " + ticket.category.subcategory);
-        tvStateName.setText(ticket.state);
-        String date = new SimpleDateFormat("dd/MM/yy hh:mm aa ").format(new Date(ticket.date));
-        tvDate.setText(date);
-        tvUser.setText(ticket.user.email);
-        tvAdmin.setText(ticket.admin.email);
-        tvDescription.setText(ticket.description);
 
     }
 

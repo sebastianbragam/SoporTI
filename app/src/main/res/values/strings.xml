@@ -130,4 +130,6 @@
     <string name="satisfaction">Satisfacción</string>
     <string name="satisfaction_form">Puntaje promedio de usuarios:</string>
     <string name="number">Número</string>
+    <string name="rating_form">Calificación:</string>
+    <string name="rating">Calificación</string>
 </resources>
