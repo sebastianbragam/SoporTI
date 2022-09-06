@@ -132,4 +132,5 @@
     <string name="number">Número</string>
     <string name="rating_form">Calificación:</string>
     <string name="rating">Calificación</string>
+    <string name="conclude_ticket">Concluir ticket</string>
 </resources>

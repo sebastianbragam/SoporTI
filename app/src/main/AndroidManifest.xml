@@ -63,7 +63,7 @@
         <activity
             android:name=".SupportFinishActivity"
             android:exported="false"
-            android:label="@string/finish_ticket" />
+            android:label="@string/conclude_ticket" />
         <activity
             android:name=".SupportReplyActivity"
             android:exported="false"
