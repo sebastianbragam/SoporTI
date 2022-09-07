@@ -133,4 +133,8 @@
     <string name="rating_form">Calificación:</string>
     <string name="rating">Calificación</string>
     <string name="conclude_ticket">Concluir ticket</string>
+    <string name="enabled_form">Habilitada:</string>
+    <string name="enabled">Habilitada</string>
+    <string name="actual_enable_state">Estado actual de habilitación</string>
+    <string name="disable">Deshabilitar</string>
 </resources>

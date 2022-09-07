@@ -227,7 +227,7 @@ public class AssignTicketActivity extends AppCompatActivity {
                     // Check if user type is support.
                     if (Objects.equals(usersListSnapshot.child("type").getValue(String.class), "Soporte")) {
 
-                        // Fill categories list.
+                        // Fill list.
                         String email = usersListSnapshot.child("email").getValue(String.class);
                         usersList.add(email);
 
@@ -334,14 +334,21 @@ public class AssignTicketActivity extends AppCompatActivity {
                 // Fill rest of list.
                 for (DataSnapshot categoriesListSnapshot : dataSnapshot.getChildren()) {
 
-                    // Fill categories list.
-                    String categoryName = categoriesListSnapshot.child("category").getValue(String.class);
-                    categoryName = categoryName + ": " + categoriesListSnapshot.child("subcategory").getValue(String.class);
-                    categoriesList.add(categoryName);
+                    // Check if category is enabled.
+                    boolean enabled = Boolean.TRUE.equals(categoriesListSnapshot.child("enabled").getValue(boolean.class));
 
-                    // Fill IDs list.
-                    String categoryID = categoriesListSnapshot.child("id").getValue(String.class);
-                    categoriesIDList.add(categoryID);
+                    if (enabled) {
+
+                        // Fill categories list.
+                        String categoryName = categoriesListSnapshot.child("category").getValue(String.class);
+                        categoryName = categoryName + ": " + categoriesListSnapshot.child("subcategory").getValue(String.class);
+                        categoriesList.add(categoryName);
+
+                        // Fill IDs list.
+                        String categoryID = categoriesListSnapshot.child("id").getValue(String.class);
+                        categoriesIDList.add(categoryID);
+
+                    }
 
                 }
 

@@ -167,14 +167,21 @@ public class SupportFinishActivity extends AppCompatActivity {
                 // Fill rest of list.
                 for (DataSnapshot categoriesListSnapshot : dataSnapshot.getChildren()) {
 
-                    // Fill categories list.
-                    String categoryName = categoriesListSnapshot.child("category").getValue(String.class);
-                    categoryName = categoryName + ": " + categoriesListSnapshot.child("subcategory").getValue(String.class);
-                    categoriesList.add(categoryName);
+                    // Check if category is enabled.
+                    boolean enabled = Boolean.TRUE.equals(categoriesListSnapshot.child("enabled").getValue(boolean.class));
 
-                    // Fill IDs list.
-                    String categoryID = categoriesListSnapshot.child("id").getValue(String.class);
-                    categoriesIDList.add(categoryID);
+                    if (enabled) {
+
+                        // Fill categories list.
+                        String categoryName = categoriesListSnapshot.child("category").getValue(String.class);
+                        categoryName = categoryName + ": " + categoriesListSnapshot.child("subcategory").getValue(String.class);
+                        categoriesList.add(categoryName);
+
+                        // Fill IDs list.
+                        String categoryID = categoriesListSnapshot.child("id").getValue(String.class);
+                        categoriesIDList.add(categoryID);
+
+                    }
 
                 }
 

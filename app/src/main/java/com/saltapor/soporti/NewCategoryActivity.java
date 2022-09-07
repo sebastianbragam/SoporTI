@@ -95,9 +95,8 @@ public class NewCategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) { }
 
-            }
         });
 
     }
@@ -114,6 +113,20 @@ public class NewCategoryActivity extends AppCompatActivity {
         // Check if there is missing data.
         if (categoryName.isEmpty() || subcategory.isEmpty()) {
             Toast.makeText(this, "Por favor rellene todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check if category already exists.
+        boolean exists = false;
+
+        for (Category categoryItem : list) {
+            if (Objects.equals(categoryItem.category.trim(), categoryName) && Objects.equals(categoryItem.subcategory.trim(), subcategory)) {
+                exists = true;
+            }
+        }
+
+        if (exists) {
+            Toast.makeText(this, "La categoría ya existe", Toast.LENGTH_SHORT).show();
             return;
         }
 

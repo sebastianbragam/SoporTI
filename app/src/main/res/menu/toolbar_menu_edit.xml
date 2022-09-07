@@ -10,10 +10,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_delete"
+        android:id="@+id/action_disable"
         android:orderInCategory="10"
-        android:title="@string/delete"
-        android:icon="@drawable/ic_delete"
+        android:title="@string/disable"
+        android:icon="@drawable/ic_disable"
         app:showAsAction="ifRoom" />
 
 </menu>
