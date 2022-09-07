@@ -114,7 +114,7 @@ public class EditCategoryActivity extends AppCompatActivity {
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // Obtain data.
+        // Set reference.
         DatabaseReference reference = database.getReference("categories");
 
         // Create update Map object.

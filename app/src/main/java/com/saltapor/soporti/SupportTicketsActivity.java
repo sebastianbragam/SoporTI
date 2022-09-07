@@ -312,11 +312,19 @@ public class SupportTicketsActivity extends AppCompatActivity {
             case R.id.action_documentation:
                 startActivityDocumentation();
                 return true;
+            case R.id.action_profile:
+                startActivityEditProfile();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
         }
         return true;
+    }
+
+    private void startActivityEditProfile() {
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        startActivity(intent);
     }
 
     private void startActivityFilter() {

@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoporTI">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:label="@string/edit_profile" />
+        <activity
             android:name=".UserFinishActivity"
             android:exported="false"
             android:label="@string/finish_ticket" />

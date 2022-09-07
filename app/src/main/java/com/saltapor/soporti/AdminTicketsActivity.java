@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +28,7 @@ import com.saltapor.soporti.Models.User;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AdminTicketsActivity extends AppCompatActivity {
 
@@ -221,11 +223,26 @@ public class AdminTicketsActivity extends AppCompatActivity {
             case R.id.action_documentation:
                 startActivityDocumentation();
                 return true;
+            case R.id.action_profile:
+                startActivityEditProfile();
+                return true;
             case R.id.action_logout:
                 logOutUser();
                 return true;
         }
         return true;
+    }
+
+    private void startActivityEditProfile() {
+
+        // Check if user is admin.
+        if (Objects.equals(userLogged.email, "admin@saltapor.com")) {
+            Toast.makeText(this, "El usuario admin principal no puede editar su perfil", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(this, EditProfileActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     private void startActivityDocumentation() {

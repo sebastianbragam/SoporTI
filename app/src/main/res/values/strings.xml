@@ -138,4 +138,6 @@
     <string name="actual_enable_state">Estado actual de habilitación</string>
     <string name="disable">Deshabilitar</string>
     <string name="categories_edit_notice">Al editar una categoría, la misma se habilita automáticamente.</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="my_profile">Mi perfil</string>
 </resources>
