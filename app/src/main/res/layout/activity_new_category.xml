@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="@string/category"
+        android:text="@string/grouper"
         android:textStyle="bold" />
 
     <EditText
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/subcategory"
+        android:text="@string/name"
         android:textStyle="bold" />
 
     <EditText
