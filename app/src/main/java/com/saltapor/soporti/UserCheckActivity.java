@@ -45,12 +45,20 @@ public class UserCheckActivity extends AppCompatActivity {
 
         // Connect to database.
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
 
-        // Reference to obtain user data.
-        DatabaseReference usersReference = database.getReference("users").child(currentUser.getUid());
+        // Reference all database to keep updated.
+        DatabaseReference usersReference = database.getReference("users");
+        DatabaseReference ticketsReference = database.getReference("tickets");
+        DatabaseReference categoriesReference = database.getReference("categories");
+
+        // Keep reference always synced.
+        usersReference.keepSynced(true);
+        ticketsReference.keepSynced(true);
+        categoriesReference.keepSynced(true);
 
         // Listener to update user data.
-        usersReference.addValueEventListener(new ValueEventListener() {
+        usersReference.child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
