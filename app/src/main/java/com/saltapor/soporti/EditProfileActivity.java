@@ -32,6 +32,9 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText etRegisterEmail;
     User userLogged;
 
+    boolean appOnline = false;
+    boolean reconnectionCheck = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +93,35 @@ public class EditProfileActivity extends AppCompatActivity {
 
         });
 
+        // Check if app is online.
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                appOnline = connected;
+                if (reconnectionCheck && connected) {
+                    Toast.makeText(EditProfileActivity.this, "Conexión reestablecida", Toast.LENGTH_SHORT).show();
+                }
+                reconnectionCheck = true;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                appOnline = false;
+            }
+        });
+
     }
 
     private void editUser() {
+
+        // Check if app is online.
+        if (!appOnline) {
+            Toast.makeText(this, "Conexión perdida, para realizar cambios debe encontrarse en línea", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Obtain form data.
         String firstName = etFirstName.getText().toString().trim();

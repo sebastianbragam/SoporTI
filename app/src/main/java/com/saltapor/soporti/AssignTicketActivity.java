@@ -66,6 +66,9 @@ public class AssignTicketActivity extends AppCompatActivity {
     boolean emailCheck = true;
     int emailSelectionsCount = 0;
 
+    boolean appOnline = false;
+    boolean reconnectionCheck = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,6 +315,25 @@ public class AssignTicketActivity extends AppCompatActivity {
 
         });
 
+        // Check if app is online.
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                appOnline = connected;
+                if (reconnectionCheck && connected) {
+                    Toast.makeText(AssignTicketActivity.this, "Conexión reestablecida", Toast.LENGTH_SHORT).show();
+                }
+                reconnectionCheck = true;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                appOnline = false;
+            }
+        });
+
     }
 
     private void setSpinner() {
@@ -425,6 +447,12 @@ public class AssignTicketActivity extends AppCompatActivity {
     }
 
     private void assignTicket() {
+
+        // Check if app is online.
+        if (!appOnline) {
+            Toast.makeText(this, "Conexión perdida, para realizar cambios debe encontrarse en línea", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // Check if there is missing data.
         if (emailCheck) {
